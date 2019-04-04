@@ -11,10 +11,17 @@ use yii\base\Model;
  * @property User|null $user This property is read-only.
  *
  */
+
 class LoginForm extends Model
 {
-    public $username;
-    public $password;
+    public $usua_dins;
+    public $usua_nivel;
+    public $usua_nome;
+    public $usua_pass;
+    public $usua_mail;
+    public $usua_hash;
+    public $usua_logi;
+    public $usua_foto;
     public $rememberMe = true;
 
     private $_user = false;
@@ -27,11 +34,11 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['username', 'password'], 'required'],
+            [['usua_mail', 'usua_pass'], 'required'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
-            ['password', 'validatePassword'],
+            ['usua_pass', 'validatePassword'],
         ];
     }
 
@@ -47,8 +54,8 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
 
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+            if (!$user || !$user->validatePassword($this->usua_pass)) {
+                $this->addError($attribute, 'Senha ou usuário invalidos');
             }
         }
     }
@@ -73,9 +80,26 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
+            $this->_user = User::findByUsername($this->usua_mail);
         }
 
         return $this->_user;
     }
+
+        public function attributeLabels()
+    {
+        return [
+            'usua_codi' => 'Código',
+            'usua_nome' => 'Nome',
+            'usua_dins' => 'Dins',
+            'usua_pass' => 'Senha',
+            'usua_mail' => 'E-mail',
+            'usua_hash' => 'Hash',
+            'usua_nivel' => 'Nivel',
+            'usua_foto' => 'Foto',
+            'usua_logi' => 'Usuário',
+        ];
+    }
+
+
 }

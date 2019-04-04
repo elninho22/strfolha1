@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+use app\components\Upload;
 
 use Yii;
 
@@ -33,9 +34,9 @@ class FolhaPagamento extends \yii\db\ActiveRecord
     {
         return [
             [['fopa_data'], 'safe'],
-            [['fopa_usua'], 'required'],
+            [['fopa_usua','fopa_arquivo'], 'required'],
             [['fopa_usua'], 'integer'],
-            [['fopa_arquivo'], 'string', 'max' => 145],
+            //[['fopa_arquivo'], 'string', 'max' => 145],
             [['fopa_text'], 'string', 'max' => 45],
             [['fopa_usua'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['fopa_usua' => 'usua_codi']],
         ];
@@ -65,8 +66,8 @@ class FolhaPagamento extends \yii\db\ActiveRecord
         return [
             'fopa_codi' => 'Código',
             'fopa_arquivo' => 'Arquivo',
-            'fopa_data' => 'Data de Envio',
-            'fopa_text' => 'Descrição',
+            'fopa_data' => 'Mês de Referencia',
+            'fopa_text' => 'Observação',
             'fopa_usua' => 'Gestor',
         ];
     }

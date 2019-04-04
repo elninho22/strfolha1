@@ -45,11 +45,11 @@ class FolhaHistorico extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'fohi_codi' => 'Fohi Codi',
-            'fohi_data' => 'Fohi Data',
-            'fohi_text' => 'Fohi Text',
-            'fohi_arq' => 'Fohi Arq',
-            'fopa_fopa' => 'Fopa Fopa',
+            'fohi_codi' => 'Código',
+            'fohi_data' => 'Data de Envio',
+            'fohi_text' => 'Mês de Referencia   ',
+            'fohi_arq' => 'Arquivo',
+            'fopa_fopa' => 'Folha de Pagamento ID',
         ];
     }
 

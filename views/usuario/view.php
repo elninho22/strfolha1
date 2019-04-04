@@ -31,13 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'usua_codi',
             'usua_nome',
-            'usua_dins',
-            'usua_pass',
             'usua_mail',
-            'usua_hash',
-            'usua_nivel',
-            'usua_foto',
-            'usua_logi',
+            'gestor',          
+            //'usua_logi',
         ],
     ]) ?>
 

@@ -1,20 +1,25 @@
 <?php
 
 namespace app\controllers;
+use app\components\Upload;
 
 use Yii;
+use app\models\FolhaPagamento;
+use app\models\FolhaPagamentoSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 use app\models\Usuario;
 use app\models\UsuarioSearch;
 use app\models\GestorUsuario;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
+
 
 /**
- * UsuarioController implements the CRUD actions for Usuario model.
+ * FolhaPagamentoController implements the CRUD actions for FolhaPagamento model.
  */
-class UsuarioController extends Controller
+class FolhapagamentoController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -31,7 +36,7 @@ class UsuarioController extends Controller
                         'roles' => ['@'],
                     ],
                 ],
-            ],
+            ],            
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -42,12 +47,15 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Lists all Usuario models.
+     * Lists all FolhaPagamento models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UsuarioSearch();
+
+        ////var_dump(Yii::$app->user->identity);
+        //die('parou');
+        $searchModel = new FolhaPagamentoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -56,42 +64,45 @@ class UsuarioController extends Controller
         ]);
     }
 
+
+
     /**
-     * Displays a single Usuario model.
-     * @param integer $id
+     * Displays a single FolhaPagamento model.
+     * @param integer $fopa_codi
+     * @param integer $fopa_usua
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($fopa_codi, $fopa_usua)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($fopa_codi, $fopa_usua),
         ]);
     }
 
     /**
-     * Creates a new Usuario model.
+     * Creates a new FolhaPagamento model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
-        ///var_dump(Yii::$app->request->post());
+    public function actionCreate()
+
+    {
+       // var_dump(Yii::$app->request->post());
         //die('oi');
-       // criar coluna para gestor ou nao
-       // $gest = isset(Yii::$app->request->post('uuu')) ? 1 : 0;
-        $model = new Usuario();
+        
+        $model = new FolhaPagamento();
+           
         if ($model->load(Yii::$app->request->post())) {
-            if($model->save()){
-               $usua_codi = $model->usua_codi;
-               $gestor = new GestorUsuario();
-               $gestor->geus_usua = $model->usua_codi; //pegando id do gestor tabela geus_
-               $gestor->geus_gest = $model->usua_guest; //salvando id do gestor tabela geus_
-               $gestor->save();
-                return $this->redirect(['view', 'id' => $model->usua_codi]);
+            
+            if ($model->save())
+            {
+               
             }
-            //var_dump($model->errors);
-            //die('o');
+
+            return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
         }
+
 
         return $this->render('create', [
             'model' => $model,
@@ -99,18 +110,19 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Updates an existing Usuario model.
+     * Updates an existing FolhaPagamento model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param integer $fopa_codi
+     * @param integer $fopa_usua
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($fopa_codi, $fopa_usua)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($fopa_codi, $fopa_usua);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->usua_codi]);
+            return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
         }
 
         return $this->render('update', [
@@ -119,29 +131,31 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Deletes an existing Usuario model.
+     * Deletes an existing FolhaPagamento model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param integer $fopa_codi
+     * @param integer $fopa_usua
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($fopa_codi, $fopa_usua)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($fopa_codi, $fopa_usua)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Usuario model based on its primary key value.
+     * Finds the FolhaPagamento model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Usuario the loaded model
+     * @param integer $fopa_codi
+     * @param integer $fopa_usua
+     * @return FolhaPagamento the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($fopa_codi, $fopa_usua)
     {
-        if (($model = Usuario::findOne($id)) !== null) {
+        if (($model = FolhaPagamento::findOne(['fopa_codi' => $fopa_codi, 'fopa_usua' => $fopa_usua])) !== null) {
             return $model;
         }
 

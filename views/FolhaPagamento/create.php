@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\FolhaPagamento */
 
-$this->title = 'Criar Folha de Presença';
+$this->title = 'Nova Folha';
 $this->params['breadcrumbs'][] = ['label' => 'Inicio', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

@@ -7,17 +7,13 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\FolhaHistoricoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Folha Historicos';
+$this->title = 'Historico de Folhas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="folha-historico-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Folha Historico', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'usua_nome') ?>
 
-    <?= $form->field($model, 'usua_dins') ?>
+    <?php // echo $form->field($model, 'usua_dins') ?>
 
     <?= $form->field($model, 'usua_pass') ?>
 

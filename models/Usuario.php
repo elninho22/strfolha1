@@ -21,6 +21,7 @@ use Yii;
  */
 class Usuario extends \yii\db\ActiveRecord
 {
+   public $gestor;
     /**
      * {@inheritdoc}
      */
@@ -35,8 +36,9 @@ class Usuario extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['usua_nome', 'usua_mail'], 'required'],
+            [['usua_nome', 'usua_mail', 'usua_guest'], 'required'],
             [['usua_dins'], 'safe'],
+            [['gestor'], 'integer'],
             [['usua_nivel'], 'integer'],
             ['usua_mail', 'email'],
             [['usua_nome', 'usua_pass', 'usua_mail', 'usua_hash', 'usua_logi'], 'string', 'max' => 80],
@@ -51,14 +53,16 @@ class Usuario extends \yii\db\ActiveRecord
     {
         return [
             'usua_codi' => 'Código',
+            'gestor' => 'Gestor',
             'usua_nome' => 'Nome',
             'usua_dins' => 'Dins',
             'usua_pass' => 'Senha',
             'usua_mail' => 'E-mail',
             'usua_hash' => 'Hash',
-            'usua_nivel' => 'Nivel',
+            'usua_nivel'=> 'Nivel',
             'usua_foto' => 'Foto',
             'usua_logi' => 'Username',
+            'usua_guest' => 'Gestor',
         ];
     }
 

@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use app\models\Usuario;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\FolhaPagamento */
@@ -13,17 +15,21 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
     
     <?= $form->field($model, 'fopa_arquivo')->fileInput()?> 
-    
+    echo 
     <?= $form->field($model, 'fopa_data')->textInput() ?>
-
-    <?= $form->field($model, 'fopa_text')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'fopa_usua')->textInput() ?>
+    <?= $form->field($model, 'fopa_text')->textInput() ?>
+    
+    <?= $form->field($model, 'fopa_usua')->dropDownlist(ArrayHelper::map(Usuario::find()->where(['usua_guest' => '1'])->all(), 'usua_codi', 'usua_nome'), ['prompt' => 'Selecione seu Gestor'])
+         ->label('Gestor') ?>
+    
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Enviar', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+
+
+

@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\FolhaPagamento */
 
-$this->title = $model->fopa_codi;
+$this->title = $model->fopa_text;
 $this->params['breadcrumbs'][] = ['label' => 'Inicio', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -16,11 +16,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], [
+        <?= Html::a('Deletar', ['delete', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Confirma a exclusão ?',
+                'confirm' => "Confirma a exclusão da folha {$model->fopa_text}? ",
                 'method' => 'post',
             ],
         ]) ?>

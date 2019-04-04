@@ -58,7 +58,22 @@ class SiteController extends Controller
      * Displays homepage.
      *
      * @return string
+
+
      */
+
+        public function actionCreate()
+    {
+        $model = new Usuario();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->usua_codi]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
     public function actionIndex()
     {
         return $this->render('index');
@@ -71,16 +86,13 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            //return $this->render('index');
+            return $this->redirect(['folhapagamento/index']);
         }
 
-        $model->password = '';
+        $model->usua_pass = '';
         return $this->render('login', [
             'model' => $model,
         ]);

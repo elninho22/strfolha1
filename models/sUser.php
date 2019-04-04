@@ -2,11 +2,8 @@
 
 namespace app\models;
 
-use app\models\Usuario;
-
 class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
 {
-    public $usua_codi;
     public $usua_dins;
     public $usua_nivel;
     public $usua_nome;
@@ -15,16 +12,15 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $usua_hash;
     public $usua_logi;
     public $usua_foto;
-    public $usua_guest;
     public $rememberMe = true;
 
-/*    private static $users = [
-        '1' => [
-            'usua_codi' => '$usua_codi',
-            'usua_logi' => '$usua_logi',
-            'usua_pass' => '$usua_pass',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
+    private static $users = [
+        '100' => [
+            'id' => '1',
+            'usua_logi' => 'usua_logi',
+            'usua_pass' => 'usua_pass',
+            //'authKey' => 'test100key',
+            //'accessToken' => '100-token',
         ],
         '101' => [
             'id' => '101',
@@ -33,22 +29,15 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
             'authKey' => 'test101key',
             'accessToken' => '101-token',
         ],
-    ];*/
+    ];
 
 
     /**
      * {@inheritdoc}
      */
-    public static function findIdentity($usua_codi)
+    public static function findIdentity($id)
     {
-        //return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
-        $user = Usuario::find($usua_codi)->one();
-
-        if ($user)
-        {
-            return new static($user);
-        }
-        return null;
+        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
     }
 
     /**
@@ -71,18 +60,12 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      * @param string $username
      * @return static|null
      */
-    public static function findByUsername($usua_mail)
+    public static function findByUsername($username)
     {
-/*        foreach (self::$users as $user) {
-            if (strcasecmp($user['usua_logi'], $usua_logi) === 0) {
+        foreach (self::$users as $user) {
+            if (strcasecmp($user['username'], $username) === 0) {
                 return new static($user);
             }
-        }*/
-
-        $user = Usuario::find()->where(['usua_mail' => $usua_mail])->one();
-        if ($user)
-        {
-            return new static($user);
         }
 
         return null;
@@ -93,7 +76,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public function getId()
     {
-        return $this->usua_codi;
+        return $this->id;
     }
 
     /**
@@ -101,7 +84,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public function getAuthKey()
     {
-        return null; //$this->authKey;
+        return $this->authKey;
     }
 
     /**
@@ -109,7 +92,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        return null; //$this->authKey === $authKey;
+        return $this->authKey === $authKey;
     }
 
     /**

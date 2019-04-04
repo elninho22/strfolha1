@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\FolhaPagamentoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Folha de Presença';
+$this->title = 'Folha de Ponto';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="folha-pagamento-index">
@@ -25,7 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'fopa_codi',
             'fopa_arquivo',
             'fopa_data',
             'fopa_text',
@@ -35,3 +34,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 </div>
+
+
