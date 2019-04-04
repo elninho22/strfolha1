@@ -18,8 +18,8 @@ use app\components\Uteis;
 
  /*/ FolhaPagamentoController implements the CRUD actions for FolhaPagamento model.
  */
-class FolhapagamentoController extends Controller
-{
+ class FolhapagamentoController extends Controller
+ {
     /**
      * {@inheritdoc}
      */
@@ -41,9 +41,11 @@ class FolhapagamentoController extends Controller
     public function actionIndex()
     {
         $searchModel = new FolhaPagamentoSearch();
+        
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('index', [
             'searchModel' => $searchModel,
+
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -68,40 +70,44 @@ class FolhapagamentoController extends Controller
     public function actionCreate()
     {
         $model = new FolhaPagamento();
-           
+
         if ($model->load(Yii::$app->request->post())) {
-            
-            if ($model->save())
-            {
-                //pega o arquivo
-                $arquivo = UploadedFile::getInstance($model, 'fopa_arquivo');
+            //var_dump($model);
+            //die('sd');
+                            //pega o arquivo
+            $arquivo = UploadedFile::getInstance($model, 'fopa_arquivo');
 
                 // Cria uma pasta dentro de WEB uploads e dentro folha
-                $upload = new Upload(\Yii::getAlias('@webroot') . '/uploads/folha/');
+            $upload = new Upload(\Yii::getAlias('@webroot') . '/uploads/folha/');
 
                 // SALVA O ARQUIVO 
-                 $upload->Image($arquivo);
+            $upload->File($arquivo);
+            $upload->Image($arquivo);
 
                 //Aqui o metodo verifica se o arquivo ou processo foi com sucesso
-                if (!$upload->getResult()) {
-                    throw new Exception("Erro ao salvar folha" . $upload->getError());
-                }
+            if (!$upload->getResult()) {
+                throw new Exception("Erro ao salvar folha" . $upload->getError());
+            }
 
                 // Aqui é o nome tratado pronto para ser gravado no banco 
-                $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
+            $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
+            $model->fopa_usua = Yii::$app->user->identity->usua_codi;
+            
+            if ($model->save())   {
 
-            return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
 
-        }
+                return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
+
+            }
         //var_dump($model->errors);
         // die('o');
-    }
+        }
         return $this->render('create', [
             'model' => $model,
         ]);
-    
 
-}
+
+    }
     /**
      * Updates an existing FolhaPagamento model.
      * If update is successful, the browser will be redirected to the 'view' page.

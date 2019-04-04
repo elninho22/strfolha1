@@ -16,7 +16,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $usua_logi;
     public $usua_foto;
     public $usua_guest;
-    public $rememberMe = true;
+    //public $rememberMe = true;
 
 /*    private static $users = [
         '1' => [

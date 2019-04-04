@@ -2,6 +2,7 @@
 
 namespace app\models;
 use app\components\Upload;
+use app\models\PagamentoUtil;
 
 use Yii;
 
@@ -13,6 +14,8 @@ use Yii;
  * @property string $fopa_data data automatica
  * @property string $fopa_text comentario
  * @property int $fopa_usua id do usuario
+ * @property int $fopa_guest id do gestor
+ * @property int $fopa_stat status da folha
  *
  * @property FolhaHistorico[] $folhaHistoricos
  * @property Usuario $fopaUsua
@@ -34,9 +37,9 @@ class FolhaPagamento extends \yii\db\ActiveRecord
     {
         return [
             [['fopa_data'], 'safe'],
-            [['fopa_usua','fopa_arquivo'], 'required'],
-            [['fopa_usua'], 'integer'],
-            //[['fopa_arquivo'], 'string', 'max' => 145],
+            [['fopa_usua','fopa_guest'], 'required'],
+            [['fopa_usua','fopa_guest','fopa_stat'], 'integer'],
+            [['fopa_arquivo'], 'string', 'max' => 145],
             [['fopa_text'], 'string', 'max' => 45],
             [['fopa_usua'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['fopa_usua' => 'usua_codi']],
         ];
@@ -68,7 +71,9 @@ class FolhaPagamento extends \yii\db\ActiveRecord
             'fopa_arquivo' => 'Arquivo',
             'fopa_data' => 'Mês de Referencia',
             'fopa_text' => 'Observação',
-            'fopa_usua' => 'Gestor',
+            'fopa_guest' => 'Gestor',
+            'fopa_usua' => 'Usuario',
+            'fopa_stat' => 'Status',
         ];
     }
 

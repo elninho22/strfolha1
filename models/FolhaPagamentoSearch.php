@@ -6,6 +6,8 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\FolhaPagamento;
 
+use Yii;
+
 /**
  * FolhaPagamentoSearch represents the model behind the search form of `app\models\FolhaPagamento`.
  */
@@ -40,7 +42,11 @@ class FolhaPagamentoSearch extends FolhaPagamento
      */
     public function search($params)
     {
-        $query = FolhaPagamento::find();
+        if(!Usuario::find()->where(['usua_codi'=>Yii::$app->user->identity->usua_codi, 'usua_nivel'=> '1'])->exists()){
+         $query = FolhaPagamento::find()->where(['fopa_usua' => Yii::$app->user->identity->usua_codi]);
+        }else{
+        $query = FolhaPagamento::find()->where(['fopa_guest' => Yii::$app->user->identity->usua_codi]);
+    }
 
         // add conditions that should always apply here
 

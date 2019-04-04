@@ -28,7 +28,7 @@ $this->title = 'StrFolha';
 </div>
 
 <div class="row">
-  <div class="col-xs-6 col-md-2"><a class="btn btn-lg btn-success" href="?r=site/login">Entrar</a></div>
+  <div class="col-xs-6 col-md-2"><a class="btn btn-lg btn-success" href="site/login">Entrar</a></div>
   <div class="col-xs-6 col-md-4"><!-- Trigger the modal with a button -->
 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
  Cadastrar</button>

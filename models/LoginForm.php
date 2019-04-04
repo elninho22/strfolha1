@@ -22,7 +22,7 @@ class LoginForm extends Model
     public $usua_hash;
     public $usua_logi;
     public $usua_foto;
-    public $rememberMe = true;
+   // public $rememberMe = false;
 
     private $_user = false;
 
@@ -36,7 +36,7 @@ class LoginForm extends Model
             // username and password are both required
             [['usua_mail', 'usua_pass'], 'required'],
             // rememberMe must be a boolean value
-            ['rememberMe', 'boolean'],
+           // ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['usua_pass', 'validatePassword'],
         ];
@@ -67,7 +67,7 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            return Yii::$app->user->login($this->getUser());
         }
         return false;
     }

@@ -19,7 +19,7 @@ use app\models\Usuario;
     <?= $form->field($model, 'fopa_data')->textInput() ?>
     <?= $form->field($model, 'fopa_text')->textInput() ?>
     
-    <?= $form->field($model, 'fopa_usua')->dropDownlist(ArrayHelper::map(Usuario::find()->where(['usua_guest' => '1'])->all(), 'usua_codi', 'usua_nome'), ['prompt' => 'Selecione seu Gestor'])
+    <?= $form->field($model, 'fopa_guest')->dropDownlist(ArrayHelper::map(Usuario::find()->where(['usua_guest' => '1'])->all(), 'usua_codi', 'usua_nome'), ['prompt' => 'Selecione seu Gestor'])
          ->label('Gestor') ?>
     
 

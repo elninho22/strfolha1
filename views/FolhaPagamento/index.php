@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\models\PagamentoUtil;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\FolhaPagamentoSearch */
@@ -24,15 +25,39 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'fopa_arquivo',
+            
+            
+            'fopa_usua',
             'fopa_data',
             'fopa_text',
-            'fopa_usua',
+            [
+            
+            'attribute' => 'fopa_arquivo',
+            //'label' => 'fopa_arquivo',
+            'format'=> 'raw',
+            'value'  => function($model){return "<a href='".Yii::getAlias('@web').$model['fopa_arquivo']."'>Baixar</a>";}
+            ],
+
+            [
+                'attribute' => 'fopa_stat',
+                'format'=> 'raw',
+                'value' => ['app\models\PagamentoUtil', 'getStatusValue'],
+                /*'value' => function ($data) {
+                    if($data->fopa_stat == '1')
+                    {
+                        return 'Aprovado';
+                    }
+                    else
+                    {
+                        return 'Reprovado';
+                    }
+                }*/
+            ],            
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+
 </div>
 
 

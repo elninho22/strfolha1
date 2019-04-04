@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\FolhaHistoricoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Historico de Folhas';
+$this->title = 'Folhas Studiorama';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="folha-historico-index">

@@ -10,6 +10,10 @@ $this->title = $model->fopa_text;
 $this->params['breadcrumbs'][] = ['label' => 'Inicio', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+
+//var_dump($url);
+//die('4');
 ?>
 <div class="folha-pagamento-view">
 
@@ -29,7 +33,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'fopa_codi',
-            'fopa_arquivo',
+            [
+            'attribute' => 'fopa_arquivo',
+            //'label' => 'fopa_arquivo',
+            'format'=> 'raw',
+            'value'  => function($model){return "<a href='".Yii::getAlias('@web').$model['fopa_arquivo']."'>Baixar</a>";}
+            ],
+            //'fopa_arquivo',
             'fopa_data',
             'fopa_text',
             'fopa_usua',
