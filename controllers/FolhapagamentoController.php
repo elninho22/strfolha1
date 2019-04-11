@@ -178,16 +178,26 @@ use app\components\Uteis;
         if ($model) {   
             $model->fopa_stat = 1;
             $model->save();
-            Yii::$app->getSession()->setFlash('folhaSucesso', 'Status alterado com sucesso.');
+            Yii::$app->getSession()->setFlash('folhaSucesso', 'Folha foi aprovada com sucesso.');
             return $this->redirect('index');
         }
-        Yii::$app->getSession()->setFlash('folhaErro', 'Nao alterado.');
+
+
+    }
+
+    public function actionReprovar($id) {
+        $model = FolhaPagamento::find()->where(['fopa_codi'=>$id])->one();
+        if ($model) {   
+            $model->fopa_stat = 2;
+            $model->save();
+            Yii::$app->getSession()->setFlash('folhaErro', 'Folha Reprovada :(');
         return $this->redirect('index');
+        }
+        
 
     }
     
-    
-    
+   
             /**
      * Finds the FolhaPagamento model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

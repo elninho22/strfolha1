@@ -24,11 +24,11 @@ class UsuarioController extends Controller
         return [
             'acess'=> [
                 'class' => AccessControl::classname(),
-                'only' => ['create', 'delete', 'update', 'view','index'],
+                //'allow' => ['create', 'delete', 'update', 'view','index'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
+                        //'roles' => ['@'],
                     ],
                 ],
             ],
@@ -80,6 +80,7 @@ class UsuarioController extends Controller
        // $gest = isset(Yii::$app->request->post('uuu')) ? 1 : 0;
         $model = new Usuario();
         if ($model->load(Yii::$app->request->post())) {
+            $model->usua_pass = hash('sha256', $model->usua_pass);
             if($model->save()){
                $usua_codi = $model->usua_codi;
                $gestor = new GestorUsuario();

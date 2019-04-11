@@ -2,52 +2,43 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
-{
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
+use Yii;
+use yii\base\NotSupportedException;
+use yii\base\Object;
+use yii\helpers\Html;
+use yii\web\IdentityInterface;
 
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
+class User extends Object implements IdentityInterface {
 
+   public $usua_codi;
+   public $usua_nome;
+   public $usua_dins;
+   public $usua_pass;
+   public $usua_mail;
+   public $usua_hash;
+   public $usua_nivel;
+   public $usua_foto;
+   public $usua_logi;
+   public $usua_guest;
+   public $authKey;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public static function findIdentity($id)
-    {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+    public static function findIdentity($usua_codi) {
+        $modelUsuario = Usuario::find()->where(['usua_codi'=>$usua_codi])->one();
+        if ($modelUsuario) {
+            $user = self::getAttributesUserIdentity($modelUsuario);
+            return new static($user);
+        }
+        return null;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+    public static function findIdentityByAccessToken($token, $type = null) {
+        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
     /**
@@ -56,49 +47,62 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      * @param string $username
      * @return static|null
      */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
+    public static function findByUsername($username) {
+        $modelUsuario = Usuario::find()->where(['usua_mail' => trim($username)])->one();
+        if ($modelUsuario) {
+            $user = self::getAttributesUserIdentity($modelUsuario);
+            return new static($user);
         }
-
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
+    public static function getAttributesUserIdentity($modelUsuarioAttributes) {
+        /*
+         * Verificar quais dados são necessários a serem gravados na sessão
+         */
+        $nome = Html::encode($modelUsuarioAttributes['usua_nome']);
+        $userAttributes['usua_codi'] = $modelUsuarioAttributes['usua_codi'];
+        $userAttributes['usua_dins'] = $modelUsuarioAttributes['usua_dins'];
+        $userAttributes['usua_pass'] = $modelUsuarioAttributes['usua_pass'];
+        $userAttributes['usua_mail'] = $modelUsuarioAttributes['usua_mail'];
+        $userAttributes['usua_hash'] = $modelUsuarioAttributes['usua_hash'];
+        $userAttributes['usua_nivel'] = $modelUsuarioAttributes['usua_nivel'];
+        $userAttributes['usua_foto'] = $modelUsuarioAttributes['usua_foto'];
+        $userAttributes['usua_logi'] = $modelUsuarioAttributes['usua_logi'];
+        $userAttributes['usua_guest'] = $modelUsuarioAttributes['usua_guest'];
+        $userAttributes['authKey'] = $modelUsuarioAttributes['authKey'];
+        $userAttributes['usua_nome'] = $nome;
+        return $userAttributes;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function getAuthKey()
-    {
+    public function getId() {
+        return $this->usua_codi;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAuthKey() {
         return $this->authKey;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function validateAuthKey($authKey)
-    {
+    public function validateAuthKey($authKey) {
         return $this->authKey === $authKey;
     }
-
     /**
      * Validates password
      *
      * @param string $password password to validate
      * @return bool if password provided is valid for current user
      */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
+    public function validatePassword($usua_pass) {
+        return $this->usua_pass === hash("sha256", $usua_pass);
     }
+   
 }

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\grid\DataColumn;
 use app\models\PagamentoUtil;
+use app\models\Usuario;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\FolhaPagamentoSearch */
@@ -25,8 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>';            
         }
         elseif(Yii::$app->session->hasFlash('folhaErro')){
-            echo '<div class="alert alert-succdangeress" role="alert">
-            '. Yii::$app->session->getFlash('folhaSucesso').'
+            echo '<div class="alert alert-danger" role="alert">
+            '. Yii::$app->session->getFlash('folhaErro').'
           </div>';
         }
         ?>
@@ -93,7 +94,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a('Aprovar', ['aprovar', 'id' => $model->fopa_codi], [
                             'class' => 'btn btn-success',
                             'data' => [
-                                'confirm' => 'Deseja aprovar a folha?',
+                                'confirm' => 'Confirma Aprovar a folha $model->usua_nome?',
                                 'method' => 'post',
                             ],
                         ]);
@@ -103,10 +104,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         
                     },
                     'update' => function ($url, $model) {
-                        return Html::a('Reprovar', $url, [
-                        'class'=>'btn btn-danger',
-
+                        return Html::a('Reprovar', ['reprovar', 'id' => $model->fopa_codi], [
+                            'class' => 'btn btn-danger',
+                            'data' => [
+                                'confirm' => 'Confirma Reprovar a folha de ?',
+                                'method' => 'post',
+                            ],
                         ]);
+
                     },
                 ],
             ],

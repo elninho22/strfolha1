@@ -19,11 +19,10 @@ use app\models\Usuario;
     <?= $form->field($model, 'usua_pass')->passwordInput()
                     ->hint('Senha deve ter no mínimo 6 digitos')
                     ->label('Senha') ?>
-    <?= echo //$form->field($model, 'usua_mail')->textInput(['maxlength' => true]) ?>
+
 
     <?php // esta informação tem que vir do BD ?>
-    <?= $form->field($model, 'usua_nome')->dropDownlist(ArrayHelper::map(Usuario::find()->all(), 'id', 'usua_nome')),
-        ->label('Gestor') ?>
+    <?= $form->field($model, 'usua_nome')->dropDownlist(ArrayHelper::map(Usuario::find()->all(), 'id', 'usua_nome'))->label('Gestor') ?>
 
     <?= $form->field($model, 'usua_foto')->FileInput() ?>
 

@@ -58,7 +58,23 @@ class SiteController extends Controller
      * Displays homepage.
      *
      * @return string
+
+
      */
+
+    public function actionCreate()
+    {
+        $model = new Usuario();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->usua_codi]);
+            }
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
     public function actionIndex()
     {
         return $this->render('index');
@@ -71,16 +87,25 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+        //var_dump(Yii::$app->request->post());
+        //die('as');
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        if ($model->load(Yii::$app->request->post())) {
+            //var_dump( Yii::$app->user->identity);
+             //die('ads');
+            if ($model->login()) {
+                if (Yii::$app->user->identity->usua_nivel == 1) {
+                    return $this->redirect(['folhapagamento/index']);
+                } elseif (Yii::$app->user->identity->usua_nivel == 0) {
+                    return $this->redirect(['folhapagamentousuario/index']);
+                } else {
+                    return $this->redirect(['site/login']);
+                }
+            }
         }
 
-        $model->password = '';
+        //$model->usua_pass = '';
         return $this->render('login', [
             'model' => $model,
         ]);
@@ -93,7 +118,11 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
+        $session = Yii::$app->session;
         Yii::$app->user->logout();
+        $session->close();
+        // destrói todos os dados registrados em uma sessão.
+        $session->destroy();
 
         return $this->goHome();
     }

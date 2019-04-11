@@ -4,7 +4,7 @@ namespace app\models;
 
 use app\models\Usuario;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
+class BackUser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     public $usua_codi;
     public $usua_dins;
@@ -16,39 +16,22 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $usua_logi;
     public $usua_foto;
     public $usua_guest;
+    public $authKey;
     //public $rememberMe = true;
 
-/*    private static $users = [
-        '1' => [
-            'usua_codi' => '$usua_codi',
-            'usua_logi' => '$usua_logi',
-            'usua_pass' => '$usua_pass',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];*/
 
-
-    /**
-     * {@inheritdoc}
-     */
     public static function findIdentity($usua_codi)
     {
+        
+        return static::findOne($usua_codi);
         //return isset(self::$user[$usua_codi]) ? new static(self::$user[$usua_codi]) : null;
-        $user = Usuario::find($usua_codi)->one();
+       /* $user = Usuario::find($usua_codi)->one();
 
         if ($user)
         {
             return new static($user);
         }
-        return null;
+        return null;*/
     }
 /*
         public static function findIdentity($usua_codi)
