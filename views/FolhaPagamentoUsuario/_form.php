@@ -10,7 +10,7 @@ use app\models\Usuario;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="folha-pagamento-form">
+<div class="folha-pagamento-usuario-form">
 
     <?php $form = ActiveForm::begin(); ?>
     

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\models\GestorUsuario;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuario */
@@ -29,10 +30,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'usua_codi',
+            //'usua_codi',
             'usua_nome',
             'usua_mail',
-            'gestor',          
+            //'value' => $gestor = new GestorUsuario(),        
+            
             //'usua_logi',
         ],
     ]) ?>

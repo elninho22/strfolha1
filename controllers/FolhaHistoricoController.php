@@ -9,6 +9,13 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use app\models\FolhaPagamento;
+use app\models\FolhaPagamentoSearch;
+use app\models\Usuario;
+use app\models\UsuarioSearch;
+use app\models\GestorUsuario;
+use app\components\Upload;
+use app\components\Uteis;
 
 /**
  * FolhaHistoricoController implements the CRUD actions for FolhaHistorico model.
@@ -21,16 +28,16 @@ class FolhahistoricoController extends Controller
     public function behaviors()
     {
         return [
-                'acess'=> [
+              /*  'acess'=> [
                 'class' => AccessControl::classname(),
-                'only' => ['create', 'delete', 'update', 'view','index'],
+               // 'only' => ['create', 'delete', 'update', 'view','index'],
                 'rules' => [
                     [
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                 ],
-            ],
+            ],*/
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

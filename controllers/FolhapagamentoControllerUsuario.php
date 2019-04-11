@@ -2,8 +2,8 @@
 
 namespace app\controllers;
 use Yii;
-use app\models\FolhaPagamento;
-use app\models\FolhaPagamentoSearch;
+use app\models\FolhaPagamentoUsuario;
+use app\models\FolhaPagamentoUsuarioSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
@@ -16,9 +16,9 @@ use app\components\Upload;
 use app\components\Uteis;
 
 
- /*/ FolhaPagamentoController implements the CRUD actions for FolhaPagamento model.
+ /*/ FolhapagamentoUsuarioController implements the CRUD actions for FolhaPagamento model.
  */
- class FolhapagamentoController extends Controller
+ class FolhapagamentousuarioController extends Controller
  {
     /**
      * {@inheritdoc}
@@ -27,27 +27,22 @@ use app\components\Uteis;
     {
         return [
             'verbs' => [
-                'class' => AccessControl::classname(),
-                'only' => ['create', 'delete', 'update', 'view','index'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
                 ],
             ],
         ];
     }
-
     /**
-     * Lists all FolhaPagamento models.
+     * Lists all FolhapagamentoUsuario models.
      * @return mixed
      */
     public function actionIndex()
     {
 
 
-        $searchModel = new FolhaPagamentoSearch();
+        $searchModel = new FolhapagamentoUsuarioSearch();
         
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('index', [
@@ -57,7 +52,7 @@ use app\components\Uteis;
         ]);
     }
     /**
-     * Displays a single FolhaPagamento model.
+     * Displays a single FolhapagamentoUsuario model.
      * @param integer $fopa_codi
      * @param integer $fopa_usua
      * @return mixed
@@ -71,13 +66,13 @@ use app\components\Uteis;
 
     }
     /**
-     * Creates a new FolhaPagamento model.
+     * Creates a new FolhapagamentoUsuario model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new FolhaPagamento();
+        $model = new FolhapagamentoUsuario();
 
         if ($model->load(Yii::$app->request->post())) {
             //var_dump($model);
@@ -102,7 +97,7 @@ use app\components\Uteis;
                 $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
                 $model->fopa_usua = Yii::$app->user->identity->usua_codi;
 
-                //$model->fopa_stat = 0;
+                
                 if ($model->save())   {
 
                 return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
@@ -116,7 +111,7 @@ use app\components\Uteis;
 
     }
     /**
-     * Updates an existing FolhaPagamento model.
+     * Updates an existing FolhapagamentoUsuario model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $fopa_codi
      * @param integer $fopa_usua
@@ -160,7 +155,7 @@ use app\components\Uteis;
         ]);
     }
     /**
-     * Deletes an existing FolhaPagamento model.
+     * Deletes an existing FolhapagamentoUsuario model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $fopa_codi
      * @param integer $fopa_usua
@@ -172,33 +167,17 @@ use app\components\Uteis;
         $this->findModel($fopa_codi, $fopa_usua)->delete();
         return $this->redirect(['index']);
     }
-
-    public function actionAprovar($id) {
-        $model = FolhaPagamento::find()->where(['fopa_codi'=>$id])->one();
-        if ($model) {   
-            $model->fopa_stat = 1;
-            $model->save();
-            Yii::$app->getSession()->setFlash('folhaSucesso', 'Status alterado com sucesso.');
-            return $this->redirect('index');
-        }
-        Yii::$app->getSession()->setFlash('folhaErro', 'Nao alterado.');
-        return $this->redirect('index');
-
-    }
-    
-    
-    
-            /**
-     * Finds the FolhaPagamento model based on its primary key value.
+    /**
+     * Finds the FolhapagamentoUsuario model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $fopa_codi
      * @param integer $fopa_usua
-     * @return FolhaPagamento the loaded model
+     * @return FolhapagamentoUsuario the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($fopa_codi, $fopa_usua)
     {
-        if (($model = FolhaPagamento::findOne(['fopa_codi' => $fopa_codi, 'fopa_usua' => $fopa_usua])) !== null) {
+        if (($model = FolhapagamentoUsuario::findOne(['fopa_codi' => $fopa_codi, 'fopa_usua' => $fopa_usua])) !== null) {
             return $model;
         }
         throw new NotFoundHttpException('Oppss... não encontramos o que procurava :(.');

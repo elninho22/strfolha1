@@ -20,7 +20,7 @@ class FolhaPagamentoSearch extends FolhaPagamento
     {
         return [
             [['fopa_codi', 'fopa_usua'], 'integer'],
-            [['fopa_arquivo', 'fopa_data', 'fopa_text'], 'safe'],
+            [['fopa_data', 'fopa_text','fopa_stat'], 'safe'],
         ];
     }
 
@@ -67,6 +67,7 @@ class FolhaPagamentoSearch extends FolhaPagamento
             'fopa_codi' => $this->fopa_codi,
             'fopa_data' => $this->fopa_data,
             'fopa_usua' => $this->fopa_usua,
+            'fopa_stat' => $this->fopa_stat,
         ]);
 
         $query->andFilterWhere(['like', 'fopa_arquivo', $this->fopa_arquivo])

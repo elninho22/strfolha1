@@ -6,36 +6,25 @@ use yii\grid\DataColumn;
 use app\models\PagamentoUtil;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\FolhaPagamentoSearch */
+/* @var $searchModel app\models\FolhaPagamentoUsuarioSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-
-$this->title = 'Gerencial - Folha de Ponto';
+//var_dump(Yii::$app->user->identity);
+//die('04');
+$this->title = 'Folha de Ponto';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="folha-pagamento-index">
+<div class="folha-pagamento-usuario-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?php 
-        if (Yii::$app->session->hasFlash('folhaSucesso') ){
-            echo '<div class="alert alert-success" role="alert">
-            '. Yii::$app->session->getFlash('folhaSucesso').'
-          </div>';            
-        }
-        elseif(Yii::$app->session->hasFlash('folhaErro')){
-            echo '<div class="alert alert-succdangeress" role="alert">
-            '. Yii::$app->session->getFlash('folhaSucesso').'
-          </div>';
-        }
-        ?>
+        <?= Html::a('Nova Folha', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        //'layout'=>"{sorter}\n{pager}\n{summary}\n{items}",
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             
@@ -58,17 +47,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             [
+              // 'class' => 'yii\grid\SerialColumn',
                'attribute' => 'fopa_text',
                'format'=> 'raw',
+
             ],
 
             [
-                //'class' => 'yii\grid\DataColumn',
                 'attribute' => 'fopa_arquivo',
                 'label' => 'Folha',
                 'headerOptions' => ['class' => 'text-center'],
                 'format'=> 'raw',
-                //'showFooter'=>true,
                 'contentOptions' => ['class' => 'text-center'],
                 'value'  => function($model){return "<a href='".Yii::getAlias('@web').$model['fopa_arquivo']."'>Download</a>";}
             ],
@@ -79,38 +68,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'  => function($model){return "<botoes>";},
                 'header' => 'Opções',
                 'headerOptions' => ['width' => '70'],
-            ],*/ // parou aqui
+            ],*/ // parou aqui      
 
             [
-                'header' => 'Opções',
+                'header' => 'Edição',
                 'class' => 'yii\grid\ActionColumn',
-                'headerOptions' => ['class' => 'text-center'],
-               // 'headerOptions' => ['style'=>'width: 60%;'],
                 'contentOptions' => ['class' => 'text-center'],
-                'template' => "{view}     {update}", // altera a forma de exibição dos botões
-                'buttons' => [
-                    'view' => function ($url, $model) {
-                        return Html::a('Aprovar', ['aprovar', 'id' => $model->fopa_codi], [
-                            'class' => 'btn btn-success',
-                            'data' => [
-                                'confirm' => 'Deseja aprovar a folha?',
-                                'method' => 'post',
-                            ],
-                        ]);
-
-                    /* <?= Html::Button(Yii::t('app','Apagar'), ['id'=>'btn-confirm','class' => 'btn btn-danger', 'name' => 'apagar','style' => 'width:78px','disabled'=>$desabilitaAPAGA]) ?> */ // DESABILITAR BOTAÃO
-
-                        
-                    },
-                    'update' => function ($url, $model) {
-                        return Html::a('Reprovar', $url, [
-                        'class'=>'btn btn-danger',
-
-                        ]);
-                    },
-                ],
+                'headerOptions' => ['width' => '80','class' => 'text-center'],
             ],
-        
 
         ],
     ]); ?>

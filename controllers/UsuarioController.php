@@ -75,8 +75,7 @@ class UsuarioController extends Controller
      * @return mixed
      */
     public function actionCreate() {
-        ///var_dump(Yii::$app->request->post());
-        //die('oi');
+
        // criar coluna para gestor ou nao
        // $gest = isset(Yii::$app->request->post('uuu')) ? 1 : 0;
         $model = new Usuario();
@@ -89,8 +88,7 @@ class UsuarioController extends Controller
                $gestor->save();
                 return $this->redirect(['view', 'id' => $model->usua_codi]);
             }
-            //var_dump($model->errors);
-            //die('o');
+
         }
 
         return $this->render('create', [
@@ -98,9 +96,7 @@ class UsuarioController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing Usuario model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     /* If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -109,8 +105,15 @@ class UsuarioController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+          if($model->save()) {
+               $usua_codi = $model->usua_codi;
+               $gestor = new GestorUsuario();
+               $gestor->geus_usua = $model->usua_codi; //pegando id do gestor tabela geus_
+               $gestor->geus_gest = $model->usua_guest; //salvando id do gestor tabela geus_
+               $gestor->save();
             return $this->redirect(['view', 'id' => $model->usua_codi]);
+            }
         }
 
         return $this->render('update', [
