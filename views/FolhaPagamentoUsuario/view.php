@@ -6,8 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\FolhaPagamento */
 
-$this->title = $model->fopa_text;
-$this->params['breadcrumbs'][] = ['label' => 'Inicio', 'url' => ['index']];
+$this->title = 'Referência: ' . $model->fopa_data;
+$this->params['breadcrumbs'][] = ['label' => 'Folha de Ponto', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 

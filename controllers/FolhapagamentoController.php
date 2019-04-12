@@ -16,16 +16,11 @@ use app\components\Upload;
 use app\components\Uteis;
 
 
- /*/ FolhaPagamentoController implements the CRUD actions for FolhaPagamento model.
- */
  class FolhapagamentoController extends Controller
  {
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors()
     {
-        return [
+         return [
             'verbs' => [
                 'class' => AccessControl::classname(),
                 'only' => ['create', 'delete', 'update', 'view','index'],
@@ -36,13 +31,10 @@ use app\components\Uteis;
                     ],
                 ],
             ],
-        ];
+        ]; 
+
     }
 
-    /**
-     * Lists all FolhaPagamento models.
-     * @return mixed
-     */
     public function actionIndex()
     {
 
@@ -70,11 +62,6 @@ use app\components\Uteis;
         ]);
 
     }
-    /**
-     * Creates a new FolhaPagamento model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
         $model = new FolhaPagamento();
@@ -83,11 +70,11 @@ use app\components\Uteis;
             //var_dump($model);
             //die('sd');
             
-            //pega o arquivo
-            $arquivo = UploadedFile::getInstance($model, 'fopa_arquivo');
+                //pega o arquivo
+                $arquivo = UploadedFile::getInstance($model, 'fopa_arquivo');
 
                 // Cria uma pasta dentro de WEB uploads e dentro folha
-            $upload = new Upload(\Yii::getAlias('@webroot') . '/uploads/folha/');
+                 $upload = new Upload(\Yii::getAlias('@webroot') . '/uploads/folha/');
 
                 // SALVA O ARQUIVO 
                 ($upload->File($arquivo));
@@ -115,25 +102,16 @@ use app\components\Uteis;
 
 
     }
-    /**
-     * Updates an existing FolhaPagamento model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $fopa_codi
-     * @param integer $fopa_usua
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($fopa_codi, $fopa_usua)
     {
         $model = $this->findModel($fopa_codi, $fopa_usua);
         if ($model->load(Yii::$app->request->post())) {
 
-
-        //pega o arquivo
-            $arquivo = UploadedFile::getInstance($model, 'fopa_arquivo');
+                //pega o arquivo
+                $arquivo = UploadedFile::getInstance($model, 'fopa_arquivo');
 
                 // Cria uma pasta dentro de WEB uploads e dentro folha
-            $upload = new Upload(\Yii::getAlias('@webroot') . '/uploads/folha/');
+                $upload = new Upload(\Yii::getAlias('@webroot') . '/uploads/folha/');
 
                 // SALVA O ARQUIVO 
                 ($upload->File($arquivo));
@@ -142,13 +120,10 @@ use app\components\Uteis;
                 if (!$upload->getResult()) {
                     throw new Exception("Erro ao salvar folha" . $upload->getError());
                 }
-
-
                 // Aqui é o nome tratado pronto para ser gravado no banco 
                 $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
                 $model->fopa_usua = Yii::$app->user->identity->usua_codi;
 
-                
             if  ($model->save()) {
                     return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
                 }
@@ -159,14 +134,7 @@ use app\components\Uteis;
             'model' => $model,
         ]);
     }
-    /**
-     * Deletes an existing FolhaPagamento model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $fopa_codi
-     * @param integer $fopa_usua
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     public function actionDelete($fopa_codi, $fopa_usua)
     {
         $this->findModel($fopa_codi, $fopa_usua)->delete();
@@ -178,7 +146,7 @@ use app\components\Uteis;
         if ($model) {   
             $model->fopa_stat = 1;
             $model->save();
-            Yii::$app->getSession()->setFlash('folhaSucesso', 'Folha foi aprovada com sucesso.');
+            Yii::$app->getSession()->setFlash('folhaSucesso', "Folha de <b> $model->fopa_usua </b> foi aprovada com sucesso.");
             return $this->redirect('index');
         }
 
@@ -190,22 +158,21 @@ use app\components\Uteis;
         if ($model) {   
             $model->fopa_stat = 2;
             $model->save();
-            Yii::$app->getSession()->setFlash('folhaErro', 'Folha Reprovada :(');
+            Yii::$app->getSession()->setFlash('folhaErro', "Folha de <b> $model->fopa_usua </b> foi Reprovada :( ");
         return $this->redirect('index');
         }
         
 
     }
+    public function actionDownload($id)
+    {
+        $model = FolhaPagamento::find()->where(['fopa_codi' => $id])->one();
+        if($model){
+            return "<a href='" . Yii::getAlias('@web') . $model['fopa_arquivo'] . "'></a>";
+        }
+        
+    }
     
-   
-            /**
-     * Finds the FolhaPagamento model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $fopa_codi
-     * @param integer $fopa_usua
-     * @return FolhaPagamento the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($fopa_codi, $fopa_usua)
     {
         if (($model = FolhaPagamento::findOne(['fopa_codi' => $fopa_codi, 'fopa_usua' => $fopa_usua])) !== null) {

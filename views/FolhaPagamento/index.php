@@ -11,23 +11,28 @@ use app\models\Usuario;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Gerencial - Folha de Ponto';
-$this->params['breadcrumbs'][] = $this->title;
+
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="folha-pagamento-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php
+
+    //$usua_codi = $model->usua_codi;
+
+
+    ?>
 
     <p>
-        <?php 
-        if (Yii::$app->session->hasFlash('folhaSucesso') ){
+        <?php
+        if (Yii::$app->session->hasFlash('folhaSucesso')) {
             echo '<div class="alert alert-success" role="alert">
-            '. Yii::$app->session->getFlash('folhaSucesso').'
-          </div>';            
-        }
-        elseif(Yii::$app->session->hasFlash('folhaErro')){
+            ' . Yii::$app->session->getFlash('folhaSucesso') . '
+          </div>';
+        } elseif (Yii::$app->session->hasFlash('folhaErro')) {
             echo '<div class="alert alert-danger" role="alert">
-            '. Yii::$app->session->getFlash('folhaErro').'
+            ' . Yii::$app->session->getFlash('folhaErro') . '
           </div>';
         }
         ?>
@@ -39,10 +44,10 @@ $this->params['breadcrumbs'][] = $this->title;
         //'layout'=>"{sorter}\n{pager}\n{summary}\n{items}",
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            
+
             [
                 'attribute' => 'fopa_usua',
-              //  'filter' => ['Usuarios' => 'Usuarios'], //trazer usuarios do banco
+                // 'filter' => ['Usuarios' => 'Usuarios'], //trazer usuarios do banco
             ],
 
             [
@@ -53,74 +58,75 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'fopa_stat',
-                'format'=> 'raw',
+                'format' => 'raw',
                 'filter' => ['1' => 'Aprovado', '2' => 'Reprovado', '0' => 'Pendente'],
                 'value' => ['app\models\PagamentoUtil', 'getStatusValue'],
             ],
 
             [
-               'attribute' => 'fopa_text',
-               'format'=> 'raw',
+                'attribute' => 'fopa_text',
+                'format' => 'raw',
+            ],
+            [
+                'attribute' => 'fopa_dins',
+                'label' => 'Data'
+                //'format' => "datedateFormat",
             ],
 
             [
-                //'class' => 'yii\grid\DataColumn',
-                'attribute' => 'fopa_arquivo',
-                'label' => 'Folha',
+                'header' => 'Folha',
+                'class' => 'yii\grid\ActionColumn',
                 'headerOptions' => ['class' => 'text-center'],
-                'format'=> 'raw',
+                //'format' => 'raw',
                 //'showFooter'=>true,
+                'template' => "{view}",
                 'contentOptions' => ['class' => 'text-center'],
-                'value'  => function($model){return "<a href='".Yii::getAlias('@web').$model['fopa_arquivo']."'>Download</a>";}
-            ],
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                        return Html::a('<span class="btn-label">Download</span>', [Yii::getAlias('') . $model['fopa_arquivo']], ['class' => 'btn btn-primary']);
 
-            /*
-            [
-                'class' => 'btn btn-success',
-                'value'  => function($model){return "<botoes>";},
-                'header' => 'Opções',
-                'headerOptions' => ['width' => '70'],
-            ],*/ // parou aqui
+                        //DOWNLOAD SEM UTILIZAR METODO 
+                        /* Html::a('Download', ['download', 'id' => $model->fopa_codi], [
+                            'class' => 'btn btn-primary',
+                            "title" => 'Aprovar Folha', */
+                        /*                             'data' => [
+                                'confirm' => " Confirma aprovar a folh a ?", // {Usuario::$usua_nome}",
+                                'method' => '"<a href=' " . Yii::getAlias('@web') . $model['fopa_arquivo'] . " '></a>";',
+                            ], */
+                        //]);
+                    },
+                ],
+            ],
 
             [
                 'header' => 'Opções',
                 'class' => 'yii\grid\ActionColumn',
-                'headerOptions' => ['class' => 'text-center'],
-               // 'headerOptions' => ['style'=>'width: 60%;'],
+                'headerOptions' => ['class' => 'text-center', 'style' => 'width: 18%;'],
                 'contentOptions' => ['class' => 'text-center'],
                 'template' => "{view}     {update}", // altera a forma de exibição dos botões
                 'buttons' => [
                     'view' => function ($url, $model) {
                         return Html::a('Aprovar', ['aprovar', 'id' => $model->fopa_codi], [
                             'class' => 'btn btn-success',
+                            "title" => 'Aprovar Folha',
                             'data' => [
-                                'confirm' => 'Confirma Aprovar a folha $model->usua_nome?',
+                                'confirm' => "Confirma aprovar a folha ?", // {Usuario::$usua_nome}",
                                 'method' => 'post',
                             ],
                         ]);
-
-                    /* <?= Html::Button(Yii::t('app','Apagar'), ['id'=>'btn-confirm','class' => 'btn btn-danger', 'name' => 'apagar','style' => 'width:78px','disabled'=>$desabilitaAPAGA]) ?> */ // DESABILITAR BOTAÃO
-
-                        
                     },
                     'update' => function ($url, $model) {
                         return Html::a('Reprovar', ['reprovar', 'id' => $model->fopa_codi], [
                             'class' => 'btn btn-danger',
+                            "title" => 'Reprovar Folha',
                             'data' => [
-                                'confirm' => 'Confirma Reprovar a folha de ?',
+                                'confirm' => 'Confirma reprovar a folha de ?',
                                 'method' => 'post',
                             ],
                         ]);
-
                     },
                 ],
             ],
-        
-
         ],
     ]); ?>
-
-
 </div>
-
-

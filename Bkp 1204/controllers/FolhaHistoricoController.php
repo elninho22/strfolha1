@@ -1,25 +1,26 @@
 <?php
 
 namespace app\controllers;
-use app\components\Upload;
 
 use Yii;
-use app\models\FolhaPagamento;
-use app\models\FolhaPagamentoSearch;
+use app\models\FolhaHistorico;
+use app\models\FolhaHistoricoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
+use yii\filters\AccessControl;
+use app\models\FolhaPagamento;
+use app\models\FolhaPagamentoSearch;
 use app\models\Usuario;
 use app\models\UsuarioSearch;
 use app\models\GestorUsuario;
-
+use app\components\Upload;
+use app\components\Uteis;
 
 /**
- * FolhaPagamentoController implements the CRUD actions for FolhaPagamento model.
+ * FolhaHistoricoController implements the CRUD actions for FolhaHistorico model.
  */
-class FolhapagamentoController extends Controller
+class FolhahistoricoController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -27,16 +28,16 @@ class FolhapagamentoController extends Controller
     public function behaviors()
     {
         return [
-            'acess'=> [
+              /*  'acess'=> [
                 'class' => AccessControl::classname(),
-                'only' => ['create', 'delete', 'update', 'view','index'],
+               // 'only' => ['create', 'delete', 'update', 'view','index'],
                 'rules' => [
                     [
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                 ],
-            ],            
+            ],*/
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -47,15 +48,12 @@ class FolhapagamentoController extends Controller
     }
 
     /**
-     * Lists all FolhaPagamento models.
+     * Lists all FolhaHistorico models.
      * @return mixed
      */
     public function actionIndex()
     {
-
-        ////var_dump(Yii::$app->user->identity);
-        //die('parou');
-        $searchModel = new FolhaPagamentoSearch();
+        $searchModel = new FolhaHistoricoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -64,45 +62,32 @@ class FolhapagamentoController extends Controller
         ]);
     }
 
-
-
     /**
-     * Displays a single FolhaPagamento model.
-     * @param integer $fopa_codi
-     * @param integer $fopa_usua
+     * Displays a single FolhaHistorico model.
+     * @param integer $fohi_codi
+     * @param integer $fopa_fopa
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($fopa_codi, $fopa_usua)
+    public function actionView($fohi_codi, $fopa_fopa)
     {
         return $this->render('view', [
-            'model' => $this->findModel($fopa_codi, $fopa_usua),
+            'model' => $this->findModel($fohi_codi, $fopa_fopa),
         ]);
     }
 
     /**
-     * Creates a new FolhaPagamento model.
+     * Creates a new FolhaHistorico model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
-
     {
-       // var_dump(Yii::$app->request->post());
-        //die('oi');
-        
-        $model = new FolhaPagamento();
-           
-        if ($model->load(Yii::$app->request->post())) {
-            
-            if ($model->save())
-            {
-               
-            }
+        $model = new FolhaHistorico();
 
-            return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'fohi_codi' => $model->fohi_codi, 'fopa_fopa' => $model->fopa_fopa]);
         }
-
 
         return $this->render('create', [
             'model' => $model,
@@ -110,19 +95,19 @@ class FolhapagamentoController extends Controller
     }
 
     /**
-     * Updates an existing FolhaPagamento model.
+     * Updates an existing FolhaHistorico model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $fopa_codi
-     * @param integer $fopa_usua
+     * @param integer $fohi_codi
+     * @param integer $fopa_fopa
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($fopa_codi, $fopa_usua)
+    public function actionUpdate($fohi_codi, $fopa_fopa)
     {
-        $model = $this->findModel($fopa_codi, $fopa_usua);
+        $model = $this->findModel($fohi_codi, $fopa_fopa);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
+            return $this->redirect(['view', 'fohi_codi' => $model->fohi_codi, 'fopa_fopa' => $model->fopa_fopa]);
         }
 
         return $this->render('update', [
@@ -131,31 +116,31 @@ class FolhapagamentoController extends Controller
     }
 
     /**
-     * Deletes an existing FolhaPagamento model.
+     * Deletes an existing FolhaHistorico model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $fopa_codi
-     * @param integer $fopa_usua
+     * @param integer $fohi_codi
+     * @param integer $fopa_fopa
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($fopa_codi, $fopa_usua)
+    public function actionDelete($fohi_codi, $fopa_fopa)
     {
-        $this->findModel($fopa_codi, $fopa_usua)->delete();
+        $this->findModel($fohi_codi, $fopa_fopa)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the FolhaPagamento model based on its primary key value.
+     * Finds the FolhaHistorico model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $fopa_codi
-     * @param integer $fopa_usua
-     * @return FolhaPagamento the loaded model
+     * @param integer $fohi_codi
+     * @param integer $fopa_fopa
+     * @return FolhaHistorico the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($fopa_codi, $fopa_usua)
+    protected function findModel($fohi_codi, $fopa_fopa)
     {
-        if (($model = FolhaPagamento::findOne(['fopa_codi' => $fopa_codi, 'fopa_usua' => $fopa_usua])) !== null) {
+        if (($model = FolhaHistorico::findOne(['fohi_codi' => $fohi_codi, 'fopa_fopa' => $fopa_fopa])) !== null) {
             return $model;
         }
 

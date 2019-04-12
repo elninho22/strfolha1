@@ -19,8 +19,8 @@ class FolhapagamentoUsuarioSearch extends FolhapagamentoUsuario
     public function rules()
     {
         return [
-            [['fopa_codi', 'fopa_usua'], 'integer'],
-            [['fopa_data', 'fopa_text','fopa_stat'], 'safe'],
+            //[['fopa_codi', 'fopa_usua'], 'integer'],
+            [['fopa_data', 'fopa_stat'], 'safe'],
         ];
     }
 
@@ -42,11 +42,13 @@ class FolhapagamentoUsuarioSearch extends FolhapagamentoUsuario
      */
     public function search($params)
     {
+        
         if(!Usuario::find()->where(['usua_codi'=>Yii::$app->user->identity->usua_codi, 'usua_nivel'=> '1'])->exists()){
          $query = FolhapagamentoUsuario::find()->where(['fopa_usua' => Yii::$app->user->identity->usua_codi]);
         }else{
         $query = FolhapagamentoUsuario::find()->where(['fopa_guest' => Yii::$app->user->identity->usua_codi]);
-    }
+    } 
+    
 
         // add conditions that should always apply here
 
@@ -64,14 +66,10 @@ class FolhapagamentoUsuarioSearch extends FolhapagamentoUsuario
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'fopa_codi' => $this->fopa_codi,
             'fopa_data' => $this->fopa_data,
-            'fopa_usua' => $this->fopa_usua,
             'fopa_stat' => $this->fopa_stat,
         ]);
 
-        $query->andFilterWhere(['like', 'fopa_arquivo', $this->fopa_arquivo])
-            ->andFilterWhere(['like', 'fopa_text', $this->fopa_text]);
 
         return $dataProvider;
     }

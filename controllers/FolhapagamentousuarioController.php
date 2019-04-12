@@ -27,9 +27,13 @@ use app\components\Uteis;
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+                'class' => AccessControl::classname(),
+                'only' => ['create', 'delete', 'update', 'view', 'index'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -143,7 +147,10 @@ use app\components\Uteis;
                 $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
                 $model->fopa_usua = Yii::$app->user->identity->usua_codi;
 
+            //$now = new DateTime();
                 
+                $model->fopa_stat = 0;
+                $model->fopa_dins = date('Y-m-d H:i:s');
             if  ($model->save()) {
                     return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
                 }

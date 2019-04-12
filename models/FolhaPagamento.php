@@ -16,31 +16,28 @@ use Yii;
  * @property int $fopa_usua id do usuario
  * @property int $fopa_guest id do gestor
  * @property int $fopa_stat status da folha
+ * @property int $fopa_dins data de cadastro automatica
  *
  * @property FolhaHistorico[] $folhaHistoricos
  * @property Usuario $fopaUsua
  */
 class FolhaPagamento extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public static function tableName()
     {
         return 'folha_pagamento';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
             [['fopa_data'], 'safe'],
             [['fopa_usua','fopa_guest'], 'required'],
+            [['fopa_dins'], 'safe'],
             [['fopa_usua','fopa_guest','fopa_stat'], 'integer'],
             [['fopa_arquivo'], 'string', 'max' => 145],
-            [['fopa_text'], 'string', 'max' => 45],
+            [['fopa_text'], 'string', 'max' => 150],
             [['fopa_usua'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['fopa_usua' => 'usua_codi']],
         ];
     }
@@ -74,6 +71,7 @@ class FolhaPagamento extends \yii\db\ActiveRecord
             'fopa_guest' => 'Gestor',
             'fopa_usua' => 'Usuario',
             'fopa_stat' => 'Status',
+            'fopa_dins' => 'Data autoamtica',
         ];
     }
 

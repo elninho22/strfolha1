@@ -11,7 +11,7 @@ use app\models\PagamentoUtil;
 //var_dump(Yii::$app->user->identity);
 //die('04');
 $this->title = 'Folha de Ponto';
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="folha-pagamento-usuario-index">
 
@@ -28,10 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             
-            [
-                'attribute' => 'fopa_usua',
-              //  'filter' => ['Usuarios' => 'Usuarios'], //trazer usuarios do banco
-            ],
+
 
             [
                 'attribute' => 'fopa_data',

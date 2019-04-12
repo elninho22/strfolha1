@@ -15,6 +15,9 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'formatter' => [
+            'dateFormat' => 'dd.MM.yyyy',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'xbGDzvAGO1QbKSXcMsn48N66plfTvIo0',
@@ -25,8 +28,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => false,//If you don't have authKey column in your DB, set enableAutoLogin field to false
-            'enableSession' => false,
-            'enableAutoLogin' => false,
+            'enableSession' => true,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Usuario;
@@ -18,7 +19,7 @@ class UsuarioSearch extends Usuario
     {
         return [
             [['usua_codi', 'usua_nivel'], 'integer'],
-            [['usua_nome', 'usua_dins', 'usua_pass', 'usua_mail', 'usua_hash', 'usua_foto', 'usua_logi'], 'safe'],
+            [['usua_nome', 'usua_dins', 'usua_pass', 'usua_hash', 'usua_foto', 'usua_logi'], 'safe'],
         ];
     }
 
@@ -40,7 +41,15 @@ class UsuarioSearch extends Usuario
      */
     public function search($params)
     {
-        $query = Usuario::find();
+        if(!Usuario::find()->where(['usua_codi'=>Yii::$app->user->identity->usua_codi, 'usua_nivel'=> '1'])->exists()){
+         $query = Usuario::find()->where([ 'usua_codi' => Yii::$app->user->identity->usua_codi]);
+        }else{
+            $query = Usuario::find();
+        //$query = Usuario::find()->where([ 'usua_codi' => Yii::$app->user->identity->usua_codi]);
+    }
+        
+        
+        //$query = Usuario::find();
 
         // add conditions that should always apply here
 
@@ -58,14 +67,15 @@ class UsuarioSearch extends Usuario
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'usua_codi' => $this->usua_codi,
+            
             'usua_dins' => $this->usua_dins,
             'usua_nivel' => $this->usua_nivel,
+            'usua_guest' => $this->usua_guest,
         ]);
 
         $query->andFilterWhere(['like', 'usua_nome', $this->usua_nome])
             ->andFilterWhere(['like', 'usua_pass', $this->usua_pass])
-            ->andFilterWhere(['like', 'usua_mail', $this->usua_mail])
+            //->andFilterWhere(['like', 'usua_mail', $this->usua_mail])
             ->andFilterWhere(['like', 'usua_hash', $this->usua_hash])
             ->andFilterWhere(['like', 'usua_foto', $this->usua_foto])
             ->andFilterWhere(['like', 'usua_logi', $this->usua_logi]);

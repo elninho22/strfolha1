@@ -40,7 +40,7 @@ class FolhapagamentoUsuario extends \yii\db\ActiveRecord
             [['fopa_usua','fopa_guest'], 'required'],
             [['fopa_usua','fopa_guest','fopa_stat'], 'integer'],
             [['fopa_arquivo'], 'string', 'max' => 145],
-            [['fopa_text'], 'string', 'max' => 45],
+            [['fopa_text'], 'string', 'max' => 100],
             [['fopa_usua'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['fopa_usua' => 'usua_codi']],
         ];
     }

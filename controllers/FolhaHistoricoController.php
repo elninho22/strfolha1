@@ -28,22 +28,17 @@ class FolhahistoricoController extends Controller
     public function behaviors()
     {
         return [
-              /*  'acess'=> [
+                'acess'=> [
                 'class' => AccessControl::classname(),
-               // 'only' => ['create', 'delete', 'update', 'view','index'],
+                'only' => ['create', 'delete', 'update', 'view','index'],
                 'rules' => [
                     [
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                 ],
-            ],*/
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
             ],
+
         ];
     }
 

@@ -92,12 +92,12 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post())) {
-            //var_dump( Yii::$app->user->identity);
-             //die('ads');
+          //  var_dump( Yii::$app->user->identity);
+            // die('ads');
             if ($model->login()) {
                 if (Yii::$app->user->identity->usua_nivel == 1) {
                     return $this->redirect(['folhapagamento/index']);
-                } elseif (Yii::$app->user->identity->usua_nivel == 0) {
+                } elseif (Yii::$app->user->identity->usua_nivel == 2) {
                     return $this->redirect(['folhapagamentousuario/index']);
                 } else {
                     return $this->redirect(['site/login']);
@@ -105,7 +105,7 @@ class SiteController extends Controller
             }
         }
 
-        //$model->usua_pass = '';
+        $model->usua_pass = '';
         return $this->render('login', [
             'model' => $model,
         ]);

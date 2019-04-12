@@ -7,6 +7,7 @@ use app\models\Usuario;
 use app\models\UsuarioSearch;
 use app\models\GestorUsuario;
 use yii\web\Controller;
+use yii\app;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -16,29 +17,24 @@ use yii\filters\AccessControl;
  */
 class UsuarioController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function behaviors()
     {
-        return [
-            'acess'=> [
+         return [
+            'access' => [
                 'class' => AccessControl::classname(),
-                //'allow' => ['create', 'delete', 'update', 'view','index'],
+                'only' => ['create', 'delete', 'update', 'view', 'index'],
                 'rules' => [
+
+                    
                     [
                         'allow' => true,
-                        //'roles' => ['@'],
+                        'roles' => ['@'],
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
         ];
+
     }
 
     /**
