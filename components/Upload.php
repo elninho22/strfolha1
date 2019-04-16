@@ -69,7 +69,7 @@ class Upload {
         $this->File = $File;
         $this->Name = ( (string) $Name ? $Name : substr($File->name, 0, strrpos($File->name, '.')) );
         $this->Folder = ( (string) $Folder ? $Folder : 'files' );
-        $MaxFileSize = ( (int) $MaxFileSize ? $MaxFileSize : 50 );
+        $MaxFileSize = ( (int) $MaxFileSize ? $MaxFileSize : 5000 );
 
         $FileAccept = [
             'application/pdf', //pdf
@@ -112,7 +112,7 @@ class Upload {
             'text/richtext', //rtx
         ];
 
-        if ($this->File->size > ($MaxFileSize * (1024 * 1024))):
+        if ($this->File->size > ($MaxFileSize * (4024 * 4024))):
             $this->Result = false;
             $this->Error = "Arquivo muito grande, tamanho máximo permitido de {$MaxFileSize}mb";
         elseif (!in_array($this->File->type, $FileAccept)):
@@ -125,46 +125,7 @@ class Upload {
         endif;
     }
 
-    /**
-     * <b>Enviar Mífia:</b> Basta envelopar um $_FILES de uma mídia e caso queira um nome e um tamanho personalizado.
-     * Caso não informe o tamanho será 40mb!
-     * @param FILES $Media = Enviar envelope de $_FILES (MP3 ou MP4)
-     * @param STRING $Name = Nome do arquivo ( ou do artigo )
-     * @param STRING $Folder = Pasta personalizada
-     * @param STRING $MaxFileSize = Tamanho máximo do arquivo (40mb)
-     */
-    public function Media($Media, $Name = null, $Folder = null, $MaxFileSize = null) {
-        $this->File = $Media;
-        $this->Name = ( (string) $Name ? $Name : substr($Media->name, 0, strrpos($Media->name, '.')) );
-        $this->Folder = ( (string) $Folder ? $Folder : 'medias' );
-        $MaxFileSize = ( (int) $MaxFileSize ? $MaxFileSize : 50 );
-
-        $FileAccept = [
-            'audio/mp3',
-            //Vídeo
-            'video/x-msvideo', //avi
-            'video/mp4', //mp4
-            'video/mp4', //m4v
-            'video/quicktime', //mov
-            'video/x-sgi-movie', //movie
-            'video/mpeg', //mpe
-            'video/mpeg', //mpeg
-        ];
-
-        if ($this->File->size > ($MaxFileSize * (1024 * 1024))):
-            $this->Result = false;
-            $this->Error = "Arquivo muito grande, tamanho máximo permitido de {$MaxFileSize}mb";
-        elseif (!in_array($this->File->type, $FileAccept)):
-            $this->Result = false;
-            $this->Error = 'Tipo de arquivo não suportado. Envie audio MP3 ou vídeo MP4!';
-        else:
-            $this->CheckFolder($this->Folder);
-            $this->setFileName();
-            $this->MoveFile();
-        endif;
-    }
-
-    /**
+   /**
      * <b>Verificar Upload:</b> Executando um getResult é possível verificar se o Upload foi executado ou não. Retorna
      * uma string com o caminho e nome do arquivo ou FALSE.
      * @return STRING  = Caminho e Nome do arquivo ou False

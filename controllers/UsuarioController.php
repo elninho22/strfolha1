@@ -11,36 +11,48 @@ use yii\app;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\VarDumper;
 
-/**
- * UsuarioController implements the CRUD actions for Usuario model.
- */
+
 class UsuarioController extends Controller
 {
 
     public function behaviors()
     {
-         return [
-            'access' => [
-                'class' => AccessControl::classname(),
-                'only' => ['create', 'delete', 'update', 'view', 'index'],
-                'rules' => [
-
-                    
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
+            //  VarDumper::dump(Yii::$app->user->identity->usua_nivel, 10, true);
+            //  die('oi');
+            $x = 4;
+    if (Yii::$app->user->identity->usua_nivel != 98) {
+            return [
+                    'access' => [
+                    'class' => AccessControl::classname(),
+                    'rules' => [
+                        [
+                            'actions' => ['view', 'index', 'update'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
                     ],
                 ],
-            ],
-        ];
-
+            ];
+        }
+        elseif(Yii::$app->user->identity->usua_nivel = 98){
+        return [
+                'access' => [
+                    'class' => AccessControl::classname(),
+                    'rules' => [
+                        [
+                           'actions' => ['create','view','index','update'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
+            ];
+        }
     }
+    
 
-    /**
-     * Lists all Usuario models.
-     * @return mixed
-     */
     public function actionIndex()
     {
         $searchModel = new UsuarioSearch();
@@ -52,24 +64,23 @@ class UsuarioController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Usuario model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
-    {
+    {   
+        if (Yii::$app->user->identity->usua_nivel != 98) { // se for diferente do admin é usuario
+            // VarDumper::dump(Yii::$app->user->identity->usua_codi, 10, true);
+            // die('oi');
+            if (Yii::$app->user->identity->usua_codi != $id) { // ID do usuário é diferente da sessão
+            
+                throw new NotFoundHttpException("Ops . . . não encontramos o que procurava :( " . "Entre em contato com suporte informando código: 0937");
+            }
+        }
         return $this->render('view', [
-            'model' => $this->findModel($id),
+        'model' => $this->findModel($id),
         ]);
+       
     }
 
-    /**
-     * Creates a new Usuario model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+
     public function actionCreate() {
 
        // criar coluna para gestor ou nao
@@ -77,11 +88,13 @@ class UsuarioController extends Controller
         $model = new Usuario();
         if ($model->load(Yii::$app->request->post())) {
             $model->usua_pass = hash('sha256', $model->usua_pass);
+            $model->usua_nivel = 99;
             if($model->save()){
                $usua_codi = $model->usua_codi;
                $gestor = new GestorUsuario();
                $gestor->geus_usua = $model->usua_codi; //pegando id do gestor tabela geus_
                $gestor->geus_gest = $model->usua_guest; //salvando id do gestor tabela geus_
+               
                $gestor->save();
                 return $this->redirect(['view', 'id' => $model->usua_codi]);
             }
@@ -93,16 +106,21 @@ class UsuarioController extends Controller
         ]);
     }
 
-     /* If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->identity->usua_nivel != 98) { // se for diferente do admin é usuario
+            // VarDumper::dump(Yii::$app->user->identity->usua_codi, 10, true);
+            // die('oi');
+            if (Yii::$app->user->identity->usua_codi != $id) { // ID do usuário é diferente da sessão
+
+                throw new NotFoundHttpException("Ops . . . não encontramos o que procurava :( " . "Entre em contato com suporte informando código: 0937");
+            }
+        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->usua_pass = hash('sha256', $model->usua_pass);
           if($model->save()) {
                $usua_codi = $model->usua_codi;
                $gestor = new GestorUsuario();
@@ -118,13 +136,6 @@ class UsuarioController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Usuario model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -132,13 +143,7 @@ class UsuarioController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Usuario model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Usuario the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     protected function findModel($id)
     {
         if (($model = Usuario::findOne($id)) !== null) {

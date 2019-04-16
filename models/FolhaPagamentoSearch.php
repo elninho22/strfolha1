@@ -42,10 +42,10 @@ class FolhaPagamentoSearch extends FolhaPagamento
      */
     public function search($params)
     {
-        if(!Usuario::find()->where(['usua_codi'=>Yii::$app->user->identity->usua_codi, 'usua_nivel'=> '1'])->exists()){
-         $query = FolhaPagamento::find()->where(['fopa_usua' => Yii::$app->user->identity->usua_codi]);
+        if(!Usuario::find()->where(['usua_codi'=>Yii::$app->user->identity->usua_codi, 'usua_nivel'=> '98'])->exists()){
+         $query = FolhaPagamento::find()->where(['fopa_usua' => Yii::$app->user->identity->usua_codi])->orderBy('fopa_stat');
         }else{
-        $query = FolhaPagamento::find()->where(['fopa_guest' => Yii::$app->user->identity->usua_codi]);
+        $query = FolhaPagamento::find()->where(['fopa_guest' => Yii::$app->user->identity->usua_codi])->orderBy('fopa_stat');
     }
 
         // add conditions that should always apply here

@@ -41,7 +41,7 @@ class UsuarioSearch extends Usuario
      */
     public function search($params)
     {
-        if(!Usuario::find()->where(['usua_codi'=>Yii::$app->user->identity->usua_codi, 'usua_nivel'=> '1'])->exists()){
+        if(!Usuario::find()->where(['usua_codi'=>Yii::$app->user->identity->usua_codi, 'usua_nivel'=> '98'])->exists()){
          $query = Usuario::find()->where([ 'usua_codi' => Yii::$app->user->identity->usua_codi]);
         }else{
             $query = Usuario::find();

@@ -95,9 +95,9 @@ class SiteController extends Controller
           //  var_dump( Yii::$app->user->identity);
             // die('ads');
             if ($model->login()) {
-                if (Yii::$app->user->identity->usua_nivel == 1) {
+                if (Yii::$app->user->identity->usua_nivel == 98) {
                     return $this->redirect(['folhapagamento/index']);
-                } elseif (Yii::$app->user->identity->usua_nivel == 2) {
+                } elseif (Yii::$app->user->identity->usua_nivel == 99) {
                     return $this->redirect(['folhapagamentousuario/index']);
                 } else {
                     return $this->redirect(['site/login']);
@@ -132,7 +132,7 @@ class SiteController extends Controller
      *
      * @return Response|string
      */
-    public function actionContact()
+    public function actionrRelatorios()
     {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {

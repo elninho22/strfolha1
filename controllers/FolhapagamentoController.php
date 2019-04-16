@@ -4,24 +4,21 @@ namespace app\controllers;
 use Yii;
 use app\models\FolhaPagamento;
 use app\models\FolhaPagamentoSearch;
+use app\models\Usuario;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\web\UploadedFile;
-use app\models\Usuario;
-use app\models\UsuarioSearch;
-use app\models\GestorUsuario;
-use app\components\Upload;
-use app\components\Uteis;
+
 
 
  class FolhapagamentoController extends Controller
  {
     public function behaviors()
     {
+        if (Usuario::find()->where(['usua_codi' => Yii::$app->user->identity->usua_codi, 'usua_nivel' => '98'])->exists()) {
          return [
-            'verbs' => [
+            'access' => [
                 'class' => AccessControl::classname(),
                 'only' => ['create', 'delete', 'update', 'view','index'],
                 'rules' => [
@@ -31,7 +28,21 @@ use app\components\Uteis;
                     ],
                 ],
             ],
-        ]; 
+        ];
+
+        }   
+        return [
+            'access' => [
+                'class' => AccessControl::classname(),
+                'only' => ['create', 'delete', 'update', 'view', 'index'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => [''],
+                    ],
+                ],
+            ],
+        ];
 
     }
 
@@ -62,7 +73,7 @@ use app\components\Uteis;
         ]);
 
     }
-    public function actionCreate()
+   /* public function actionCreate()
     {
         $model = new FolhaPagamento();
 
@@ -140,6 +151,7 @@ use app\components\Uteis;
         $this->findModel($fopa_codi, $fopa_usua)->delete();
         return $this->redirect(['index']);
     }
+    */
 
     public function actionAprovar($id) {
         $model = FolhaPagamento::find()->where(['fopa_codi'=>$id])->one();

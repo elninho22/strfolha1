@@ -7,6 +7,7 @@ $config = [
     'id' => 'basic',
     'name'=>'SigFolha - Studiorama',
     'sourceLanguage' => 'pt-br',
+    'version' => '1.0.4.7',
     'language' => 'pt-br',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],

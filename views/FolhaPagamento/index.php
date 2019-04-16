@@ -66,11 +66,7 @@ $this->title = 'Gerencial - Folha de Ponto';
             [
                 'attribute' => 'fopa_text',
                 'format' => 'raw',
-            ],
-            [
-                'attribute' => 'fopa_dins',
-                'label' => 'Data'
-                //'format' => "datedateFormat",
+                // 'headerOptions' => ['class' => 'text-center', 'style' => 'width: 30%;'],
             ],
 
             [
@@ -83,7 +79,7 @@ $this->title = 'Gerencial - Folha de Ponto';
                 'contentOptions' => ['class' => 'text-center'],
                 'buttons' => [
                     'view' => function ($url, $model) {
-                        return Html::a('<span class="btn-label">Download</span>', [Yii::getAlias('') . $model['fopa_arquivo']], ['class' => 'btn btn-primary']);
+                        return Html::a('<span class="btn-label">Download</span>', [Yii::getAlias('') . $model['fopa_arquivo']], ['class' => 'btn btn-default']);
 
                         //DOWNLOAD SEM UTILIZAR METODO 
                         /* Html::a('Download', ['download', 'id' => $model->fopa_codi], [
@@ -101,9 +97,9 @@ $this->title = 'Gerencial - Folha de Ponto';
             [
                 'header' => 'Opções',
                 'class' => 'yii\grid\ActionColumn',
-                'headerOptions' => ['class' => 'text-center', 'style' => 'width: 18%;'],
+                'headerOptions' => ['class' => 'text-center', 'style' => 'width: 24%;'],
                 'contentOptions' => ['class' => 'text-center'],
-                'template' => "{view}     {update}", // altera a forma de exibição dos botões
+                'template' => "{view} {update} {delete}", // altera a forma de exibição dos botões
                 'buttons' => [
                     'view' => function ($url, $model) {
                         return Html::a('Aprovar', ['aprovar', 'id' => $model->fopa_codi], [
@@ -123,6 +119,12 @@ $this->title = 'Gerencial - Folha de Ponto';
                                 'confirm' => 'Confirma reprovar a folha de ?',
                                 'method' => 'post',
                             ],
+                        ]);
+                    },
+                    'delete' => function ($url, $model) {
+                        return Html::a('Visualizar', ['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], [
+                            'class' => 'btn btn-primary',
+                            "title" => 'Editar Folha',
                         ]);
                     },
                 ],

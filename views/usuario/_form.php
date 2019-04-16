@@ -21,7 +21,7 @@ use app\models\Usuario;
     <?php echo ''//$form->field($model, 'usua_logi')->textInput(['maxlength' => true]) ?>
 
     <?php // esta informação tem que vir do BD ?>
-    <?= $form->field($model, 'usua_guest')->dropDownlist(ArrayHelper::map(Usuario::find()->where(['usua_nivel' => '1'])->all(), 'usua_codi', 'usua_nome'), ['prompt' => 'Selecione seu Gestor'])
+    <?= $form->field($model, 'usua_guest')->dropDownlist(ArrayHelper::map(Usuario::find()->where(['usua_nivel' => '98'])->all(), 'usua_codi', 'usua_nome'), ['prompt' => 'Selecione seu Gestor'])
          ->label('Gestor') ?>
     <?php echo '' // $form->field($model, 'usua_foto')->FileInput() ?>
 

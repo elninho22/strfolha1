@@ -18,31 +18,32 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="folha-pagamento-usuario-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Deletar', ['delete', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => "Confirma a exclusão da folha {$model->fopa_text}? ",
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
+    <?= Html::a('Editar', ['update', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], ['class' => 'btn btn-warning']) ?>
+    <br>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'fopa_codi',
             [
-            'attribute' => 'fopa_arquivo',
-            //'label' => 'fopa_arquivo',
-            'format'=> 'raw',
-            'value'  => function($model){return "<a href='".Yii::getAlias('@web').$model['fopa_arquivo']."'>Baixar</a>";}
+                'fopa_usua',
+                
+            ],
+            'fopa_data', // MES DE REFERENCIA NA tabela
+            [
+                'attribute' => 'fopa_arquivo',
+                //'label' => 'fopa_arquivo',
+                'format' => 'raw',
+                'value'  => function ($model) {
+                    return "<a href='" . Yii::getAlias('@web') . $model['fopa_arquivo'] . "'>Baixar</a>";
+                }
             ],
             //'fopa_arquivo',
-            'fopa_data',
             'fopa_text',
-            'fopa_usua',
+            [
+                'fopa_dins',
+                'attribute' => 'fopa_dins',
+                'label' => 'Data de Envio',
+            ],
         ],
     ]) ?>
 

@@ -25,12 +25,30 @@ use app\components\Uteis;
      */
     public function behaviors()
     {
+        if (!Usuario::find()->where(['usua_codi' => Yii::$app->user->identity->usua_codi, 'usua_nivel' => '99'])->exists()) {
+
+            return [
+                'access' => [
+                    'class' => AccessControl::classname(),
+                    'rules' => [
+                        [
+                            'actions' => ['create','update', 'view', 'index'],
+                            'allow' => true,
+                            'roles' => [''],
+                            
+                        ],  
+                    ],
+                ],
+            ];
+            ;
+        }
+        
         return [
-            'verbs' => [
+            'access' => [
                 'class' => AccessControl::classname(),
-                'only' => ['create', 'delete', 'update', 'view', 'index'],
                 'rules' => [
                     [
+                        'actions' => ['create', 'update', 'view', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -55,25 +73,23 @@ use app\components\Uteis;
             'dataProvider' => $dataProvider,
         ]);
     }
-    /**
-     * Displays a single FolhapagamentoUsuario model.
-     * @param integer $fopa_codi
-     * @param integer $fopa_usua
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     public function actionView($fopa_codi, $fopa_usua)
     {
+        if (Yii::$app->user->identity->usua_nivel != 98) { // se for diferente do admin é usuario
+            // VarDumper::dump(Yii::$app->user->identity->usua_codi, 10, true);
+            // die('oi');
+            if (Yii::$app->user->identity->usua_codi != $fopa_usua) { // ID do usuário é diferente da sessão
+
+                throw new NotFoundHttpException("Ops . . . não encontramos o que procurava :( " . "Entre em contato com suporte informando código: 0937");
+            }
+        }
         return $this->render('view', [
             'model' => $this->findModel($fopa_codi, $fopa_usua),
         ]);
 
     }
-    /**
-     * Creates a new FolhapagamentoUsuario model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+
     public function actionCreate()
     {
         $model = new FolhapagamentoUsuario();
@@ -81,7 +97,6 @@ use app\components\Uteis;
         if ($model->load(Yii::$app->request->post())) {
             //var_dump($model);
             //die('sd');
-            
             //pega o arquivo
             $arquivo = UploadedFile::getInstance($model, 'fopa_arquivo');
 
@@ -90,12 +105,12 @@ use app\components\Uteis;
 
                 // SALVA O ARQUIVO 
                 ($upload->File($arquivo));
+                ($upload->Image($arquivo));
 
                 //Aqui o metodo verifica se o arquivo ou processo foi com sucesso
                 if (!$upload->getResult()) {
                     throw new Exception("Erro ao salvar folha" . $upload->getError());
                 }
-
 
                 // Aqui é o nome tratado pronto para ser gravado no banco 
                 $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
@@ -114,16 +129,17 @@ use app\components\Uteis;
 
 
     }
-    /**
-     * Updates an existing FolhapagamentoUsuario model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $fopa_codi
-     * @param integer $fopa_usua
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     public function actionUpdate($fopa_codi, $fopa_usua)
     {
+        if (Yii::$app->user->identity->usua_nivel != 98) { // se for diferente do admin é usuario
+            // VarDumper::dump(Yii::$app->user->identity->usua_codi, 10, true);
+            // die('oi');
+            if (Yii::$app->user->identity->usua_codi != $fopa_usua) { // ID do usuário é diferente da sessão
+
+                throw new NotFoundHttpException("Ops . . . não encontramos o que procurava :( " . "Entre em contato com suporte informando código: 0937");
+            }
+        }
         $model = $this->findModel($fopa_codi, $fopa_usua);
         if ($model->load(Yii::$app->request->post())) {
 
@@ -161,27 +177,13 @@ use app\components\Uteis;
             'model' => $model,
         ]);
     }
-    /**
-     * Deletes an existing FolhapagamentoUsuario model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $fopa_codi
-     * @param integer $fopa_usua
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     public function actionDelete($fopa_codi, $fopa_usua)
     {
         $this->findModel($fopa_codi, $fopa_usua)->delete();
         return $this->redirect(['index']);
     }
-    /**
-     * Finds the FolhapagamentoUsuario model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $fopa_codi
-     * @param integer $fopa_usua
-     * @return FolhapagamentoUsuario the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     protected function findModel($fopa_codi, $fopa_usua)
     {
         if (($model = FolhapagamentoUsuario::findOne(['fopa_codi' => $fopa_codi, 'fopa_usua' => $fopa_usua])) !== null) {
