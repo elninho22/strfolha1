@@ -9,7 +9,7 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\widgets\ActiveForm;
 
-$this->title = 'SigFolha - Studiorama ';
+his->title = 'SigFolha - Studiorama '
 ?>
 
 <div class="site-index">
