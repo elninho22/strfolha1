@@ -30,11 +30,11 @@ class FolhahistoricoController extends Controller
         return [
                 'acess'=> [
                 'class' => AccessControl::classname(),
-                'only' => ['create', 'delete', 'update', 'view','index'],
+                'only' => ['create', 'delete', 'update', 'view'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => [''],
                     ],
                 ],
             ],

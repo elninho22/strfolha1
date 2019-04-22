@@ -5,12 +5,17 @@ use yii\grid\GridView;
 use yii\grid\DataColumn;
 use app\models\PagamentoUtil;
 use app\models\Usuario;
+use yii\helpers\Url;
+use yii\bootstrap\Modal;
+use app\assets\AppAsset;
+use app\models\FolhaPagamento;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\FolhaPagamentoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Gerencial - Folha de Ponto';
+
 
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -20,7 +25,6 @@ $this->title = 'Gerencial - Folha de Ponto';
     <?php
 
     //$usua_codi = $model->usua_codi;
-
 
     ?>
 
@@ -46,13 +50,17 @@ $this->title = 'Gerencial - Folha de Ponto';
             ['class' => 'yii\grid\SerialColumn'],
 
             [
+
                 'attribute' => 'fopa_usua',
+                'value' => function ($model) {
+                    return FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome;
+                }
                 // 'filter' => ['Usuarios' => 'Usuarios'], //trazer usuarios do banco
             ],
 
             [
                 'attribute' => 'fopa_data',
-                'filter' => ['Janeiro' => 'Janeiro', 'Fevereiro' => 'Fevereiro'],
+                'filter' => ['Janeiro' => 'Janeiro', 'Fevereiro' => 'Fevereiro', 'Março' => 'Março', 'Abril' => 'Abril', 'Maio' => 'Maio', 'Junho' => 'Junho', 'Julho' => 'Julho', 'Agosto' => 'Agosto', 'Setembro' => 'Setembro', 'Outubro' => 'Outubro', 'Novembro' => 'Novembro', 'Dezembro' => 'Dezembro'],
 
             ],
 
@@ -106,25 +114,29 @@ $this->title = 'Gerencial - Folha de Ponto';
                             'class' => 'btn btn-success',
                             "title" => 'Aprovar Folha',
                             'data' => [
-                                'confirm' => "Confirma aprovar a folha ?", // {Usuario::$usua_nome}",
+                                'confirm' => "Aprovar folha do colaborador: " .  FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . " ? ",
                                 'method' => 'post',
                             ],
                         ]);
                     },
+                    //'update' => [], man n ta cansado mao kraai ? 
+                    //aqui teria q clicar e abrir a MODAL - com campo texto e o botao reprovar ! em seguida o disparo de amil kkkkk ok
                     'update' => function ($url, $model) {
-                        return Html::a('Reprovar', ['reprovar', 'id' => $model->fopa_codi], [
-                            'class' => 'btn btn-danger',
-                            "title" => 'Reprovar Folha',
-                            'data' => [
-                                'confirm' => 'Confirma reprovar a folha de ?',
-                                'method' => 'post',
-                            ],
-                        ]);
+                        return '<button type="button" id="'.FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_mail .'" class="btn btn-danger" data-toggle="modal" data-target="#modalReprovar" title="Reprovar Folha">Reprovar</button>';
+                        //"title" => 'Visualizar Folha',
+                        // return Html::a('Reprovar', ['reprovar', 'id' => $model->fopa_codi], [
+                        // 'class' => 'btn btn-danger',
+                        // "title" => 'Reprovar Folha',
+                        // 'data' => [
+                        // 'confirm' => 'Confirma reprovar a folha de ?',
+                        // 'method' => 'post',
+                        // ],
+                        // ]);
                     },
                     'delete' => function ($url, $model) {
                         return Html::a('Visualizar', ['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], [
                             'class' => 'btn btn-primary',
-                            "title" => 'Editar Folha',
+                            "title" => 'Visualizar Folha',
                         ]);
                     },
                 ],
@@ -132,3 +144,5 @@ $this->title = 'Gerencial - Folha de Ponto';
         ],
     ]); ?>
 </div>
+
+<?= $this->render('_modals') ?>

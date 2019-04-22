@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\models\FolhaPagamento;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\FolhaPagamento */
@@ -19,32 +20,36 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?= Html::a('Editar', ['update', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], ['class' => 'btn btn-warning']) ?>
-    <br>
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'fopa_codi',
-            [
-                'fopa_usua',
-                
+    <p>
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'fopa_codi',
+                [
+                    'attribute' => 'fopa_usua',
+                    'value' => function ($model) {
+                        return FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome;
+                    }
+                ],
+
+                'fopa_data', // MES DE REFERENCIA NA tabela
+                [
+                    'attribute' => 'fopa_arquivo',
+                    //'label' => 'fopa_arquivo',
+                    'format' => 'raw',
+                    'value'  => function ($model) {
+                        return "<a href='" . Yii::getAlias('@web') . $model['fopa_arquivo'] . "'>Baixar</a>";
+                    }
+                ],
+                //'fopa_arquivo',
+                'fopa_text',
+                [
+                    'fopa_dins',
+                    'attribute' => 'fopa_dins',
+                    'label' => 'Data de Envio',
+                ],
+                'fopa_stat',
             ],
-            'fopa_data', // MES DE REFERENCIA NA tabela
-            [
-                'attribute' => 'fopa_arquivo',
-                //'label' => 'fopa_arquivo',
-                'format' => 'raw',
-                'value'  => function ($model) {
-                    return "<a href='" . Yii::getAlias('@web') . $model['fopa_arquivo'] . "'>Baixar</a>";
-                }
-            ],
-            //'fopa_arquivo',
-            'fopa_text',
-            [
-                'fopa_dins',
-                'attribute' => 'fopa_dins',
-                'label' => 'Data de Envio',
-            ],
-        ],
-    ]) ?>
+        ]) ?>
 
 </div>

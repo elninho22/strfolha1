@@ -75,4 +75,10 @@ class Usuario extends \yii\db\ActiveRecord
     {
         return $this->hasMany(FolhaPagamento::className(), ['fopa_usua' => 'usua_codi']);
     }
+
+    public static function nomeGestor($id)
+    {
+        return $id ? Usuario::find()->where(['usua_codi' => $id])->one() : '';
+    }
 }
+

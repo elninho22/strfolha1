@@ -16,13 +16,10 @@ use app\components\Upload;
 use app\components\Uteis;
 
 
- /*/ FolhapagamentoUsuarioController implements the CRUD actions for FolhaPagamento model.
- */
+ 
+ 
  class FolhapagamentousuarioController extends Controller
  {
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors()
     {
         if (!Usuario::find()->where(['usua_codi' => Yii::$app->user->identity->usua_codi, 'usua_nivel' => '99'])->exists()) {
@@ -56,10 +53,7 @@ use app\components\Uteis;
             ],
         ];
     }
-    /**
-     * Lists all FolhapagamentoUsuario models.
-     * @return mixed
-     */
+
     public function actionIndex()
     {
 
@@ -97,36 +91,38 @@ use app\components\Uteis;
         if ($model->load(Yii::$app->request->post())) {
             //var_dump($model);
             //die('sd');
+            
             //pega o arquivo
-            $arquivo = UploadedFile::getInstance($model, 'fopa_arquivo');
-
-                // Cria uma pasta dentro de WEB uploads e dentro folha
+            $arquivo = UploadedFile::getInstance($model, 'arquivo');
+            // Cria uma pasta dentro de WEB uploads e dentro folha
             $upload = new Upload(\Yii::getAlias('@webroot') . '/uploads/folha/');
 
-                // SALVA O ARQUIVO 
-                ($upload->File($arquivo));
-                ($upload->Image($arquivo));
+            // pegando extensao do arquivo$ex = $arquivo->extension; e verifica em qual metodo vai tratar
+            if( $arquivo->extension == 'pdf'){
+                $upload->File($arquivo);
+            }else{
+                $upload->Image($arquivo);
+            }
 
-                //Aqui o metodo verifica se o arquivo ou processo foi com sucesso
-                if (!$upload->getResult()) {
-                    throw new Exception("Erro ao salvar folha" . $upload->getError());
-                }
+            //Aqui o metodo verifica se o arquivo ou processo foi com sucesso
+            $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
+            
+            // depuracao: \yii\helpers\VarDumper::dump( $model,10,true); die('o');
+            // if (!$upload->getResult()) {
+            // caso de erro     throw new Exception("Erro ao salvar folha" . $upload->getError());
+            // }
 
-                // Aqui é o nome tratado pronto para ser gravado no banco 
-                $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
-                $model->fopa_usua = Yii::$app->user->identity->usua_codi;
+             $model->fopa_usua = Yii::$app->user->identity->usua_codi;
 
-                
-                if ($model->save())   {
-
+            // SALVA O ARQUIVO           
+            if ($model->save())   {
                 return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
                 }
-            
+           // depuracao \yii\helpers\VarDumper::dump( $model->errors,10,true); die('o');
         }
         return $this->render('create', [
             'model' => $model,
         ]);
-
 
     }
 
@@ -143,28 +139,29 @@ use app\components\Uteis;
         $model = $this->findModel($fopa_codi, $fopa_usua);
         if ($model->load(Yii::$app->request->post())) {
 
-
-        //pega o arquivo
-            $arquivo = UploadedFile::getInstance($model, 'fopa_arquivo');
-
-                // Cria uma pasta dentro de WEB uploads e dentro folha
+            //pega o arquivo
+            $arquivo = UploadedFile::getInstance($model, 'arquivo');
+            // Cria uma pasta dentro de WEB uploads e dentro folha
             $upload = new Upload(\Yii::getAlias('@webroot') . '/uploads/folha/');
 
-                // SALVA O ARQUIVO 
-                ($upload->File($arquivo));
+            // pegando extensao do arquivo$ex = $arquivo->extension; e verifica em qual metodo vai tratar
+            if ($arquivo->extension == 'pdf') {
+                $upload->File($arquivo);
+            } else {
+                $upload->Image($arquivo);
+            }
 
-                //Aqui o metodo verifica se o arquivo ou processo foi com sucesso
-                if (!$upload->getResult()) {
-                    throw new Exception("Erro ao salvar folha" . $upload->getError());
-                }
+            //Aqui o metodo verifica se o arquivo ou processo foi com sucesso
+            $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
 
+            // depuracao: \yii\helpers\VarDumper::dump( $model,10,true); die('o');
+            // if (!$upload->getResult()) {
+            // caso de erro     throw new Exception("Erro ao salvar folha" . $upload->getError());
+            // }
 
-                // Aqui é o nome tratado pronto para ser gravado no banco 
-                $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
-                $model->fopa_usua = Yii::$app->user->identity->usua_codi;
+            $model->fopa_usua = Yii::$app->user->identity->usua_codi;     
 
             //$now = new DateTime();
-                
                 $model->fopa_stat = 0;
                 $model->fopa_dins = date('Y-m-d H:i:s');
             if  ($model->save()) {

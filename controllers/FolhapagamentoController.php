@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use app\components\Email;
 
 
 
@@ -20,7 +21,7 @@ use yii\filters\VerbFilter;
          return [
             'access' => [
                 'class' => AccessControl::classname(),
-                'only' => ['create', 'delete', 'update', 'view','index'],
+                'only' => ['create', 'delete', 'update', 'view','index','email'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -59,13 +60,7 @@ use yii\filters\VerbFilter;
             'dataProvider' => $dataProvider,
         ]);
     }
-    /**
-     * Displays a single FolhaPagamento model.
-     * @param integer $fopa_codi
-     * @param integer $fopa_usua
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+
     public function actionView($fopa_codi, $fopa_usua)
     {
         return $this->render('view', [
@@ -158,7 +153,7 @@ use yii\filters\VerbFilter;
         if ($model) {   
             $model->fopa_stat = 1;
             $model->save();
-            Yii::$app->getSession()->setFlash('folhaSucesso', "Folha de <b> $model->fopa_usua </b> foi aprovada com sucesso.");
+            Yii::$app->getSession()->setFlash('folhaSucesso', "Colaborador: <b>" . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . "</b> | Folha referente: <b> $model->fopa_data </b><p> Aprovada com sucesso!");
             return $this->redirect('index');
         }
 
@@ -191,5 +186,24 @@ use yii\filters\VerbFilter;
             return $model;
         }
         throw new NotFoundHttpException('Oppss... não encontramos o que procurava :(.');
+    }
+    public function actionEmail() {
+        $sendMail = new Email();
+        $remetente = ['andre.juliano@colaborativa.co' => 'André']; //Só um índice
+        $destinatario = ['carlos.santos@colaborativa.tv' => 'Carlos Colaborativa', 'andre.juliano@colaborativa.co' => 'André']; // Um ou mais índices de e-mails. Entendeu? entendi
+        $assunto = 'Assunto do email';
+        $nomeLayout = 'default'; //Nome do arquivo criado na raiz da pasta mail
+        $usarTemplate = false; // ou false
+        $corpoEmail = '<p style="color:#069;font-size:150px;">'. Yii::$app->request->post('motivo').'</p>';
+        $copiaOculta = false; // ou true
+        $params = ['titulo' => 'PNM']; //Array de parametros para usar no template.
+
+        $sendMail->sendEmail($remetente, $destinatario, $assunto, $nomeLayout, $usarTemplate, $corpoEmail, $copiaOculta, $params);
+        if ($sendMail->getResult()) {
+            $retorno = ['success'=>true, 'mensagem'=> $sendMail->getError()];
+        } else {
+            $retorno = ['success' => false, 'mensagem' => $sendMail->getError()];
+        }
+      return json_encode($retorno);
     }
 }

@@ -2,25 +2,33 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\Url;
+use yii\bootstrap\Modal;
+use app\assets\AppAsset;
+use app\models\FolhaPagamento;
+use app\models\PagamentoUtil;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\FolhaPagamento */
 
-$this->title = $model->fopa_usua;
+//$this->title = 'Folha : '; // . FolhaPagamento::nomeUsuario('fopa_usua')->modal->usua_nome;//return FolhaPagamento::nomeUsuario($model['fopa_codi'])->usua_nome;,
+
 $this->params['breadcrumbs'][] = ['label' => 'Gerencial', 'url' => ['index']];
+
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
-
 
 //var_dump($url);
 //die('4');
 ?>
 <div class="folha-pagamento-view">
 
+
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Editar', ['update', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], ['class' => 'btn btn-warning']) ?>
+        <?php echo ''
+        ?>
 
     </p>
 
@@ -28,7 +36,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'fopa_codi',
-            'fopa_usua',
+            [
+                'attribute' => 'fopa_usua',
+                'value' => function ($model) {
+                    return FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome;
+                }
+            ],
             'fopa_data', // mes de referencia na TABELA
             [
                 'attribute' => 'fopa_arquivo',
@@ -44,6 +57,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'fopa_dins',
                 'attribute' => 'fopa_dins',
                 'label' => 'Data de Envio',
+            ],
+
+            //'attribute' => 'fopa_stat',
+            //'format' => 'raw',
+            //'label' =>   
+            [
+                'attribute' => 'fopa_stat',
+                // 'value' => PagamentoUtil::getStatusValue('fopa_stat'),
             ],
         ],
     ]) ?>

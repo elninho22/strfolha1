@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\FolhapagamentoUsuario */
 
-$this->title = 'Editar Folha de Ponto: ' . $model->fopa_text;
+$this->title = 'Editar folha: ' . $model->fopa_data;
 $this->params['breadcrumbs'][] = ['label' => 'Folha Pagamentos', 'url' => ['index']];
 
 $this->params['breadcrumbs'][] = 'Update';

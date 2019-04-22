@@ -17,18 +17,22 @@ use app\models\Usuario;
     <?= $form->field($model, 'usua_nome')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'usua_mail')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'usua_pass')->passwordInput()
-                    ->hint('Senha deve ter no mínimo 6 digitos')
-                    ->label('Senha') ?>
+        ->hint('Senha deve ter no mínimo 6 digitos')
+        ->label('Senha') ?>
 
 
-    <?php // esta informação tem que vir do BD ?>
+    <?php 
+    ?>
     <?= $form->field($model, 'usua_nome')->dropDownlist(ArrayHelper::map(Usuario::find()->all(), 'id', 'usua_nome'))->label('Gestor') ?>
 
     <?= $form->field($model, 'usua_foto')->FileInput() ?>
 
-    <?php echo ''// $form->field($model, 'usua_dins')->textInput() ?>
-    <?php echo '' // $form->field($model, 'usua_hash')->textInput(['maxlength' => true]) ?>
-    <?php echo '' // $form->field($model, 'usua_nivel')->textInput() ?>
+    <?php echo '' 
+    ?>
+    <?php echo '' 
+    ?>
+    <?php echo '' 
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton('Salvar', ['class' => 'btn btn-success']) ?>
@@ -37,3 +41,5 @@ use app\models\Usuario;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+

@@ -22,6 +22,7 @@ use Yii;
  */
 class FolhapagamentoUsuario extends \yii\db\ActiveRecord
 {
+    public $arquivo;
     /**
      * {@inheritdoc}
      */
@@ -39,27 +40,28 @@ class FolhapagamentoUsuario extends \yii\db\ActiveRecord
             [['fopa_data'], 'safe'],
             [['fopa_usua','fopa_guest'], 'required'],
             [['fopa_usua','fopa_guest','fopa_stat'], 'integer'],
-            [['fopa_arquivo'], 'string', 'max' => 145],
+            //[['fopa_arquivo'], 'string', 'max' => 145],
+            [[ 'arquivo'], 'file', /*'skipOnEmpty' => false, 'maxSize' => (1 * (1024*1024)),*/ "extensions" => "pdf,png, jpg, jpeg"],
             [['fopa_text'], 'string', 'max' => 100],
             [['fopa_usua'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['fopa_usua' => 'usua_codi']],
         ];
     }
 
         //funcao apra realizar upload de arquivos
-    public function actionUpload()
-    {
-        $model = new FolhapagamentoUsuario();
+    // public function actionUpload()
+    // {
+    //     $model = new FolhapagamentoUsuario();
 
-        if (Yii::$app->request->isPost) {
-            $model->fopa_arquivo = UploadedFile::getInstance($model, 'fopa_arquivo');
-            if ($model->upload()) {
-                // file is uploaded successfully
-                return;
-            }
-        }
+    //     if (Yii::$app->request->isPost) {
+    //         $model->fopa_arquivo = UploadedFile::getInstance($model, 'fopa_arquivo');
+    //         if ($model->upload()) {
+    //             // file is uploaded successfully
+    //             return;
+    //         }
+    //     }
 
-        return $this->render('upload', ['model' => $model]);
-    }
+    //     return $this->render('upload', ['model' => $model]);
+    // }
 
     /**
      * {@inheritdoc}
@@ -68,7 +70,7 @@ class FolhapagamentoUsuario extends \yii\db\ActiveRecord
     {
         return [
             'fopa_codi' => 'Código',
-            'fopa_arquivo' => 'Arquivo',
+            'arquivo' => 'Arquivo',
             'fopa_data' => 'Mês de Referencia',
             'fopa_text' => 'Observação',
             'fopa_guest' => 'Gestor',

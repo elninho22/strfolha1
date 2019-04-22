@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\models\Usuario;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UsuarioSearch */
@@ -30,7 +31,14 @@ $this->title = 'Usuários';
 
             'usua_nome',
             'usua_mail',
-            'usua_guest',
+            [
+                //'usua_guest',
+                'attribute' => 'usua_guest',
+                'contentOptions' => ['class' => 'text-center'],
+                'value' => function ($model) {
+                    return Usuario::nomeGestor($model['usua_guest'])->usua_nome;
+                }
+            ],
             [
 
                 'header' => 'Edição',

@@ -6,10 +6,10 @@ use app\models\GestorUsuario;
 use yii\helpers\ArrayHelper;
 use app\models\Usuario;
 
-    /* @var $this yii\web\View */
-    /* @var $model app\models\Usuario */
+/* @var $this yii\web\View */
+/* @var $model app\models\Usuario */
 
-    $this->title = $model->usua_nome;
+$this->title = $model->usua_nome;
 
 $this->params['breadcrumbs'][] = ['label' => 'Usuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Deletar', ['delete', 'id' => $model->usua_codi], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => "Desejar deletar {$model->usua_nome} ?",
+                'confirm' => "Deseja excluir usuário: {$model->usua_nome} ?",
                 'method' => 'post',
             ],
         ]) ?>
@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'usua_codi',
             'usua_nome',
             'usua_mail',
-            'usua_guest',// => $gestor = new GestorUsuario(),
+            'usua_guest', // => $gestor = new GestorUsuario(),
 
             //'usua_logi',
         ],

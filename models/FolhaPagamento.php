@@ -66,10 +66,10 @@ class FolhaPagamento extends \yii\db\ActiveRecord
         return [
             'fopa_codi' => 'Código',
             'fopa_arquivo' => 'Arquivo',
-            'fopa_data' => 'Mês de Referencia',
+            'fopa_data' => 'Mês de Referência',
             'fopa_text' => 'Observação',
             'fopa_guest' => 'Gestor',
-            'fopa_usua' => 'Usuario',
+            'fopa_usua' => 'Usuário',
             'fopa_stat' => 'Status',
             'fopa_dins' => 'Data autoamtica',
         ];
@@ -89,5 +89,11 @@ class FolhaPagamento extends \yii\db\ActiveRecord
     public function getFopaUsua()
     {
         return $this->hasOne(Usuario::className(), ['usua_codi' => 'fopa_usua']);
+       
+    }
+    public static function nomeUsuario($id)
+    {
+        return $id ? Usuario::find()->where(['usua_codi' => $id])->one() : '';
+       
     }
 }

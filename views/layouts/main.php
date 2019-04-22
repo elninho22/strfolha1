@@ -10,6 +10,9 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use yii\bootstrap\Modal;
+use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 //use kartik\icons\Icon;
 
 
@@ -50,7 +53,7 @@ AppAsset::register($this);
                 Yii::$app->user->isGuest ? (['label' => 'Login', 'url' => ['/site/login']]) : ('<li>'
                     . Html::beginForm(['/site/logout'], 'post')
                     . Html::submitButton(
-                        'Logout (' . Yii::$app->user->identity->usua_nome . ')',
+                        'Sair (' . Yii::$app->user->identity->usua_nome . ')',
                         ['class' => 'btn btn-link logout']
                     )
                     . Html::endForm()

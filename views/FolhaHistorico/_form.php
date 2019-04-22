@@ -1,29 +1,33 @@
-<?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\FolhaHistorico */
-/* @var $form yii\widgets\ActiveForm */
-?>
+    <?php $form = ActiveForm::begin([
 
-<div class="folha-historico-form">
+        'id' => $model->formName()
 
-    <?php $form = ActiveForm::begin(); ?>
+    ]); ?>
 
-    <?= $form->field($model, 'fohi_data')->textInput() ?>
+    
 
-    <?= $form->field($model, 'fohi_text')->textInput(['maxlength' => true]) ?>
+    
 
-    <?= $form->field($model, 'fohi_arq')->textInput(['maxlength' => true]) ?>
+    <?php
 
-    <?= $form->field($model, 'fopa_fopa')->textInput() ?>
+    //beforeSubmit
 
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
+    $js = "
 
-    <?php ActiveForm::end(); ?>
+        $('form#" . $model->formName() . "').on('beforeSubmit', function(e){
 
-</div>
+            var \$form = $(this);
+
+            submitMySecondForm(\$form);
+
+        }).on('submit', function(e){
+
+            e.preventDefault();
+
+        });";
+
+    $this->registerJs($js);
+
+    ?>
