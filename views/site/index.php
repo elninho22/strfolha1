@@ -29,7 +29,7 @@ $this->title = 'SigFolha - Studiorama ';
         <h4>Acesse sua conta</h4>
       </div>
       <div class="col-xs-3 col-md-3">
-        <h4>1º acesso ? Faça seu cadastro!</h4>
+        <h4>1º acesso ? Faça seu cadastross!</h4>
       </div>
     </div>
 
