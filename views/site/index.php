@@ -8,7 +8,6 @@
 <div class="site-index">
 
   <div class="site-index">
-
     <div class="well">
       <h1>Olá, bem vindo!
 
