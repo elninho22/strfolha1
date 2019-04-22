@@ -16,7 +16,7 @@ $this->title = 'SigFolha - Studiorama ';
   <div class="site-index">
 
     <div class="well">
-      <h1>Olá, bem vindo!ss
+      <h1>Olá, bem vindo!
 
 
 
