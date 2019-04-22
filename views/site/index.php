@@ -1,15 +1,9 @@
 <?php
 
 /* @var $this yii\web\View */
-use app\widgets\Alert;
-use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
-use app\assets\AppAsset;
-use yii\widgets\ActiveForm;
 
-$this->title = 'SigFolha - Studiorama ';
+
+->title = 'SigFolha - Studiorama ';
 ?>
 <div class="site-index">
 
