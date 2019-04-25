@@ -15,6 +15,7 @@ class LoginForm extends Model {
 
     public $usua_mail;
     public $usua_pass;
+    public $usua_logi;
     public $captcha;
     public $rememberMe = true;
     private $_user = false;
@@ -73,7 +74,7 @@ class LoginForm extends Model {
      */
     public function getUser() {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->usua_mail);
+            $this->_user = User::findByUsername($this->usua_mail, $this->usua_logi);
         }
 
         return $this->_user;

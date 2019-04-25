@@ -12,7 +12,7 @@ $this->title = 'SigFolha - Login';
 ?>
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
-    <p>Informe usuário e senha para acesso:</p>
+    <p>Informe e-mail e senha para acesso:</p>
     <br>
 
     <?php $form = ActiveForm::begin([
@@ -24,7 +24,9 @@ $this->title = 'SigFolha - Login';
         ],
     ]); ?>
 
-    <?= $form->field($model, 'usua_mail')->textInput(['autofocus' => true]) ?>
+    <?= $form->field($model, 'usua_mail')->textInput(['autofocus' => true])
+    ->label('E-mail')
+    ->hint('Informe E-mail') ?>
 
     <?= $form->field($model, 'usua_pass')->passwordInput() ?>
 
@@ -37,6 +39,6 @@ $this->title = 'SigFolha - Login';
     <?php ActiveForm::end(); ?>
 
     <div class="col-lg-offset-1" style="color:#999;">
-        Version: 1.0.4.7
+        Versão: 1.0.4.7
     </div>
 </div>

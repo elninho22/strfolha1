@@ -21,7 +21,7 @@ use app\components\Email;
          return [
             'access' => [
                 'class' => AccessControl::classname(),
-                'only' => ['create', 'delete', 'update', 'view','index','email'],
+                'only' => ['create', 'delete', 'update', 'view','index', 'reprovar-folha'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -68,46 +68,7 @@ use app\components\Email;
         ]);
 
     }
-   /* public function actionCreate()
-    {
-        $model = new FolhaPagamento();
-
-        if ($model->load(Yii::$app->request->post())) {
-            //var_dump($model);
-            //die('sd');
-            
-                //pega o arquivo
-                $arquivo = UploadedFile::getInstance($model, 'fopa_arquivo');
-
-                // Cria uma pasta dentro de WEB uploads e dentro folha
-                 $upload = new Upload(\Yii::getAlias('@webroot') . '/uploads/folha/');
-
-                // SALVA O ARQUIVO 
-                ($upload->File($arquivo));
-
-                //Aqui o metodo verifica se o arquivo ou processo foi com sucesso
-                if (!$upload->getResult()) {
-                    throw new Exception("Erro ao salvar folha" . $upload->getError());
-                }
-
-
-                // Aqui é o nome tratado pronto para ser gravado no banco 
-                $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
-                $model->fopa_usua = Yii::$app->user->identity->usua_codi;
-
-                //$model->fopa_stat = 0;
-                if ($model->save())   {
-
-                return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
-                }
-            
-        }
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-
-
-    }
+   /* 
     public function actionUpdate($fopa_codi, $fopa_usua)
     {
         $model = $this->findModel($fopa_codi, $fopa_usua);
@@ -153,21 +114,30 @@ use app\components\Email;
         if ($model) {   
             $model->fopa_stat = 1;
             $model->save();
-            Yii::$app->getSession()->setFlash('folhaSucesso', "Colaborador: <b>" . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . "</b> | Folha referente: <b> $model->fopa_data </b><p> Aprovada com sucesso!");
+            Yii::$app->getSession()->setFlash('folhaSucesso', "Folha do Colaborador: <b>" . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . "</b> | Mês de Referencia: <b> $model->fopa_data </b><p> Aprovada com sucesso!");
             return $this->redirect('index');
         }
 
 
     }
+    public function actionReprovar($id)
+    {
+        $model = FolhaPagamento::find()->where(['fopa_codi' => $id])->one();
+        if ($model) {
+            $model->fopa_stat = 2;
+            $model->save();
+            Yii::$app->getSession()->setFlash('folhaErro', "Folha de <b> $model->fopa_usua </b> foi Reprovada :( ");
+            return $this->redirect('index');
+        }
 
-    public function actionReprovar($id) {
+/*     public function actionReprovar($id) {
         $model = FolhaPagamento::find()->where(['fopa_codi'=>$id])->one();
         if ($model) {   
             $model->fopa_stat = 2;
             $model->save();
             Yii::$app->getSession()->setFlash('folhaErro', "Folha de <b> $model->fopa_usua </b> foi Reprovada :( ");
         return $this->redirect('index');
-        }
+        } */
         
 
     }
@@ -187,23 +157,74 @@ use app\components\Email;
         }
         throw new NotFoundHttpException('Oppss... não encontramos o que procurava :(.');
     }
-    public function actionEmail() {
+    public function actionReprovarFolha() {
+        $idfolha = trim(Yii::$app->request->post('id'));
+         $model = FolhaPagamento::find()->where(['fopa_codi' => $idfolha])->one();
+        if ($model) {
+                $model->fopa_stat = 2;
+                $model->save();
+        }
+ 
+        //se for vazio no dispara email, assim evbita erro
+        $email_destinatario = trim(Yii::$app->request->post('usua_mail'));
+        if(empty($email_destinatario)){
+            return json_encode(['success' => false, 'mensagem' => "Error ao reprovar folha.  Entre em contato informadno  código 2404."]); 
+        }
         $sendMail = new Email();
-        $remetente = ['andre.juliano@colaborativa.co' => 'André']; //Só um índice
-        $destinatario = ['carlos.santos@colaborativa.tv' => 'Carlos Colaborativa', 'andre.juliano@colaborativa.co' => 'André']; // Um ou mais índices de e-mails. Entendeu? entendi
-        $assunto = 'Assunto do email';
+        $remetente = [ 'andrejulianom@gmail.com' => 'Informe - SigFolha']; //Só um índice
+        $destinatario = [$email_destinatario=>null]; // Um ou mais índices de e-mails. Entendeu? entendi
+        $assunto = 'Folha Reprovada - Studiorama';
         $nomeLayout = 'default'; //Nome do arquivo criado na raiz da pasta mail
         $usarTemplate = false; // ou false
-        $corpoEmail = '<p style="color:#069;font-size:150px;">'. Yii::$app->request->post('motivo').'</p>';
+        $corpoEmail = '<p style="color:black;font-size:14px;font-family:verdana;">' . 'Olá, ' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome.'. <br>' . 'Sua folha de ponto foi reprovada pelo seguinte motivo: ' . '<br>' . '<p style="color:Tomato;font-size:15px;font-family:verdana;">' . Yii::$app->request->post('motivo') . '</p>.' . '<br><p style="color:MediumSeaGreen;font-size:11px;font-family:verdana;">' . "Mensagem enviada automaticamente, por favor não responda a este e-mail." . '<br>' . "Se necessário entre em contato com seu Gestor para maiores informações." . '<br>' . "Acesse SigFolha para verificação: www.sigfolha.com.br";
         $copiaOculta = false; // ou true
-        $params = ['titulo' => 'PNM']; //Array de parametros para usar no template.
+        $params = ['titulo' => 'SigFolha']; //Array de parametros para usar no template.
+
+         $sendMail->sendEmail($remetente, $destinatario, $assunto, $nomeLayout, $usarTemplate, $corpoEmail, $copiaOculta, $params);
+        if ($sendMail->getResult()) {
+            $retorno = ['success'=>true, 'mensagem'=> $sendMail->getError()];
+        } else  {
+            $retorno = ['success' => false, 'mensagem' => $sendMail->getError()];
+        }
+
+        //return Yii::$app->request->redirect();
+        return json_encode($retorno);
+
+    }
+ /*   public function actionAprovarf($id)
+    {
+
+        $model = FolhaPagamento::find()->where(['fopa_codi' => $id])->one();
+        if ($model) {
+            $model->fopa_stat = 1;
+            $model->save();
+            Yii::$app->getSession()->setFlash('folhaSucesso', "Folha do Colaborador: <b>" . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . "</b> | Mês de Referencia: <b> $model->fopa_data </b><p> Aprovada com sucesso!");
+            return $this->redirect('index');
+        }
+
+        //se for vazio no dispara email, assim evbita erro
+      /*  $email_destinatario = trim(Yii::$app->request->post('usua_mail'));
+        if (empty($email_destinatario)) {
+            return json_encode(['success' => false, 'mensagem' => "Error ao aprovar folha.  Entre em contato informadno  código 2404."]);
+        }
+        $sendMail = new Email();
+        $remetente = ['andrejulianom@gmail.com' => 'Informe - SigFolha']; //Só um índice
+        $destinatario = [$email_destinatario => null]; // Um ou mais índices de e-mails. Entendeu? entendi
+        $assunto = 'Folha Reprovada - Studiorama';
+        $nomeLayout = 'default'; //Nome do arquivo criado na raiz da pasta mail
+        $usarTemplate = false; // ou false
+        $corpoEmail = '<p style="color:black;font-size:14px;font-family:verdana;">' . 'Olá, ' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . '. <br>' . 'Sua folha de ponto foi reprovada pelo seguinte motivo: ' . '<br>' . '<p style="color:Tomato;font-size:15px;font-family:verdana;">' . Yii::$app->request->post('motivo') . '</p>.' . '<br><p style="color:MediumSeaGreen;font-size:11px;font-family:verdana;">' . "Mensagem enviada automaticamente, por favor não responda a este e-mail." . '<br>' . "Se necessário entre em contato com seu Gestor para maiores informações." . '<br>' . "Acesse SigFolha para verificação: www.sigfolha.com.br";
+        $copiaOculta = false; // ou true
+        $params = ['titulo' => 'SigFolha']; //Array de parametros para usar no template.
 
         $sendMail->sendEmail($remetente, $destinatario, $assunto, $nomeLayout, $usarTemplate, $corpoEmail, $copiaOculta, $params);
         if ($sendMail->getResult()) {
-            $retorno = ['success'=>true, 'mensagem'=> $sendMail->getError()];
+            $retorno = ['success' => true, 'mensagem' => $sendMail->getError()];
         } else {
             $retorno = ['success' => false, 'mensagem' => $sendMail->getError()];
         }
-      return json_encode($retorno);
-    }
+
+        //return Yii::$app->request->redirect();
+        return json_encode($retorno);*/
+    //}
 }

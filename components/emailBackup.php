@@ -42,8 +42,8 @@ class Email
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'host' => $this->Host = isset($host) ? $host : 'smtp.gmail.com',
-                'username' => $this->User = isset($user) ? $user : 'andrejulianom@gmail.com',
-                'password' => $this->Pass = isset($pass) ? $pass : '@dav!ninho652400',
+                'username' => $this->User = isset($user) ? $user : 'webmaster@colaborativa.tv',
+                'password' => $this->Pass = isset($pass) ? $pass : 'hcolab!!01',
                 'port' => $this->Port = isset($port) ? $port : '465',
                 'encryption' => $this->Security = isset($security) ? $security : 'ssl'
             ],
@@ -66,9 +66,9 @@ class Email
      */
     public function sendEmail(array $remetente, array $destinatario, $assunto = null, $nomeLayout = null, $usarTemplate = false, $corpoEmail = null, $copiaOculta = false, $params = [])
     {
-        $remetente = count($remetente) > 0 ? $remetente : ['andrejulianom@gmail.com' => 'Studiorama'];
+        $remetente = count($remetente) > 0 ? $remetente : ['webmaster@colaborativa.tv' => 'Colaborativa'];
         $destinatario = count($destinatario) > 0 ? $destinatario : [];
-        $assunto = ((string)$assunto ? $assunto : 'E-mail SigFolha');
+        $assunto = ((string)$assunto ? $assunto : 'E-mail colaborativa');
         $nomeLayout = ((string)$nomeLayout ? $nomeLayout : 'default');
         $params = count($params) > 0 ? $params : [];
 
@@ -80,10 +80,10 @@ class Email
 
         if ($sendMail->send()) {
             $this->Result = true;
-            $this->Error = 'Folha <b> reprovada </b> com sucesso!';
+            $this->Error = 'E-mail enviado com sucesso!';
         } else {
             $this->Result = false;
-            $this->Error = 'Erro ao reprovar folha, informe código 2504!';
+            $this->Error = 'E-mail não enviado!';
         }
     }
 

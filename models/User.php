@@ -47,8 +47,8 @@ class User extends Object implements IdentityInterface {
      * @param string $username
      * @return static|null
      */
-    public static function findByUsername($usua_mail) {
-        $model = Usuario::find()->where(['usua_mail' => trim( $usua_mail)])->one();
+    public static function findByUsername($usua_mail, $usua_codi) {
+        $model = Usuario::find()->where(['usua_mail' => trim( $usua_mail), 'usua_logi' => 20])->one();
         if ($model) {
             $user = self::getAttributesUserIdentity($model);
             return new static($user);

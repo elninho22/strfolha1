@@ -96,4 +96,9 @@ class FolhaPagamento extends \yii\db\ActiveRecord
         return $id ? Usuario::find()->where(['usua_codi' => $id])->one() : '';
        
     }
+    public static function idFolhaPagamento($id)
+    {
+        return $id ? FolhaPagamento::find()->where(['fopa_codi' => $id])->one() : '';
+       
+    }
 }

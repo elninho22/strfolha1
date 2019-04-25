@@ -95,7 +95,7 @@ class SiteController extends Controller
           //  var_dump( Yii::$app->user->identity);
             // die('ads');
             if ($model->login()) {
-                if (Yii::$app->user->identity->usua_nivel == 98) {
+                if (Yii::$app->user->identity->usua_nivel == 98 && Yii::$app->user->identity->usua_logi == 20) {
                     return $this->redirect(['folhapagamento/index']);
                 } elseif (Yii::$app->user->identity->usua_nivel == 99) {
                     return $this->redirect(['folhapagamentousuario/index']);

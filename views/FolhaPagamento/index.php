@@ -74,7 +74,8 @@ $this->title = 'Gerencial - Folha de Ponto';
             [
                 'attribute' => 'fopa_text',
                 'format' => 'raw',
-                // 'headerOptions' => ['class' => 'text-center', 'style' => 'width: 30%;'],
+                'header' => 'Observação',
+                'headerOptions' => ['class' => 'text-center'],
             ],
 
             [
@@ -119,10 +120,10 @@ $this->title = 'Gerencial - Folha de Ponto';
                             ],
                         ]);
                     },
-                    //'update' => [], man n ta cansado mao kraai ? 
+                    //'update' => [], 
                     //aqui teria q clicar e abrir a MODAL - com campo texto e o botao reprovar ! em seguida o disparo de amil kkkkk ok
                     'update' => function ($url, $model) {
-                        return '<button type="button" id="'.FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_mail .'" class="btn btn-danger" data-toggle="modal" data-target="#modalReprovar" title="Reprovar Folha">Reprovar</button>';
+                        return '<button type="button" id="' . FolhaPagamento::idFolhaPagamento($model['fopa_codi'])->fopa_codi . '" data-usuario="' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_mail . '" class="btn btn-danger reprovar-user"  title="Reprovar Folha">Reprovar</button>';
                         //"title" => 'Visualizar Folha',
                         // return Html::a('Reprovar', ['reprovar', 'id' => $model->fopa_codi], [
                         // 'class' => 'btn btn-danger',

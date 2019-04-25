@@ -1,18 +1,24 @@
-$('#modalReprovar').on('show.bs.modal', function (event) {
-    var modal = $(this);
-    console.log($(this).attr('id'));
-});
-
-
-
-
 $(document).ready(function () {
+    $(".reprovar-user").on('click', function () {
+        var mail = $(this).attr('data-usuario');
+        var fopacodi = $(this).attr('id');
+
+        $('#modalReprovar').modal("show");
+
+
+        $('input[name="usua_mail"]').val(mail);
+        $('input[name="id"]').val(fopacodi);
+
+        
+
+    });
+
     var formData;
     $('form#_reprovacao').submit(function (event) {
         event.preventDefault();
         formData = new FormData($(this)[0]);
         $.ajax({
-            url: "/strfolha/web/folhapagamento/email",
+            url: "/strfolha/web/folhapagamento/reprovar-folha",
             dataType: "json",
             type: 'POST',
             data: formData,
@@ -21,28 +27,32 @@ $(document).ready(function () {
             processData: false,
             success: function (responseText) {
                 console.log(responseText);
-                /*  if (responseText.acao_java == 'create') {
-                    $('.aviso').html(responseText.msg).fadeIn('slow');
-                    window.setTimeout(function () {
-                        $('.aviso').empty().fadeOut(1000);
-                        $('input[type=text],textarea').val("");
-                        $('form[name="cadForm"]').find(".has-success").removeClass('has-success');
-                    }, 3000);
-                } else if (responseText.acao_java == 'update') {
-                    $('.aviso').html(responseText.msg).fadeIn('slow');
-                    window.setTimeout(function () {
-                        $('.aviso').empty().fadeOut(1000);
-                        $('form[name="cadForm"]').find(".has-success").removeClass('has-success');
-                        // $(location).href(responseText.urlRedirect);
-                        window.location.href = responseText.urlRedirect;
-                    }, 3000);
-                }  */
+                $('.msg_ajax').html(' ');
+                if (responseText.success) {
+                    $('.msg_ajax').html('<div class="alert alert-success">' + responseText.mensagem + '</div>').fadeIn('slow');
+                    $('textarea[name="motivo"]').val();
+                    //$('#modalReprovar').modal("hide");
+
+                } else {
+                    $('.msg_ajax').html('<div class="alert alert-warning">' + responseText.mensagem + '</div>').fadeIn('slow');
+                }
+
             },
-            beforeSend: function () { console.log("enviadno..."); },
+            beforeSend: function () {
+                $('.msg_ajax').html(' ');
+                $('.msg_ajax').html('<div class="alert alert-info"><b>Aguarde</b>, processando sua solicitaçao...</div>').fadeIn('slow');
+            },
             complete: function () { },
             error: function (e) { console.log(e); }
         });
+
+        setTimeout(function () {
+            window.location.reload(1);
+        }, 5000);
+        
         return false;
+        
+       // location.reload();
     });
 }); //fim do documento
 
