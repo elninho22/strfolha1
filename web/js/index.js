@@ -5,11 +5,8 @@ $(document).ready(function () {
 
         $('#modalReprovar').modal("show");
 
-
         $('input[name="usua_mail"]').val(mail);
         $('input[name="id"]').val(fopacodi);
-
-        
 
     });
 
@@ -48,7 +45,7 @@ $(document).ready(function () {
 
         setTimeout(function () {
             window.location.reload(1);
-        }, 5000);
+        }, 10000);
         
         return false;
         

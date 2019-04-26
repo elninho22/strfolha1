@@ -120,9 +120,11 @@ class SiteController extends Controller
     {
         $session = Yii::$app->session;
         Yii::$app->user->logout();
+        return $this->goHome();
         $session->close();
         // destrói todos os dados registrados em uma sessão.
         $session->destroy();
+
 
         return $this->goHome();
     }

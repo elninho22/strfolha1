@@ -4,12 +4,12 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\grid\DataColumn;
 use app\models\PagamentoUtil;
+use app\models\Usuario;
+use yii\helpers\Url;
+use yii\bootstrap\Modal;
+use app\assets\AppAsset;
+use app\models\FolhapagamentoUsuario;
 
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\FolhaPagamentoUsuarioSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-//var_dump(Yii::$app->user->identity);
-//die('04');
 $this->title = 'Folha de Ponto';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -29,12 +29,9 @@ $this->title = 'Folha de Ponto';
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-
-
             [
                 'attribute' => 'fopa_data',
                 'filter' => ['Janeiro' => 'Janeiro', 'Fevereiro' => 'Fevereiro', 'Março' => 'Março', 'Abril' => 'Abril', 'Maio' => 'Maio', 'Junho' => 'Junho', 'Julho' => 'Julho', 'Agosto' => 'Agosto', 'Setembro' => 'Setembro', 'Outubro' => 'Outubro', 'Novembro' => 'Novembro', 'Dezembro' => 'Dezembro'],
-
             ],
 
             [
@@ -47,8 +44,8 @@ $this->title = 'Folha de Ponto';
             [
                 // 'class' => 'yii\grid\SerialColumn',
                 'attribute' => 'fopa_text',
+                'header' => 'Observação',
                 'format' => 'raw',
-
             ],
 
             [
@@ -61,13 +58,18 @@ $this->title = 'Folha de Ponto';
                 'contentOptions' => ['class' => 'text-center'],
                 'buttons' => [
                     'view' => function ($url, $model) {
-                        return Html::a('<span class="btn-label">Download</span>', [Yii::getAlias('') . $model['fopa_arquivo']], ['class' => 'btn btn-default', 'title' => 'Baixar Folha',]);
-
+                        return Html::a('Download', ['downloadu', 'id' => $model->fopa_codi],
+                   
+                            [
+                                'class' => 'btn btn-default',
+                                // 'url' => $url
+                            ]
+                        );
                         //DOWNLOAD SEM UTILIZAR METODO 
                         /* Html::a('Download', ['download', 'id' => $model->fopa_codi], [
-                            'class' => 'btn btn-primary',
-                            "title" => 'Aprovar Folha', */
-                        /*                             'data' => [
+                            'class' => 'btn btn-default',
+                            "title" => 'Aprovar Folha']);
+                        /*      'data' => [
                                 'confirm' => " Confirma aprovar a folh a ?", // {Usuario::$usua_nome}",
                                 'method' => '"<a href=' " . Yii::getAlias('@web') . $model['fopa_arquivo'] . " '></a>";',
                             ], */
@@ -75,8 +77,6 @@ $this->title = 'Folha de Ponto';
                     },
                 ],
             ],
-
-
             [
 
                 'header' => 'Edição',

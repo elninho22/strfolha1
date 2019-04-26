@@ -38,34 +38,15 @@ class FolhapagamentoUsuario extends \yii\db\ActiveRecord
     {
         return [
             [['fopa_data'], 'safe'],
-            [['fopa_usua','fopa_guest'], 'required'],
+            [['fopa_usua','fopa_guest','fopa_data'], 'required'],
             [['fopa_usua','fopa_guest','fopa_stat'], 'integer'],
             //[['fopa_arquivo'], 'string', 'max' => 145],
-            [[ 'arquivo'], 'file', /*'skipOnEmpty' => false, 'maxSize' => (1 * (1024*1024)),*/ "extensions" => "pdf,png, jpg, jpeg"],
+            [[ 'arquivo'], 'file', /*'skipOnEmpty' => false, 'maxSize' => (1 * (1024*1024)),*/ "extensions" => "pdf, png, jpg, jpeg, zip"],
             [['fopa_text'], 'string', 'max' => 100],
             [['fopa_usua'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['fopa_usua' => 'usua_codi']],
         ];
     }
 
-        //funcao apra realizar upload de arquivos
-    // public function actionUpload()
-    // {
-    //     $model = new FolhapagamentoUsuario();
-
-    //     if (Yii::$app->request->isPost) {
-    //         $model->fopa_arquivo = UploadedFile::getInstance($model, 'fopa_arquivo');
-    //         if ($model->upload()) {
-    //             // file is uploaded successfully
-    //             return;
-    //         }
-    //     }
-
-    //     return $this->render('upload', ['model' => $model]);
-    // }
-
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
@@ -79,17 +60,11 @@ class FolhapagamentoUsuario extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getFolhaHistoricos()
     {
         return $this->hasMany(FolhaHistorico::className(), ['fopa_fopa' => 'fopa_codi']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getFopaUsua()
     {
         return $this->hasOne(Usuario::className(), ['usua_codi' => 'fopa_usua']);

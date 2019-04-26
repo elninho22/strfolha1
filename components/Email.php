@@ -83,7 +83,7 @@ class Email
             $this->Error = 'Folha <b> reprovada </b> com sucesso!';
         } else {
             $this->Result = false;
-            $this->Error = 'Erro ao reprovar folha, informe código 2504!';
+            $this->Error = 'Erro no processamento da folha, informe codigo <b> 2504 </b>!';
         }
     }
 

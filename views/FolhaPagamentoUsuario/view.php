@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\models\FolhaPagamento;
+use app\models\PagamentoUtil;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\FolhaPagamento */
@@ -38,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     //'label' => 'fopa_arquivo',
                     'format' => 'raw',
                     'value'  => function ($model) {
-                        return "<a href='" . Yii::getAlias('@web') . $model['fopa_arquivo'] . "'>Baixar</a>";
+                        return "<a href='" . Yii::getAlias('@web') . $model['fopa_arquivo'] . "'>Download</a>";
                     }
                 ],
                 //'fopa_arquivo',
@@ -48,7 +49,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'fopa_dins',
                     'label' => 'Data de Envio',
                 ],
-                'fopa_stat',
+                [
+                    'attribute' => 'fopa_stat',
+                    'format' => 'raw',
+                    'value' => function ($model) {
+                        //return PagamentoUtil::getStatusValue($model[$data->fopa_stat]);
+                        return $model['fopa_stat'] == 0 ? 'Pendente' : ($model['fopa_stat'] == 1 ? 'Aprovado' : 'Reprovado');
+                    }
+                ],
+
             ],
         ]) ?>
 

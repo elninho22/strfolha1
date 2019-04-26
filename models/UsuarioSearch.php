@@ -19,7 +19,7 @@ class UsuarioSearch extends Usuario
     {
         return [
             [['usua_codi', 'usua_nivel'], 'integer'],
-            [['usua_nome', 'usua_dins', 'usua_pass', 'usua_hash', 'usua_foto', 'usua_logi'], 'safe'],
+            [['usua_nome', 'usua_dins', 'usua_pass', 'usua_hash', 'usua_foto', 'usua_logi', 'usua_insc'], 'safe'],
         ];
     }
 
@@ -75,9 +75,7 @@ class UsuarioSearch extends Usuario
 
         $query->andFilterWhere(['like', 'usua_nome', $this->usua_nome])
             ->andFilterWhere(['like', 'usua_pass', $this->usua_pass])
-            //->andFilterWhere(['like', 'usua_mail', $this->usua_mail])
-            ->andFilterWhere(['like', 'usua_hash', $this->usua_hash])
-            ->andFilterWhere(['like', 'usua_foto', $this->usua_foto])
+            //->andFilterWhere(['like', 'usua_mail', $this->usua_mail])          
             ->andFilterWhere(['like', 'usua_logi', $this->usua_logi]);
 
         return $dataProvider;

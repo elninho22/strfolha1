@@ -16,6 +16,7 @@ use Yii;
  * @property int $usua_nivel 1 usuario comum, 2 gestor
  * @property string $usua_foto
  * @property string $usua_logi Login para para acessar a ferramenta
+ * @property string $usua_insc Código de cadastro do RH
  *
  * @property FolhaPagamento[] $folhaPagamentos
  */
@@ -39,6 +40,7 @@ class Usuario extends \yii\db\ActiveRecord
             [['usua_nome', 'usua_mail', 'usua_guest'], 'required'],
             [['usua_dins'], 'safe'],
             [['usua_pass'], 'string', 'min' => 6],
+            [['usua_insc'], 'string', 'max' => 15],
             [['gestor'], 'integer'],
             [['usua_nivel'], 'integer'],
             ['usua_mail', 'email'],
@@ -55,7 +57,7 @@ class Usuario extends \yii\db\ActiveRecord
         return [
             'usua_codi' => 'Código',
             'gestor' => 'Gestor',
-            'usua_nome' => 'Nome',
+            'usua_nome' => 'Nome completo',
             'usua_dins' => 'Dins',
             'usua_pass' => 'Senha',
             'usua_mail' => 'E-mail',
@@ -64,6 +66,7 @@ class Usuario extends \yii\db\ActiveRecord
             'usua_foto' => 'Foto',
             'usua_logi' => 'Username',
             'usua_guest' => 'Gestor',
+            'usua_insc' => 'Matrícula',
             'authKey' => 'authKey',
         ];
     }

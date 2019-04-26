@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use Yii\app;
+use app\models\Usuario;
 use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
@@ -13,6 +14,8 @@ use app\assets\AppAsset;
 use yii\bootstrap\Modal;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
+use phpDocumentor\Reflection\Types\Null_;
+
 //use kartik\icons\Icon;
 
 
@@ -36,6 +39,8 @@ AppAsset::register($this);
 
     <div class="wrap">
         <?php
+        // $model = null;
+        // $model = new Usuario($model->usua_codi);
         NavBar::begin([
             'brandLabel' => Yii::$app->name,
             'brandUrl' => Yii::$app->homeUrl,
@@ -43,11 +48,52 @@ AppAsset::register($this);
                 'class' => 'navbar-inverse navbar-fixed-top',
             ],
         ]);
+        $guest = [
+            ['label' => /*Icon::show('home') .*/ 'Usuarioss', 'url' => ['site/about/']],
+            Yii::$app->user->isGuest ? (['label' => '', 'url' => ['/site']]) : ('<li>'
+                . Html::beginForm(['/site/logout'], 'post')
+                . Html::submitButton(
+                    'Sair (' . Yii::$app->user->identity->usua_nome . ')',
+                    ['class' => 'btn btn-link logout']
+                )
+                . Html::endForm()
+                . '</li>')
+        ];
+        $id = isset(Yii::$app->user->identity->usua_codi) ? Yii::$app->user->identity->usua_codi : null;
+        $useruser = [
+            ['label' => 'Perfil', 'url' => ['/usuario/view?id=' . $id]],
+            ['label' =>  'Folha de Ponto', 'url' => ['/folhapagamentousuario/']],
+
+            Yii::$app->user->isGuest ? (['label' => 'Login', 'url' => ['/site/losgin']]) : ('<li>'
+
+                . Html::beginForm(['/site/logout'], 'post')
+                . Html::submitButton(
+                    'Sair (' . Yii::$app->user->identity->usua_nome . ')',
+                    ['class' => 'btn btn-link logout']
+                )
+                . Html::endForm()
+                . '</li>'),
+        ];
+        $admin = [
+            ['label' => 'Perfil', 'url' => ['/usuario/view?id=' . $id]],
+            ['label' => /*Icon::show('home') .*/ 'Usuarios', 'url' => ['/usuario/']],
+            ['label' => /*Icon::show('home') .*/ 'Folha de Ponto', 'url' => ['/folhapagamento/']],
+            Yii::$app->user->isGuest ? (['label' => 'Login', 'url' => ['/site/losgin']]) : ('<li>'
+                . Html::beginForm(['/site/logout'], 'post')
+                . Html::submitButton(
+                    'Sair (' . Yii::$app->user->identity->usua_nome . ')',
+                    ['class' => 'btn btn-link logout']
+                )
+                . Html::endForm()
+                . '</li>')
+        ];
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
-            'items' => [
+            'items' => Yii::$app->user->isGuest  ? $guest : (Yii::$app->user->identity->usua_nivel == 99 ? $useruser : $admin) /* [
 
-                ['label' => /*Icon::show('home') .*/ 'Usuarios', 'url' => ['/usuario/']],
+                deslogadoo kkkk
+
+                ['label' => 'Usuarios', 'url' => ['/usuario/']],
                 ['label' => 'Folha de Ponto', 'url' => ['/folhapagamento/']],
                 ['label' => 'Relatórios', 'url' => ['/relatorios/']],
                 Yii::$app->user->isGuest ? (['label' => 'Login', 'url' => ['/site/login']]) : ('<li>'
@@ -58,7 +104,7 @@ AppAsset::register($this);
                     )
                     . Html::endForm()
                     . '</li>')
-            ],
+            ],*/
         ]);
         NavBar::end();
         ?>

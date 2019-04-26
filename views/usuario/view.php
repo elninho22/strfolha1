@@ -21,13 +21,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Editar', ['update', 'id' => $model->usua_codi], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Deletar', ['delete', 'id' => $model->usua_codi], [
+        <?php echo '' /* Html::a('Deletar', ['delete', 'id' => $model->usua_codi], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => "Deseja excluir usuário: {$model->usua_nome} ?",
                 'method' => 'post',
             ],
-        ]) ?>
+        ])*/ ?>
     </p>
 
     <?= DetailView::widget([
@@ -36,9 +36,13 @@ $this->params['breadcrumbs'][] = $this->title;
             //'usua_codi',
             'usua_nome',
             'usua_mail',
-            'usua_guest', // => $gestor = new GestorUsuario(),
-
-            //'usua_logi',
+            [
+                'attribute' => 'usua_guest', // => $gestor = new GestorUsuario(),
+                'value' => function ($model) {
+                    return Usuario::nomeGestor($model['usua_guest'])->usua_nome;
+                }
+            ],
+            'usua_insc',
         ],
     ]) ?>
 

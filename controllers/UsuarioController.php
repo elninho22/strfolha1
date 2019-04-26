@@ -55,6 +55,15 @@ class UsuarioController extends Controller
 
     public function actionIndex()
     {
+        if (Yii::$app->user->identity->usua_nivel != 98) { // se for diferente do admin é usuario
+                throw new NotFoundHttpException("Ops ... não encontramos o que procurava :( " . "Entre em contato com suporte informando código: 0937");
+           // VarDumper::dump(Yii::$app->user->identity->usua_nivel, 10, true);
+            //die('oi');
+            if (Yii::$app->user->identity->usua_codi != $id) { // ID do usuário é diferente da sessão
+                throw new NotFoundHttpException("Ops ... não encontramos o que procurava :( " . "Entre em contato com suporte informando código: 0937");
+                }
+        }
+
         $searchModel = new UsuarioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -67,7 +76,7 @@ class UsuarioController extends Controller
     public function actionView($id)
     {   
         if (Yii::$app->user->identity->usua_nivel != 98) { // se for diferente do admin é usuario
-            // VarDumper::dump(Yii::$app->user->identity->usua_codi, 10, true);
+           //  VarDumper::dump(Yii::$app->user->identity->usua_nivel, 10, true);
             // die('oi');
             if (Yii::$app->user->identity->usua_codi != $id) { // ID do usuário é diferente da sessão
             
@@ -80,15 +89,14 @@ class UsuarioController extends Controller
        
     }
 
-
     public function actionCreate() {
 
-       // criar coluna para gestor ou nao
        // $gest = isset(Yii::$app->request->post('uuu')) ? 1 : 0;
         $model = new Usuario();
         if ($model->load(Yii::$app->request->post())) {
             $model->usua_pass = hash('sha256', $model->usua_pass);
             $model->usua_nivel = 99;
+            $model->usua_logi = 20;
             if($model->save()){
                $usua_codi = $model->usua_codi;
                $gestor = new GestorUsuario();
