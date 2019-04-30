@@ -38,7 +38,7 @@ $this->registerJsFile("@web/js/index.js", [
             ' . Yii::$app->session->getFlash('folhaSucesso') . '
           </div>';
         } elseif (Yii::$app->session->hasFlash('folhaErro')) {
-            echo '<div class="alert alert-danger" role="alert">            ' . Yii::$app->session->getFlash('folhaErro') . '
+            echo '<div class="alert alert-danger" role="alert">' . Yii::$app->session->getFlash('folhaErro') . '
           </div>';
         }
         ?>

@@ -73,13 +73,7 @@ class FolhapagamentoController extends Controller
 
     public function actionAprovar()
     {
-        /*         $model = FolhaPagamento::find()->where(['fopa_codi'=>$id])->one();
-        if ($model) {   
-            $model->fopa_stat = 1;
-            $model->save();
-            Yii::$app->getSession()->setFlash('folhaSucesso', "Folha do Colaborador: <b>" . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . "</b> | Mês de Referencia: <b> $model->fopa_data </b><p> Aprovada com sucesso!");
-            return $this->redirect('index');
-        } */
+
         $id = trim(Yii::$app->request->get('id'));
 /*      var_dump(Yii::$app->request->get());
         die('teset'); */

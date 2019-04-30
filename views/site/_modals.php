@@ -2,6 +2,9 @@
 use app\models\Usuario;;
 use app\assets\AppAsset;
 use yii\bootstrap\Modal;
+use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
+
 
 $this->registerJsFile("@web/js/cadindex.js", [
     'depends' => AppAsset::className(),
@@ -37,25 +40,24 @@ $model = new Usuario();
 
                         <div class="md-form mb-12">
                             <label for="Form-email5" text-align="left">Matricula</label>
-                            <input type="text" name="matricula" id="usuan_insc" class="form-control" Placeholder="Digite Matricula">
+                            <input type="text" name="usuan_insc" id="usuan_insc" class="form-control" Placeholder="Digite Matricula">
                             <p>
                         </div>
 
                         <div class="md-form mb-12">
                             <label for="email">E-mail</label>
-                            <input type="email" name="email" id="usua_mail" class="form-control" Placeholder="Digite seu e-mail">
+                            <input type="email" name="usua_mail" id="usua_mail" class="form-control" Placeholder="Digite seu e-mail">
                             <p>
                         </div>
 
                         <div class="md-form pb-3">
                             <label for="senha">Senha</label>
-                            <input type="password" name="pass" id="usua_pass" class="form-control">
+                            <input type="password" name="usua_pass" id="usua_pass" class="form-control">
                         </div>
 
                         <div class="md-form mb-12">
                             <label for="gestor">Gestor</label>
-                            <input type="text" name="gestor" id="usua_guest" class="form-control" Placeholder="Selecione gestor">
-                            <p>
+                            <?= Html::dropDownList('usua_guest', null, ArrayHelper::map(Usuario::find()->where(['usua_nivel' => '98'])->all(), 'usua_codi', 'usua_nome'), [ 'class' => "form-control" , 'prompt' => 'Selecione seu Gestor']); ?>
                         </div>
 
                         <!--Grid row-->

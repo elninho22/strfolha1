@@ -42,9 +42,9 @@ class Usuario extends \yii\db\ActiveRecord
             [['usua_pass'], 'string', 'min' => 6],
             [['usua_insc'], 'string', 'max' => 15],
             [['gestor'], 'integer'],
-            [['usua_nivel'], 'integer'],
+            [['usua_nivel','usua_logi'], 'integer'],
             ['usua_mail', 'email'],
-            [['usua_nome', 'usua_pass', 'usua_mail', 'usua_hash', 'usua_logi','authKey'], 'string', 'max' => 100],
+            [['usua_nome', 'usua_pass', 'usua_mail', 'usua_hash','authKey'], 'string', 'max' => 100],
             [['usua_foto'], 'string', 'max' => 150],
         ];
     }

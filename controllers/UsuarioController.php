@@ -111,7 +111,7 @@ class UsuarioController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->usua_nivel = 99;
             $model->usua_logi = '20';
-           // $model->usua_logi = 20; 
+            // $model->usua_logi = 20; 
             $model->usua_pass = hash('sha256', $model->usua_pass);
             //var_dump($model);
             //die('as');
@@ -166,7 +166,6 @@ class UsuarioController extends Controller
         return $this->redirect(['index']);
     }
 
-
     protected function findModel($id)
     {
         if (($model = Usuario::findOne($id)) !== null) {
@@ -176,29 +175,26 @@ class UsuarioController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    /* public function actionCadUsuario()
+    public function actionCadUsuario()
     {
-        Yii::$app->request->post();
-        var_dump( Yii::$app->request->post());
-        die('fim');
+        //Yii::$app->request->post();
+        // var_dump( Yii::$app->request->post());
+        // die('fim');
         $model = new Usuario();
-        if ($model->load(Yii::$app->request->post())) {
-            $model->usua_pass = hash('sha256', $model->usua_pass);
+        if (Yii::$app->request->isAjax) {
+            $model->usua_pass = hash('sha256', Yii::$app->request->post('usua_pass'));
             $model->usua_nivel = 99;
             $model->usua_logi = 20;
-            $model->usua->nome;
-           /*  $usua_nome = Yii::$app->request->post( 'usua_nome');
-            $usua_mail = Yii::$app->request->post('usua_mail');
-            $usua_pass = Yii::$app->request->post('usua_pass');
-            $usua_guest = Yii::$app->request->post('usua_guest');
-            $usua_insc = Yii::$app->request->post('usua_insc'); 
-        }
-        if ($model->save()) {
-            return $this->redirect('index');
-        }
+            //$model->usua->nome;
+            $model->usua_nome = Yii::$app->request->post('usua_nome');
+            $model->usua_mail = Yii::$app->request->post('usua_mail');
+            //$model->usua_pass = Yii::$app->request->post('usua_pass');
+            $model->usua_guest = Yii::$app->request->post('usua_guest');
+            $model->usua_insc = Yii::$app->request->post('usua_insc');
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }*/
+            if ($model->save()) {
+                return $this->redirect('site/login');
+            }
+        }
+    }
 }
