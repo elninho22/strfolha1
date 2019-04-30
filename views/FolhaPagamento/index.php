@@ -38,8 +38,7 @@ $this->registerJsFile("@web/js/index.js", [
             ' . Yii::$app->session->getFlash('folhaSucesso') . '
           </div>';
         } elseif (Yii::$app->session->hasFlash('folhaErro')) {
-            echo '<div class="alert alert-danger" role="alert">
-            ' . Yii::$app->session->getFlash('folhaErro') . '
+            echo '<div class="alert alert-danger" role="alert">            ' . Yii::$app->session->getFlash('folhaErro') . '
           </div>';
         }
         ?>
@@ -93,10 +92,11 @@ $this->registerJsFile("@web/js/index.js", [
                     'buttons' => [
                         'view' => function ($url, $model) {
                             return Html::a(
-                                'Download', ['download', 'id' => $model->fopa_codi],
+                                'Download',
+                                ['download', 'id' => $model->fopa_codi],
                                 [
                                     'class' => 'btn btn-default',
-                                   // 'url' => $url
+                                    // 'url' => $url
                                 ]
                             );
 
@@ -121,40 +121,47 @@ $this->registerJsFile("@web/js/index.js", [
                     'template' => "{view} {update} {delete}", // altera a forma de exibição dos botões
                     'buttons' => [
                         'view' => function ($url, $model) {
-                            return Html::a('Aprovar', ['aprovar', 'id' => $model->fopa_codi, 'email' => FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_mail], [
-                                'class' => 'btn btn-success',
-                                "title" => 'Aprovar Folha',
-                                'data' => [
-                                    'confirm' => "Aprovar folha do colaborador: " .  FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . " ? ",
-                                    'method' => 'post',
-                                ],
-                            ]);
-                        },
-                        //'update' => [], 
-                        //aqui teria q clicar e abrir a MODAL - com campo texto e o botao reprovar ! em seguida o disparo de amil kkkkk ok
-                        'update' => function ($url, $model) {
-                            return '<button type="button" id="' . FolhaPagamento::idFolhaPagamento($model['fopa_codi'])->fopa_codi . '" data-usuario="' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_mail . '" class="btn btn-danger reprovar-user"  title="Reprovar Folha">Reprovar</button>';
-                            //"title" => 'Visualizar Folha',
-                            // return Html::a('Reprovar', ['reprovar', 'id' => $model->fopa_codi], [
-                            // 'class' => 'btn btn-danger',
-                            // "title" => 'Reprovar Folha',
-                            // 'data' => [
-                            // 'confirm' => 'Confirma reprovar a folha de ?',
-                            // 'method' => 'post',
-                            // ],
-                            // ]);
-                        },
-                        'delete' => function ($url, $model) {
-                            return Html::a('Visualizar', ['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], [
-                                'class' => 'btn btn-primary',
-                                "title" => 'Visualizar Folha',
-                            ]);
-                        },
+                            return Html::a(
+                                'Aprovar',
+                                [
+                                    'aprovar', 'id' => $model->fopa_codi, 'email' => FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_mail, FolhaPagamento::linkArq($model['fopa_arquivo'])->fopa_arquivo,
+                                    $model->fopa_data,
+                                    FolhaPagamento::nomeGestorf($model['fopa_guest'])->usua_nome,
+                                    'emailgestor' => FolhaPagamento::emailGestor($model['fopa_guest'])->usua_mail,
+
+
                     ],
-                ],
-            ],
-        ]
-    ); ?>
+                    [
+                        'class' => 'btn btn-success',
+                        'title' => 'Aprovar Folha',
+                        'data' => [
+                            'confirm' => "Aprovar folha do colaborador: " .  FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . " ? ",
+                            'method' => 'post',
+                        ],
+
+                    ]
+    );
+    },
+    //'update' => [], 
+    //aqui teria q clicar e abrir a MODAL - com campo texto e o botao reprovar ! em seguida o disparo de amil kkkkk ok
+    'update' => function ($url, $model) {
+        return '<button type="button" id="' . FolhaPagamento::idFolhaPagamento($model['fopa_codi'])->fopa_codi . '" data-usuario="' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_mail . '" class="btn btn-danger reprovar-user"  title="Reprovar Folha">Reprovar</button>';
+        //"title" => 'Visualizar Folha',
+        // return Html::a('Reprovar', ['reprovar', 'id' => $model->fopa_codi], [
+        // 'class' => 'btn btn-danger',
+        // "title" => 'Reprovar Folha',
+        // 'data' => [
+        // 'confirm' => 'Confirma reprovar a folha de ?',
+        // 'method' => 'post',
+        // ],
+        // ]);
+    },
+    'delete' => function ($url, $model) {
+        return Html::a('Visualizar', ['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], [
+            'class' => 'btn btn-primary',
+            "title" => 'Visualizar Folha',
+        ]);
+    },],],],]); ?>
 </div>
 
 <?= $this->render('_modals') ?>

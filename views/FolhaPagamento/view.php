@@ -64,7 +64,11 @@ $this->params['breadcrumbs'][] = $this->title;
             //'label' =>   
             [
                 'attribute' => 'fopa_stat',
-                'value' => 'Pendente',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    //return PagamentoUtil::getStatusValue($model[$data->fopa_stat]);
+                    return $model['fopa_stat'] == 0 ? 'Pendente' : ($model['fopa_stat'] == 1 ? 'Aprovado' : 'Reprovado');
+                }
             ],
         ],
     ]) ?>

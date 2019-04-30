@@ -49,7 +49,7 @@ AppAsset::register($this);
             ],
         ]);
         $guest = [
-            ['label' => /*Icon::show('home') .*/ 'Usuarioss', 'url' => ['site/about/']],
+            ['label' => /*Icon::show('home') .*/ 'Login', 'url' => ['site/login/']],
             Yii::$app->user->isGuest ? (['label' => '', 'url' => ['/site']]) : ('<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(

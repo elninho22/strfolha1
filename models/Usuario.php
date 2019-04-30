@@ -68,6 +68,7 @@ class Usuario extends \yii\db\ActiveRecord
             'usua_guest' => 'Gestor',
             'usua_insc' => 'Matrícula',
             'authKey' => 'authKey',
+            'usua_logi' => 'Log',
         ];
     }
 

@@ -26,21 +26,24 @@ class FolhapagamentousuarioController extends Controller
 {
     public function behaviors()
     {
-        if (!Usuario::find()->where(['usua_codi' => Yii::$app->user->identity->usua_codi, 'usua_nivel' => '99'])->exists()) {
+        if (Yii::$app->user->identity) {
+            if (!Usuario::find()->where(['usua_codi' => Yii::$app->user->identity->usua_codi, 'usua_nivel' => '99'])->exists()) {
+                //var_dump(Yii::$app->user->identity->usua_codi);
+                //die('tst');
+                return [
+                    'access' => [
+                        'class' => AccessControl::classname(),
+                        'rules' => [
+                            [
+                                'actions' => ['', '', '', ''],
+                                'allow' => true,
+                                'roles' => ['@'],
 
-            return [
-                'access' => [
-                    'class' => AccessControl::classname(),
-                    'rules' => [
-                        [
-                            'actions' => ['create', 'update', 'view', 'index'],
-                            'allow' => true,
-                            'roles' => ['@'],
-
+                            ],
                         ],
                     ],
-                ],
-            ];;
+                ];;
+            }
         }
 
         return [
@@ -48,7 +51,7 @@ class FolhapagamentousuarioController extends Controller
                 'class' => AccessControl::classname(),
                 'rules' => [
                     [
-                        'actions' => ['create', 'update', 'view', 'index','downloadu'],
+                        'actions' => ['create', 'update', 'view', 'index', 'downloadu'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -56,7 +59,7 @@ class FolhapagamentousuarioController extends Controller
             ],
         ];
     }
-    
+
 
     public function actionIndex()
     {
@@ -74,7 +77,7 @@ class FolhapagamentousuarioController extends Controller
 
     public function actionView($fopa_codi, $fopa_usua)
     {
-/*         if (Yii::$app->user->identity->usua_nivel != 98) { // se for diferente do admin é usuario
+        /*         if (Yii::$app->user->identity->usua_nivel != 98) { // se for diferente do admin é usuario
             // VarDumper::dump(Yii::$app->user->identity->usua_codi, 10, true);
             // die('oi');
             if (Yii::$app->user->identity->usua_codi != $fopa_usua) { // ID do usuário é diferente da sessão
@@ -130,9 +133,9 @@ class FolhapagamentousuarioController extends Controller
 
     public function actionDownloadu($id)
     {
-       
+
         //$url = $_POST;
-       $model = FolhaPagamentousuario::find()->where(['fopa_codi' => $id])->one();
+        $model = FolhaPagamentousuario::find()->where(['fopa_codi' => $id])->one();
         $url = trim(Yii::$app->request->post('url'));
         $path = Yii::getAlias('@web') . $model['fopa_arquivo']; // . $url;
 
@@ -177,7 +180,7 @@ class FolhapagamentousuarioController extends Controller
 
             //$now = new DateTime();
             //$fuso = new DateTimeZone('America/New_York');
-           // $data = new DateTime('22-01-1990');
+            // $data = new DateTime('22-01-1990');
             //$data->setTimezone($fuso);
             $model->fopa_stat = 0;
             //$model->fopa_dins = Date();

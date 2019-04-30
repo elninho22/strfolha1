@@ -67,11 +67,11 @@ $this->title = 'Usuários';
                         ]);
                     },
                     'delete' => function ($url, $model) {
-                        return Html::a('Deletar', ['delete', 'id' => $model->usua_codi], [
+                        return Html::a('Inativar', ['delete', 'id' => $model->usua_codi], [
                             'class' => 'btn btn-danger',
-                            "title " => 'Excluir usuário',
+                            "title " => 'Inativar usuário',
                             'data' => [
-                                'confirm' => "Deseja excluir usuário: {$model->usua_nome} ?",
+                                'confirm' => "Deseja bloquear usuário: {$model->usua_nome} ?",
                                 'method' => 'post',
                             ],
                         ]);

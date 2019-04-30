@@ -58,8 +58,10 @@ $this->title = 'Folha de Ponto';
                 'contentOptions' => ['class' => 'text-center'],
                 'buttons' => [
                     'view' => function ($url, $model) {
-                        return Html::a('Download', ['downloadu', 'id' => $model->fopa_codi],
-                   
+                        return Html::a(
+                            'Download',
+                            ['downloadu', 'id' => $model->fopa_codi],
+
                             [
                                 'class' => 'btn btn-default',
                                 // 'url' => $url
@@ -122,7 +124,9 @@ $this->title = 'Folha de Ponto';
             ],
 
         ],
-    ]); ?>
+    ]);
+
+    ?>
 
 
 </div>
