@@ -38,7 +38,7 @@ $this->registerJsFile("@web/js/index.js", [
             ' . Yii::$app->session->getFlash('folhaSucesso') . '
           </div>';
         } elseif (Yii::$app->session->hasFlash('folhaErro')) {
-            echo '<div class="alert alert-danger" role="alert">' . Yii::$app->session->getFlash('folhaErro') . '
+            echo '<div class="alert alert-danger" role="alert">            ' . Yii::$app->session->getFlash('folhaErro') . '
           </div>';
         }
         ?>
@@ -93,22 +93,12 @@ $this->registerJsFile("@web/js/index.js", [
                         'view' => function ($url, $model) {
                             return Html::a(
                                 'Download',
-                                ['download', 'id' => $model->fopa_codi],
+                                ['download', 'id' => $model['fopa_codi']],
                                 [
                                     'class' => 'btn btn-default',
-                                    // 'url' => $url
+                                    //'url' => $url
                                 ]
                             );
-
-                            //DOWNLOAD SEM UTILIZAR METODO 
-                            /* Html::a('Download', ['download', 'id' => $model->fopa_codi], [
-                            'class' => 'btn btn-default',
-                            "title" => 'Aprovar Folha']);
-                        /*      'data' => [
-                                'confirm' => " Confirma aprovar a folh a ?", // {Usuario::$usua_nome}",
-                                'method' => '"<a href=' " . Yii::getAlias('@web') . $model['fopa_arquivo'] . " '></a>";',
-                            ], */
-                            //]);
                         },
                     ],
                 ],
@@ -127,41 +117,44 @@ $this->registerJsFile("@web/js/index.js", [
                                     'aprovar', 'id' => $model->fopa_codi, 'email' => FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_mail, FolhaPagamento::linkArq($model['fopa_arquivo'])->fopa_arquivo,
                                     $model->fopa_data,
                                     FolhaPagamento::nomeGestorf($model['fopa_guest'])->usua_nome,
-                                    'emailgestor' => FolhaPagamento::emailGestor($model['fopa_guest'])->usua_mail,
 
+                                ],
+                                [
+                                    'class' => 'btn btn-success',
+                                    'title' => 'Aprovar Folha',
+                                    'data' => [
+                                        'confirm' => "Aprovar folha do colaborador: " .  FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . " ? ",
+                                        'method' => 'post',
+                                    ],
 
+                                ]
+                            );
+                        },
+                        //'update' => [], 
+                        //aqui teria q clicar e abrir a MODAL - com campo texto e o botao reprovar ! em seguida o disparo de amil kkkkk ok
+                        'update' => function ($url, $model) {
+                            return '<button type="button" id="' . FolhaPagamento::idFolhaPagamento($model['fopa_codi'])->fopa_codi . '" data-usuario="' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_mail . '" class="btn btn-danger reprovar-user"  title="Reprovar Folha">Reprovar</button>';
+                            //"title" => 'Visualizar Folha',
+                            // return Html::a('Reprovar', ['reprovar', 'id' => $model->fopa_codi], [
+                            // 'class' => 'btn btn-danger',
+                            // "title" => 'Reprovar Folha',
+                            // 'data' => [
+                            // 'confirm' => 'Confirma reprovar a folha de ?',
+                            // 'method' => 'post',
+                            // ],
+                            // ]);
+                        },
+                        'delete' => function ($url, $model) {
+                            return Html::a('Visualizar', ['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], [
+                                'class' => 'btn btn-primary',
+                                "title" => 'Visualizar Folha',
+                            ]);
+                        },
                     ],
-                    [
-                        'class' => 'btn btn-success',
-                        'title' => 'Aprovar Folha',
-                        'data' => [
-                            'confirm' => "Aprovar folha do colaborador: " .  FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . " ? ",
-                            'method' => 'post',
-                        ],
-
-                    ]
-    );
-    },
-    //'update' => [], 
-    //aqui teria q clicar e abrir a MODAL - com campo texto e o botao reprovar ! em seguida o disparo de amil kkkkk ok
-    'update' => function ($url, $model) {
-        return '<button type="button" id="' . FolhaPagamento::idFolhaPagamento($model['fopa_codi'])->fopa_codi . '" data-usuario="' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_mail . '" class="btn btn-danger reprovar-user"  title="Reprovar Folha">Reprovar</button>';
-        //"title" => 'Visualizar Folha',
-        // return Html::a('Reprovar', ['reprovar', 'id' => $model->fopa_codi], [
-        // 'class' => 'btn btn-danger',
-        // "title" => 'Reprovar Folha',
-        // 'data' => [
-        // 'confirm' => 'Confirma reprovar a folha de ?',
-        // 'method' => 'post',
-        // ],
-        // ]);
-    },
-    'delete' => function ($url, $model) {
-        return Html::a('Visualizar', ['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], [
-            'class' => 'btn btn-primary',
-            "title" => 'Visualizar Folha',
-        ]);
-    },],],],]); ?>
+                ],
+            ],
+        ]
+    ); ?>
 </div>
 
 <?= $this->render('_modals') ?>

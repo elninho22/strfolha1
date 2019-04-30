@@ -2,14 +2,14 @@ $(document).ready(function () {
     $(".caduser").on('click', function () {
         //alert('ok');
         //log.console($('caduser'));
-        var nome = $(this).attr('usua_nome');
+       //var mail = $(this).attr('data-usuario');
         var usua_codi = $(this).attr('id');
 
         $('#modalCad').modal("show");
         
 
-       $('input[name="usua_nome"]').val(nome);
-       //$('input[name="id"]').val(usua_codi);
+        //$('input[name="usua_mail"]').val(mail);
+       $('input[name="id"]').val(usua_codi);
 
     });
 

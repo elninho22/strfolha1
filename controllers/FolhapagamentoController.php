@@ -20,8 +20,8 @@ class FolhapagamentoController extends Controller
 {
     public function behaviors()
     {
-        if(Yii::$app->user->identity){
-            if (Usuario::find()->where(['usua_codi' => Yii::$app->user->identity->usua_codi, 'usua_nivel' => '98'])->exists()) {
+        //if(Yii::$app->user->identity){
+       /*     if (Usuario::find()->where(['usua_codi' => Yii::$app->user->identity->usua_codi, 'usua_nivel' => '98'])->exists()) {
                 return [
                 'access' => [
                     'class' => AccessControl::classname(),
@@ -34,16 +34,16 @@ class FolhapagamentoController extends Controller
                     ],
                 ],
             ];
-        }
-    }
+        //}
+    }*/
         return [
             'access' => [
                 'class' => AccessControl::classname(),
-                'only' => ['create', 'delete', 'update', 'view', 'index'],
+                'only' => ['create', 'delete', 'update', 'view', 'index', 'download'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => [''],
+                        'roles' => ['@'],
                     ],
                 ],
             ],
@@ -73,9 +73,15 @@ class FolhapagamentoController extends Controller
 
     public function actionAprovar()
     {
-
+        /*         $model = FolhaPagamento::find()->where(['fopa_codi'=>$id])->one();
+        if ($model) {   
+            $model->fopa_stat = 1;
+            $model->save();
+            Yii::$app->getSession()->setFlash('folhaSucesso', "Folha do Colaborador: <b>" . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . "</b> | Mês de Referencia: <b> $model->fopa_data </b><p> Aprovada com sucesso!");
+            return $this->redirect('index');
+        } */
         $id = trim(Yii::$app->request->get('id'));
-/*      var_dump(Yii::$app->request->get());
+/*         var_dump(Yii::$app->request->get());
         die('teset'); */
         $model = FolhaPagamento::find()->where(['fopa_codi' => $id])->one();
         if ($model) {
@@ -85,16 +91,15 @@ class FolhapagamentoController extends Controller
         }
         //se for vazio nao dispara email, assim evbita erro
         $email_destinatario = trim(Yii::$app->request->get('email'));
-        $email_gestor = trim(Yii::$app->request->get('emailgestor'));
-       // var_dump(Yii::$app->request->get());
+        //var_dump(Yii::$app->request->get());
         //die('tst'); 
-        //if (empty($email_destinatario)) {
+        if (empty($email_destinatario)) {
             /*  return json_encode(['success' => false, 'mensagem' => "Error ao aprovar folha.  Entre em contato informadno  codigo 2404 "]); */
             echo "Error ao aprovar folha.  Entre em contato informadno  <b> codigo 2404 </b>";
-        
+        }
         $sendMail = new Email();
         $remetente = ['andrejulianom@gmail.com' => 'Informe - SigFolha']; //Só um índice
-        $destinatario = [$email_destinatario => null, $email_gestor]; // Um ou mais índices de e-mails. Entendeu? entendi
+        $destinatario = [$email_destinatario => null]; // Um ou mais índices de e-mails. Entendeu? entendi
         $assunto = 'Folha Aprovada - Studiorama';
         $nomeLayout = 'default'; //Nome do arquivo criado na raiz da pasta mail
         $usarTemplate = false; // ou false
@@ -103,7 +108,7 @@ class FolhapagamentoController extends Controller
         'Gestor Responsável: <b>' . FolhaPagamento::nomeGestorf($model['fopa_guest'])->usua_nome .
          '</b><br><br>' . 'Folha disponivel no link abaixo:' . '<style="color:Tomato;font-size:16px;font-family:verdana;">' . '<br>'        
         .
-            Html::a('Download', [Yii::getAlias('@webroot' . $model->fopa_arquivo)]) .
+            Html::a('Download', [Yii::getAlias('@web' . $model->fopa_arquivo)]) .
         '<p><br><hr>' . '<style="color:black;font-size:11px;font-family:verdana;">' . "Mensagem enviada automaticamente, por favor não responda a este e-mail. <br>" . " Se necessário entre em contato com seu Gestor. Para maiores informações, acesse:" . '<br>' . "www.sigfolha.com.br";
         $copiaOculta = false; // ou true
         $params = ['titulo' => 'SigFolha']; //Array de parametros para usar no template.
@@ -131,18 +136,22 @@ class FolhapagamentoController extends Controller
         }
     }
 
-    public function actionDownload($id)
+    /* public function actionDownload($id)
     {
         //$url = $_POST;
+
         $model = FolhaPagamento::find()->where(['fopa_codi' => $id])->one();
-        $url = trim(Yii::$app->request->post('url'));      
+
+        $url = trim(Yii::$app->request->post('url'));
+    
         $path = Yii::getAlias('@web') . $model['fopa_arquivo']; // . $url;
-       /* var_dump($path);
-        die('oi');*/
+        //var_dump($path);
+       // die('oi'); 
+
         $file = $path;
       
         if (!file_exists($file)) {
-            Yii::$app->response->xSendFile($path);
+            Yii::$app->response->xSendFile($file);
 
         }
     }
@@ -152,6 +161,19 @@ class FolhapagamentoController extends Controller
         if($model){
             return ("<a href='" . Yii::getAlias('@web') . $model['fopa_arquivo'] . "'></a>");
         } */
+
+    public function actionDownload($id)
+    {
+        $model = FolhaPagamento::find()->where(['fopa_codi' => $id])->one();
+        $path = Yii::getAlias('@webroot') . $model['fopa_arquivo'];;
+
+        $file = $path;// . '/1.pdf';
+
+        if (file_exists($file)) {
+
+            Yii::$app->response->sendFile($file);
+        }
+    }
 
     protected function findModel($fopa_codi, $fopa_usua)
     {

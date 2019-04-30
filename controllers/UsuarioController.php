@@ -19,22 +19,9 @@ class UsuarioController extends Controller
 
     public function behaviors()
     {
-        if (!Yii::$app->user->identity) {
-            return [
-                'access' => [
-                    'class' => AccessControl::classname(),
-                    'rules' => [
-                        [
-                            'actions' => ['cad-usuario', 'create'],
-                            'allow' => true,
-                            //'roles' => [''],
-                        ],
-                    ],
-                ],
-            ];
-        }
         //  VarDumper::dump(Yii::$app->user->identity->usua_nivel, 10, true);
         //  die('oi');
+        $x = 4;
         if (Yii::$app->user->identity) {
             if (Yii::$app->user->identity->usua_nivel != 98) {
                 return [
@@ -42,7 +29,7 @@ class UsuarioController extends Controller
                         'class' => AccessControl::classname(),
                         'rules' => [
                             [
-                                'actions' => ['view', 'index', 'update', 'create'],
+                                'actions' => ['view', 'index', 'update', 'cad-usuario'],
                                 'allow' => true,
                                 'roles' => ['@'],
                             ],
@@ -50,8 +37,8 @@ class UsuarioController extends Controller
                     ],
                 ];
             }
-        }
-        if (Yii::$app->user->identity->usua_nivel = 98) {
+        } 
+        //elseif (Yii::$app->user->identity->usua_nivel = 98) {
             return [
                 'access' => [
                     'class' => AccessControl::classname(),
@@ -64,7 +51,7 @@ class UsuarioController extends Controller
                     ],
                 ],
             ];
-        }
+       // }
     }
 
 
@@ -105,25 +92,24 @@ class UsuarioController extends Controller
 
     public function actionCreate()
     {
-        // criar coluna para gestor ou nao
+
         // $gest = isset(Yii::$app->request->post('uuu')) ? 1 : 0;
         $model = new Usuario();
         if ($model->load(Yii::$app->request->post())) {
-            $model->usua_nivel = 99;
-            $model->usua_logi = '20';
-            // $model->usua_logi = 20; 
             $model->usua_pass = hash('sha256', $model->usua_pass);
-            //var_dump($model);
-            //die('as');
+            $model->usua_nivel = 99;
+            $model->usua_logi = 20;
             if ($model->save()) {
                 $usua_codi = $model->usua_codi;
                 $gestor = new GestorUsuario();
                 $gestor->geus_usua = $model->usua_codi; //pegando id do gestor tabela geus_
                 $gestor->geus_gest = $model->usua_guest; //salvando id do gestor tabela geus_
+
                 $gestor->save();
                 return $this->redirect(['view', 'id' => $model->usua_codi]);
             }
         }
+
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -166,6 +152,7 @@ class UsuarioController extends Controller
         return $this->redirect(['index']);
     }
 
+
     protected function findModel($id)
     {
         if (($model = Usuario::findOne($id)) !== null) {
@@ -177,24 +164,26 @@ class UsuarioController extends Controller
 
     public function actionCadUsuario()
     {
-        //Yii::$app->request->post();
+        Yii::$app->request->post();
         // var_dump( Yii::$app->request->post());
         // die('fim');
         $model = new Usuario();
-        if (Yii::$app->request->isAjax) {
-            $model->usua_pass = hash('sha256', Yii::$app->request->post('usua_pass'));
+        if ($model->load(Yii::$app->request->post())) {
+            $model->usua_pass = hash('sha256', $model->usua_pass);
             $model->usua_nivel = 99;
             $model->usua_logi = 20;
-            //$model->usua->nome;
-            $model->usua_nome = Yii::$app->request->post('usua_nome');
-            $model->usua_mail = Yii::$app->request->post('usua_mail');
-            //$model->usua_pass = Yii::$app->request->post('usua_pass');
-            $model->usua_guest = Yii::$app->request->post('usua_guest');
-            $model->usua_insc = Yii::$app->request->post('usua_insc');
-
-            if ($model->save()) {
-                return $this->redirect('site/login');
-            }
+            $usua_nome = Yii::$app->request->post('nome');
+            $usua_mail = Yii::$app->request->post('email');
+            $usua_pass = Yii::$app->request->post('pass');
+            $usua_guest = Yii::$app->request->post('gestor');
+            $usua_insc = Yii::$app->request->post('matricula');
         }
+        if ($model->save()) {
+            return $this->redirect('index');
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 }

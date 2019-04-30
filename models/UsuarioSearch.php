@@ -46,7 +46,7 @@ class UsuarioSearch extends Usuario
 
         }else{
             $query = Usuario::find();
-        $query = Usuario::find()->where([ 'usua_codi' => Yii::$app->user->identity->usua_codi]);
+        //$query = Usuario::find()->where([ 'usua_codi' => Yii::$app->user->identity->usua_codi]);
     }
         
         
@@ -75,9 +75,9 @@ class UsuarioSearch extends Usuario
         ]);
 
         $query->andFilterWhere(['like', 'usua_nome', $this->usua_nome])
-            ->andFilterWhere(['like', 'usua_pass', $this->usua_pass]);
+            ->andFilterWhere(['like', 'usua_pass', $this->usua_pass])
             //->andFilterWhere(['like', 'usua_mail', $this->usua_mail])          
-          //  ->andFilterWhere(['like', 'usua_logi', $this->usua_logi]);
+            ->andFilterWhere(['like', 'usua_logi', $this->usua_logi]);
 
         return $dataProvider;
     }
