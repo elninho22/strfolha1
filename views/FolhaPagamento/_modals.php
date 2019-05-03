@@ -28,6 +28,7 @@ $this->registerJsFile("@web/js/index.js", [
                     </div>
                     <input name="usua_mail" val="" id="usua_mail" type="hidden" />
                     <input name="id" val="" id="fopa_codi" type="hidden" />
+                    
 
                 </form>
             </div>

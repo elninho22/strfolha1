@@ -17,7 +17,7 @@ use yii\bootstrap\Modal;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'usua_nome')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'usua_insc')->textInput(['maxlength' => 15]) ?>
+    <?= $form->field($model, 'usua_insc')->textInput(['maxlength' => 9]) ?>
     <?= $form->field($model, 'usua_mail')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'usua_pass')->passwordInput()
         ->hint('Senha deve ter no mínimo 6 digitos')

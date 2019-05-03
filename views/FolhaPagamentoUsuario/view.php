@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     //'label' => 'fopa_arquivo',
                     'format' => 'raw',
                     'value'  => function ($model) {
-                        return "<a href='" . Yii::getAlias('@web') . $model['fopa_arquivo'] . "'>Download</a>";
+                        return "<a href='" . Yii::getAlias('@web') . $model['fopa_arquivo'] . "'>Visualizar</a>";
                     }
                 ],
                 //'fopa_arquivo',

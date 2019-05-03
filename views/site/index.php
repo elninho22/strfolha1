@@ -11,12 +11,18 @@ use yii\helpers\Url;
 use yii\bootstrap\Modal;
 use app\models\FolhaPagamento;
 
-
+phpinfo();
 
 $this->title = 'SigFolha - Studiorama';
 
 $this->registerJsFile("@web/js/cadindex.js", [
   'depends' => AppAsset::className(),
+
+
+
+  //$usua_codi = $model->usua_codi;
+
+
 ]);
 ?>
 

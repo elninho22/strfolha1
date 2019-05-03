@@ -18,6 +18,7 @@ use app\models\UsuarioSearch;
 use app\models\GestorUsuario;
 use app\components\Upload;
 use app\components\Uteis;
+use app\controllers\Exception;
 
 
 
@@ -35,7 +36,7 @@ class FolhapagamentousuarioController extends Controller
                         'class' => AccessControl::classname(),
                         'rules' => [
                             [
-                                'actions' => ['', '', '', ''],
+                                'actions' => ['', '', '', 'downloadu'],
                                 'allow' => true,
                                 'roles' => ['@'],
 
@@ -103,47 +104,35 @@ class FolhapagamentousuarioController extends Controller
             // Cria uma pasta dentro de WEB uploads e dentro folha
             $upload = new Upload(\Yii::getAlias('@webroot') . '/uploads/folha/');
 
-            // pegando extensao do arquivo$ex = $arquivo->extension; e verifica em qual metodo vai tratar
-            if ($arquivo->extension == 'pdf') {
-                $upload->File($arquivo);
-            } else {
-                $upload->Image($arquivo);
+            if (file_exists($arquivo)) {
+
+                // pegando extensao do arquivo$ex = $arquivo->extension; e verifica em qual metodo vai tratar
+                if ($arquivo->extension == 'pdf') {
+                    $upload->File($arquivo);
+                } else {
+                    $upload->Image($arquivo);
+                }
+
+                //Aqui o metodo verifica se o arquivo ou processo foi com sucesso
+                $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
+
+                // depuracao: \yii\helpers\VarDumper::dump( $model,10,true); die('o');
+
+                $model->fopa_usua = Yii::$app->user->identity->usua_codi;
+
+                // SALVA O ARQUIVO           
+                if ($model->save()) {
+                    return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
+                }
             }
-
-            //Aqui o metodo verifica se o arquivo ou processo foi com sucesso
-            $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
-
-            // depuracao: \yii\helpers\VarDumper::dump( $model,10,true); die('o');
-            // if (!$upload->getResult()) {
-            // caso de erro     throw new Exception("Erro ao salvar folha" . $upload->getError());
-            // }
-
-            $model->fopa_usua = Yii::$app->user->identity->usua_codi;
-
-            // SALVA O ARQUIVO           
-            if ($model->save()) {
-                return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
+            if (!$upload->getResult()) {
+                throw new NotFoundHttpException( "Formato de arquivo inválido, envie somente arquivos do tipo: .PDF, .JPG, .JPEG, .PNG" . $upload->getError());
             }
-            // depuracao \yii\helpers\VarDumper::dump( $model->errors,10,true); die('o');
-        }
+        } // depuracao \yii\helpers\VarDumper::dump( $model->errors,10,true); die('o');
+
         return $this->render('create', [
             'model' => $model,
         ]);
-    }
-
-    public function actionDownloadu($id)
-    {
-
-        //$url = $_POST;
-        $model = FolhaPagamentousuario::find()->where(['fopa_codi' => $id])->one();
-        $url = trim(Yii::$app->request->post('url'));
-        $path = Yii::getAlias('@web') . $model['fopa_arquivo']; // . $url;
-
-        $file = $path;
-
-        if (!file_exists($file)) {
-            Yii::$app->response->xSendFile($path);
-        }
     }
 
     public function actionUpdate($fopa_codi, $fopa_usua)
@@ -157,48 +146,48 @@ class FolhapagamentousuarioController extends Controller
             }
         }
         $model = $this->findModel($fopa_codi, $fopa_usua);
+
         if ($model->load(Yii::$app->request->post())) {
             //pega o arquivo
             $arquivo = UploadedFile::getInstance($model, 'arquivo');
             // Cria uma pasta dentro de WEB uploads e dentro folha
             $upload = new Upload(\Yii::getAlias('@webroot') . '/uploads/folha/');
-            // pegando extensao do arquivo$ex = $arquivo->extension; e verifica em qual metodo vai tratar
-            if ($arquivo->extension == 'pdf') {
-                $upload->File($arquivo);
-            } else {
-                $upload->Image($arquivo);
+
+            if(!file_exists($arquivo)) {
+              //  var_dump($arquivo);
+               // die('tst');
+                    // pegando extensao do arquivo$ex = $arquivo->extension; e verifica em qual metodo vai tratar
+                    if($arquivo->extension == 'pdf') {
+                        $upload->File($arquivo);
+                    } else {
+                        $upload->Image($arquivo);
+                    }
+                    //Aqui o metodo verifica se o arquivo ou processo foi com sucesso
+                    $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
+
+                    $model->fopa_usua = Yii::$app->user->identity->usua_codi;
+
+                    $model->fopa_stat = 0;
+                if ($model->save()) {
+                    return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
+                }
             }
-            //Aqui o metodo verifica se o arquivo ou processo foi com sucesso
-            $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
-
-            // depuracao: \yii\helpers\VarDumper::dump( $model,10,true); die('o');
-            // if (!$upload->getResult()) {
-            // caso de erro     throw new Exception("Erro ao salvar folha" . $upload->getError());
-            // }
-
-            $model->fopa_usua = Yii::$app->user->identity->usua_codi;
-
-            //$now = new DateTime();
-            //$fuso = new DateTimeZone('America/New_York');
-            // $data = new DateTime('22-01-1990');
-            //$data->setTimezone($fuso);
-            $model->fopa_stat = 0;
-            //$model->fopa_dins = Date();
-            if ($model->save()) {
-                return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
+            
+                if (!$upload->getResult()) {
+                    throw new NotFoundHttpException("Formato de arquivo inválido, envie somente arquivos do tipo: .PDF, .JPG, .JPEG, .PNG" . $upload->getError());
+                }
             }
-        }
-
+               
         return $this->render('update', [
             'model' => $model,
         ]);
     }
 
-    public function actionDelete($fopa_codi, $fopa_usua)
+/*     public function actionDelete($fopa_codi, $fopa_usua)
     {
         $this->findModel($fopa_codi, $fopa_usua)->delete();
         return $this->redirect(['index']);
-    }
+    } */
 
     protected function findModel($fopa_codi, $fopa_usua)
     {
@@ -206,5 +195,17 @@ class FolhapagamentousuarioController extends Controller
             return $model;
         }
         throw new NotFoundHttpException('Oppss... não encontramos o que procurava :(.');
+    }
+
+    public function actionDownloadu($id)
+    {
+        $model = FolhaPagamento::find()->where(['fopa_codi' => $id])->one();
+        $path = Yii::getAlias('@webroot')  . $model['fopa_arquivo'];
+        //var_dump($path);
+        //die('0');
+        $file = $path; //. //'/sample.pdf';
+        if (file_exists($file)) {
+            Yii::$app->response->sendFile($file);
+        }
     }
 }

@@ -40,11 +40,11 @@ class Usuario extends \yii\db\ActiveRecord
             [['usua_nome', 'usua_mail', 'usua_guest'], 'required'],
             [['usua_dins'], 'safe'],
             [['usua_pass'], 'string', 'min' => 6],
-            [['usua_insc'], 'string', 'max' => 15],
+            [['usua_insc'], 'string', 'max' => 9],
             [['gestor'], 'integer'],
-            [['usua_nivel'], 'integer'],
+            [['usua_nivel','usua_logi'], 'integer'],
             ['usua_mail', 'email'],
-            [['usua_nome', 'usua_pass', 'usua_mail', 'usua_hash', 'usua_logi','authKey'], 'string', 'max' => 100],
+            [['usua_nome', 'usua_pass', 'usua_mail', 'usua_hash','authKey'], 'string', 'max' => 100],
             [['usua_foto'], 'string', 'max' => 150],
         ];
     }
@@ -68,6 +68,7 @@ class Usuario extends \yii\db\ActiveRecord
             'usua_guest' => 'Gestor',
             'usua_insc' => 'Matrícula',
             'authKey' => 'authKey',
+            'usua_logi' => 'Log',
         ];
     }
 

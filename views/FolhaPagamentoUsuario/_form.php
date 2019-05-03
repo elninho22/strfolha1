@@ -14,21 +14,17 @@ use app\models\Usuario;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'arquivo')->fileInput() ?>
+            <?= $form->field($model, 'arquivo')->fileInput() ?><p style="color:red;font-size:11px;font-family:verdana;"><strong>arquivos válido (.pdf, .jpg, .jpeg, .png)</strong><p>
 
-    <?= $form->field($model, 'fopa_data')->dropDownlist(['Janeiro' => 'Janeiro', 'Fevereiro' => 'Fevereiro', 'Março' => 'Março', 'Abril' => 'Abril', 'Maio' => 'Maio', 'Junho' => 'Junho', 'Julho' => 'Julho', 'Agosto' => 'Agosto', 'Setembro' => 'Setembro', 'Outubro' => 'Outubro', 'Novembro' => 'Novembro', 'Dezembro' => 'Dezembro'], ['prompt' => 'Selecione Mês Referencia']) ?>
-    <?= $form->field($model, 'fopa_text')->textInput() ?>
+            <?= $form->field($model, 'fopa_data')->dropDownlist(['Janeiro' => 'Janeiro', 'Fevereiro' => 'Fevereiro', 'Março' => 'Março', 'Abril' => 'Abril', 'Maio' => 'Maio', 'Junho' => 'Junho', 'Julho' => 'Julho', 'Agosto' => 'Agosto', 'Setembro' => 'Setembro', 'Outubro' => 'Outubro', 'Novembro' => 'Novembro', 'Dezembro' => 'Dezembro'], ['prompt' => 'Selecione Mês Referencia']) ?>
+            <?= $form->field($model, 'fopa_guest')->dropDownlist(ArrayHelper::map(Usuario::find()->where(['usua_nivel' => '98'])->all(), 'usua_codi', 'usua_nome'), ['prompt' => 'Selecione seu Gestor'])
+                ->label('Gestor') ?>
+            <?= $form->field($model, 'fopa_text')->textInput() ?>
 
-    <?= $form->field($model, 'fopa_guest')->dropDownlist(ArrayHelper::map(Usuario::find()->where(['usua_nivel' => '98'])->all(), 'usua_codi', 'usua_nome'), ['prompt' => 'Selecione seu Gestor'])
-        ->label('Gestor') ?>
+            <div class="form-group">
+                <?= Html::submitButton('Enviar', ['class' => 'btn btn-success']) ?>
+            </div>
 
-
-
-
-    <div class="form-group">
-        <?= Html::submitButton('Enviar', ['class' => 'btn btn-success']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+            <?php ActiveForm::end(); ?>
 
 </div>

@@ -39,6 +39,6 @@ $this->title = 'SigFolha - Login';
     <?php ActiveForm::end(); ?>
 
     <div class="col-lg-offset-1" style="color:#999;">
-        Versão: 1.0.4.7
+        Versão: 1.5.1.3
     </div>
 </div>

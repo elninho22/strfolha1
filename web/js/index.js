@@ -2,11 +2,13 @@ $(document).ready(function () {
     $(".reprovar-user").on('click', function () {
         var mail = $(this).attr('data-usuario');
         var fopacodi = $(this).attr('id');
+        //var emailg = $(this).attr('email_gestor');
 
         $('#modalReprovar').modal("show");
 
         $('input[name="usua_mail"]').val(mail);
         $('input[name="id"]').val(fopacodi);
+        //$('input[name="email_gestor"]').val(emailg);
 
     });
 
@@ -33,19 +35,21 @@ $(document).ready(function () {
                 } else {
                     $('.msg_ajax').html('<div class="alert alert-warning">' + responseText.mensagem + '</div>').fadeIn('slow');
                 }
-
             },
             beforeSend: function () {
                 $('.msg_ajax').html(' ');
                 $('.msg_ajax').html('<div class="alert alert-info"><b>Aguarde</b>, processando sua solicitaçao...</div>').fadeIn('slow');
             },
-            complete: function () { },
+            complete: function () {            },
             error: function (e) { console.log(e); }
-        });
 
+        });
+        
         setTimeout(function () {
             window.location.reload(1);
-        }, 10000);
+        }, 1000);
+
+
         
         return false;
         

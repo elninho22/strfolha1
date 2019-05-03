@@ -26,7 +26,7 @@ $this->registerJsFile("@web/js/index.js", [
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php
-
+    phpinfo();
     //$usua_codi = $model->usua_codi;
 
     ?>
@@ -38,7 +38,7 @@ $this->registerJsFile("@web/js/index.js", [
             ' . Yii::$app->session->getFlash('folhaSucesso') . '
           </div>';
         } elseif (Yii::$app->session->hasFlash('folhaErro')) {
-            echo '<div class="alert alert-danger" role="alert">            ' . Yii::$app->session->getFlash('folhaErro') . '
+            echo '<div class="alert alert-danger" role="alert">' . Yii::$app->session->getFlash('folhaErro') . '
           </div>';
         }
         ?>
@@ -48,23 +48,27 @@ $this->registerJsFile("@web/js/index.js", [
         [
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
+            /*             'pager' => [
+                'options' => ['class' => 'pagination'],
+                'prevPageLabel' => Html::tag('i', "", ['class' => 'fa fa-angle-left']),
+                'nextPageLabel' => Html::tag('i', "", ['class' => 'fa fa-angle-right']),
+                'firstPageLabel' => Html::tag('i', "", ['class' => 'fa fa-angle-double-left']),
+                'lastPageLabel' =>  Html::tag('i', "", ['class' => 'fa fa-angle-double-right']),
+            ], */
             //'layout'=>"{sorter}\n{pager}\n{summary}\n{items}",
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
                 [
-
                     'attribute' => 'fopa_usua',
                     'value' => function ($model) {
                         return FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome;
                     }
-                    // 'filter' => ['Usuarios' => 'Usuarios'], //trazer usuarios do banco
                 ],
 
                 [
                     'attribute' => 'fopa_data',
                     'filter' => ['Janeiro' => 'Janeiro', 'Fevereiro' => 'Fevereiro', 'Março' => 'Março', 'Abril' => 'Abril', 'Maio' => 'Maio', 'Junho' => 'Junho', 'Julho' => 'Julho', 'Agosto' => 'Agosto', 'Setembro' => 'Setembro', 'Outubro' => 'Outubro', 'Novembro' => 'Novembro', 'Dezembro' => 'Dezembro'],
-
                 ],
 
                 [
@@ -93,12 +97,22 @@ $this->registerJsFile("@web/js/index.js", [
                         'view' => function ($url, $model) {
                             return Html::a(
                                 'Download',
-                                ['download', 'id' => $model['fopa_codi']],
+                                ['download', 'id' => $model->fopa_codi],
                                 [
                                     'class' => 'btn btn-default',
-                                    //'url' => $url
+                                    // 'url' => $url
                                 ]
                             );
+
+                            //DOWNLOAD SEM UTILIZAR METODO 
+                            /* Html::a('Download', ['download', 'id' => $model->fopa_codi], [
+                            'class' => 'btn btn-default',
+                            "title" => 'Aprovar Folha']);
+                        /*      'data' => [
+                                'confirm' => " Confirma aprovar a folh a ?", // {Usuario::$usua_nome}",
+                                'method' => '"<a href=' " . Yii::getAlias('@web') . $model['fopa_arquivo'] . " '></a>";',
+                            ], */
+                            //]);
                         },
                     ],
                 ],
@@ -117,6 +131,7 @@ $this->registerJsFile("@web/js/index.js", [
                                     'aprovar', 'id' => $model->fopa_codi, 'email' => FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_mail, FolhaPagamento::linkArq($model['fopa_arquivo'])->fopa_arquivo,
                                     $model->fopa_data,
                                     FolhaPagamento::nomeGestorf($model['fopa_guest'])->usua_nome,
+                                    'emailgestor' => FolhaPagamento::emailGestor($model['fopa_guest'])->usua_mail,
 
                                 ],
                                 [

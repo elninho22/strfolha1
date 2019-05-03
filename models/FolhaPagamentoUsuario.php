@@ -38,7 +38,7 @@ class FolhapagamentoUsuario extends \yii\db\ActiveRecord
     {
         return [
             [['fopa_data'], 'safe'],
-            [['fopa_usua','fopa_guest','fopa_data'], 'required'],
+            [['fopa_usua','fopa_guest','fopa_data','fopa_arquivo'], 'required'],
             [['fopa_usua','fopa_guest','fopa_stat'], 'integer'],
             //[['fopa_arquivo'], 'string', 'max' => 145],
             [[ 'arquivo'], 'file', /*'skipOnEmpty' => false, 'maxSize' => (1 * (1024*1024)),*/ "extensions" => "pdf, png, jpg, jpeg, zip"],

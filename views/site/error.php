@@ -16,13 +16,13 @@ $this->title = 'Ops...';
     <h1>:'(</h1>
 
     <div class="alert alert-danger">
-       <b> <?= nl2br(Html::encode($message)) ?>
+        <b> <?= nl2br(Html::encode($message)) ?>
     </div>
 
 
     <p>
         <div style="color:#999;">
-            Version: 1.0.4.7
+            Versão: 1.5.1.3
         </div>
     </p>
 

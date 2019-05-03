@@ -7,7 +7,7 @@ $config = [
     'id' => 'basic',
     'name'=>'SigFolha - Studiorama',
     'sourceLanguage' => 'pt-br',
-    'version' => '1.0.4.7',
+    'version' => '1.5.1.3',
     'language' => 'pt-br',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -54,14 +54,19 @@ $config = [
             ],
         ],
         'db' => $db,
-        
+
+        /*         'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+            ], */
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'login' => '/site/login'
             ],
         ],
-        
     ],
     'params' => $params,
 ];

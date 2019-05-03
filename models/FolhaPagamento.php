@@ -101,12 +101,16 @@ class FolhaPagamento extends \yii\db\ActiveRecord
         return $id ? FolhaPagamento::find()->where(['fopa_codi' => $id])->one() : '';
        
     }
-    public static function linkArq( $fopa_arquivo)
+    public static function linkArq($fopa_arquivo)
     {
         return $fopa_arquivo ? FolhaPagamento::find()->where(['fopa_arquivo' => $fopa_arquivo])->one() : '';
        
     }
     public static function nomeGestorf($id)
+    {
+        return $id ? Usuario::find()->where(['usua_codi' => $id])->one() : '';
+    }
+    public static function emailGestor($id)
     {
         return $id ? Usuario::find()->where(['usua_codi' => $id])->one() : '';
     }
