@@ -12,9 +12,7 @@ use app\models\ContactForm;
 
 class SiteController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function behaviors()
     {
         return [
@@ -38,9 +36,6 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function actions()
     {
         return [
@@ -53,14 +48,6 @@ class SiteController extends Controller
             ],
         ];
     }
-
-    /**
-     * Displays homepage.
-     *
-     * @return string
-
-
-     */
 
     public function actionCreate()
     {
@@ -77,22 +64,25 @@ class SiteController extends Controller
     }
     public function actionIndex()
     {
-        return $this->render('index');
+        if (isset(Yii::$app->user->identity->usua_codi) ? Yii::$app->user->identity->usua_nivel == 98 : null) {
+
+            return $this->redirect([@Yii::getAlias('/folhapagamento/') . '']);
+        }
+        if (isset(Yii::$app->user->identity->usua_codi) ? Yii::$app->user->identity->usua_nivel == 99 : null) {
+            return $this->redirect([@Yii::getAlias('/folhapagamentousuario/') . '']);
+        } else {
+            //return $this->render(['index']);
+            $this->layout = 'SLayout';
+            
+            return $this->render('index');
+        }        //return $this->render('folhapagamento/folhapagamento');
     }
 
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
     public function actionLogin()
     {
-        //var_dump(Yii::$app->request->post());
-        //die('as');
-
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post())) {
-          //  var_dump( Yii::$app->user->identity);
+            //  var_dump( Yii::$app->user->identity);
             // die('ads');
             if ($model->login()) {
                 if (Yii::$app->user->identity->usua_nivel == 98 && Yii::$app->user->identity->usua_logi == 20) {
@@ -111,11 +101,6 @@ class SiteController extends Controller
         ]);
     }
 
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
     public function actionLogout()
     {
         $session = Yii::$app->session;
@@ -125,35 +110,21 @@ class SiteController extends Controller
         // destrói todos os dados registrados em uma sessão.
         $session->destroy();
 
-
-        return $this->goHome();
+        return $this->redirect(['site/login']);
+        //return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
+    //pagina sera criada para mostrar qnt de aprovacoes por usuarios e etc
     public function actionrRelatorios()
     {
-        $model = new ContactForm();
+        /* $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
 
-            return $this->refresh();
-        }
-        return $this->render('contact', [
+            return $this->refresh(); 
+        }*/
+        return $this->render('relatorios'); /* , [
             'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
+        ]); */
     }
 }

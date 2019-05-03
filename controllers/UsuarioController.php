@@ -33,8 +33,7 @@ class UsuarioController extends Controller
                 ],
             ];
         }
-        //  VarDumper::dump(Yii::$app->user->identity->usua_nivel, 10, true);
-        //  die('oi');
+    
         if (Yii::$app->user->identity) {
             if (Yii::$app->user->identity->usua_nivel != 98) {
                 return [
@@ -51,7 +50,7 @@ class UsuarioController extends Controller
                 ];
             }
         }
-        if (Yii::$app->user->identity->usua_nivel = 98) {
+        if (Yii::$app->user->identity->usua_nivel == 98) {
             return [
                 'access' => [
                     'class' => AccessControl::classname(),
@@ -67,21 +66,14 @@ class UsuarioController extends Controller
         }
     }
 
-
     public function actionIndex()
     {
         if (Yii::$app->user->identity->usua_nivel != 98) { // se for diferente do admin é usuario
             throw new NotFoundHttpException("Ops ... não encontramos o que procurava :( " . "Entre em contato com suporte informando código: 0937");
-            // VarDumper::dump(Yii::$app->user->identity->usua_nivel, 10, true);
-            //die('oi');
-            //if (Yii::$app->user->identity->usua_codi != $id) { // ID do usuário é diferente da sessão
-              //  throw new NotFoundHttpException("Ops ... não encontramos o que procurava :( " . "Entre em contato com suporte informando código: 0938");
-            //}
         }
 
         $searchModel = new UsuarioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -144,12 +136,16 @@ class UsuarioController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->usua_pass = hash('sha256', $model->usua_pass);
+           // var_dump($model);
+            //die('tased');
             if ($model->save()) {
+
                 $usua_codi = $model->usua_codi;
                 $gestor = new GestorUsuario();
                 $gestor->geus_usua = $model->usua_codi; //pegando id do gestor tabela geus_
                 $gestor->geus_gest = $model->usua_guest; //salvando id do gestor tabela geus_
                 $gestor->save();
+                
                 return $this->redirect(['view', 'id' => $model->usua_codi]);
             }
         }
@@ -187,28 +183,22 @@ class UsuarioController extends Controller
 
     public function actionCadUsuario()
     {
-        //Yii::$app->request->post();
-        // var_dump( Yii::$app->request->post());
-        // die('fim');
         $model = new Usuario();
         if (Yii::$app->request->isAjax) {
             $model->usua_pass = hash('sha256', Yii::$app->request->post('usua_pass'));
             $model->usua_nivel = 99;
             $model->usua_logi = 20;
-            //$model->usua->nome;
             $model->usua_nome = Yii::$app->request->post('usua_nome');
             $model->usua_mail = Yii::$app->request->post('usua_mail');
-            //$model->usua_pass = Yii::$app->request->post('usua_pass');
             $model->usua_guest = Yii::$app->request->post('usua_guest');
             $model->usua_insc = Yii::$app->request->post('usua_insc');
 
             if ($model->save()) {
                 $model = ['success' => true, 'mensagem' => $model->getError()];
                 return $this->redirect('site/login');
-                } else {
-                    $model = ['success' => false, 'mensagem' => $model->getError()];
-                }
-            } 
+            } else {
+                $model = ['success' => false, 'mensagem' => $model->getError()];
+            }
         }
-    
+    }
 }

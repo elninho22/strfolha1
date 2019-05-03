@@ -8,14 +8,10 @@ use app\models\FolhapagamentoUsuario;
 
 use Yii;
 
-/**
- * FolhapagamentoUsuarioSearch represents the model behind the search form of `app\models\FolhaPagamento`.
- */
+
 class FolhapagamentoUsuarioSearch extends FolhapagamentoUsuario
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function rules()
     {
         return [
@@ -24,22 +20,13 @@ class FolhapagamentoUsuarioSearch extends FolhapagamentoUsuario
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
+  
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
+    
         return Model::scenarios();
     }
 
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
     public function search($params)
     {
         
@@ -51,7 +38,6 @@ class FolhapagamentoUsuarioSearch extends FolhapagamentoUsuario
     
 
         // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -69,7 +55,6 @@ class FolhapagamentoUsuarioSearch extends FolhapagamentoUsuario
             'fopa_data' => $this->fopa_data,
             'fopa_stat' => $this->fopa_stat,
         ]);
-
 
         return $dataProvider;
     }

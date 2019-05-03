@@ -58,9 +58,6 @@ class FolhaPagamento extends \yii\db\ActiveRecord
         return $this->render('upload', ['model' => $model]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

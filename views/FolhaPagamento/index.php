@@ -2,36 +2,20 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\grid\DataColumn;
-use app\models\PagamentoUtil;
-use app\models\Usuario;
-use yii\helpers\Url;
-use yii\bootstrap\Modal;
 use app\assets\AppAsset;
 use app\models\FolhaPagamento;
-
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\FolhaPagamentoSearch */
-
 
 $this->title = 'Gerencial - Folha de Ponto';
 
 $this->registerJsFile("@web/js/index.js", [
     'depends' => AppAsset::className(),
 ]);
-
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="folha-pagamento-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php
-    phpinfo();
-    //$usua_codi = $model->usua_codi;
-
-    ?>
-
-    <p>
+      <p>
         <?php
         if (Yii::$app->session->hasFlash('folhaSucesso')) {
             echo '<div class="alert alert-success" role="alert">
@@ -48,14 +32,6 @@ $this->registerJsFile("@web/js/index.js", [
         [
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
-            /*             'pager' => [
-                'options' => ['class' => 'pagination'],
-                'prevPageLabel' => Html::tag('i', "", ['class' => 'fa fa-angle-left']),
-                'nextPageLabel' => Html::tag('i', "", ['class' => 'fa fa-angle-right']),
-                'firstPageLabel' => Html::tag('i', "", ['class' => 'fa fa-angle-double-left']),
-                'lastPageLabel' =>  Html::tag('i', "", ['class' => 'fa fa-angle-double-right']),
-            ], */
-            //'layout'=>"{sorter}\n{pager}\n{summary}\n{items}",
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
@@ -89,8 +65,6 @@ $this->registerJsFile("@web/js/index.js", [
                     'header' => 'Folha',
                     'class' => 'yii\grid\ActionColumn',
                     'headerOptions' => ['class' => 'text-center'],
-                    //'format' => 'raw',
-                    //'showFooter'=>true,
                     'template' => "{view}",
                     'contentOptions' => ['class' => 'text-center'],
                     'buttons' => [
@@ -103,20 +77,9 @@ $this->registerJsFile("@web/js/index.js", [
                                     // 'url' => $url
                                 ]
                             );
-
-                            //DOWNLOAD SEM UTILIZAR METODO 
-                            /* Html::a('Download', ['download', 'id' => $model->fopa_codi], [
-                            'class' => 'btn btn-default',
-                            "title" => 'Aprovar Folha']);
-                        /*      'data' => [
-                                'confirm' => " Confirma aprovar a folh a ?", // {Usuario::$usua_nome}",
-                                'method' => '"<a href=' " . Yii::getAlias('@web') . $model['fopa_arquivo'] . " '></a>";',
-                            ], */
-                            //]);
                         },
                     ],
                 ],
-
                 [
                     'header' => 'Opções',
                     'class' => 'yii\grid\ActionColumn',
@@ -132,7 +95,6 @@ $this->registerJsFile("@web/js/index.js", [
                                     $model->fopa_data,
                                     FolhaPagamento::nomeGestorf($model['fopa_guest'])->usua_nome,
                                     'emailgestor' => FolhaPagamento::emailGestor($model['fopa_guest'])->usua_mail,
-
                                 ],
                                 [
                                     'class' => 'btn btn-success',
@@ -141,23 +103,12 @@ $this->registerJsFile("@web/js/index.js", [
                                         'confirm' => "Aprovar folha do colaborador: " .  FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . " ? ",
                                         'method' => 'post',
                                     ],
-
                                 ]
                             );
                         },
-                        //'update' => [], 
-                        //aqui teria q clicar e abrir a MODAL - com campo texto e o botao reprovar ! em seguida o disparo de amil kkkkk ok
                         'update' => function ($url, $model) {
                             return '<button type="button" id="' . FolhaPagamento::idFolhaPagamento($model['fopa_codi'])->fopa_codi . '" data-usuario="' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_mail . '" class="btn btn-danger reprovar-user"  title="Reprovar Folha">Reprovar</button>';
-                            //"title" => 'Visualizar Folha',
-                            // return Html::a('Reprovar', ['reprovar', 'id' => $model->fopa_codi], [
-                            // 'class' => 'btn btn-danger',
-                            // "title" => 'Reprovar Folha',
-                            // 'data' => [
-                            // 'confirm' => 'Confirma reprovar a folha de ?',
-                            // 'method' => 'post',
-                            // ],
-                            // ]);
+
                         },
                         'delete' => function ($url, $model) {
                             return Html::a('Visualizar', ['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], [

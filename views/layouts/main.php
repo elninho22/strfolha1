@@ -41,15 +41,16 @@ AppAsset::register($this);
         <?php
         // $model = null;
         // $model = new Usuario($model->usua_codi);
+        
         NavBar::begin([
+
             'brandLabel' => Yii::$app->name,
-            //'brandUrl' => Yii::$app->homeUrl,
-            'options' => [
-                'class' => 'navbar-inverse navbar-fixed-top',
-            ],
-        ]);
+          //  'brandUrl' => Yii::$app->homeUrl('index'),
+        'options' => [
+            'class' => 'navbar-inverse navbar-fixed-top',
+        ],]);
         $guest = [
-            ['label' => /*Icon::show('home') .*/ 'Login', 'url' => ['site/login/']],
+            //['label' => /*Icon::show('home') .*/ 'Login', 'url' => ['site/login/']],
             Yii::$app->user->isGuest ? (['label' => '', 'url' => ['/site']]) : ('<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(

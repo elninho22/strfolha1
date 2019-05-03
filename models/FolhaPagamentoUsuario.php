@@ -23,17 +23,13 @@ use Yii;
 class FolhapagamentoUsuario extends \yii\db\ActiveRecord
 {
     public $arquivo;
-    /**
-     * {@inheritdoc}
-     */
+
     public static function tableName()
     {
         return 'folha_pagamento';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function rules()
     {
         return [
@@ -41,7 +37,7 @@ class FolhapagamentoUsuario extends \yii\db\ActiveRecord
             [['fopa_usua','fopa_guest','fopa_data','fopa_arquivo'], 'required'],
             [['fopa_usua','fopa_guest','fopa_stat'], 'integer'],
             //[['fopa_arquivo'], 'string', 'max' => 145],
-            [[ 'arquivo'], 'file', /*'skipOnEmpty' => false, 'maxSize' => (1 * (1024*1024)),*/ "extensions" => "pdf, png, jpg, jpeg, zip"],
+            [[ 'arquivo'], 'file', /*'skipOnEmpty' => false, 'maxSize' => (1 * (4024*4024)),*/ "extensions" => "pdf, png, jpg, jpeg"],
             [['fopa_text'], 'string', 'max' => 100],
             [['fopa_usua'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['fopa_usua' => 'usua_codi']],
         ];

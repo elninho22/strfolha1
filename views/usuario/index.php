@@ -3,6 +3,10 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\Usuario;
+use app\models\UsuarioSearch;
+use app\models\GestorUsuario;
+use yii\widgets\DetailView;;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UsuarioSearch */
@@ -27,17 +31,19 @@ $this->title = 'Usuários';
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-
             'usua_nome',
             'usua_mail',
             [
-                //'usua_guest',
                 'attribute' => 'usua_guest',
                 'contentOptions' => ['class' => 'text-center'],
                 'value' => function ($model) {
                     return Usuario::nomeGestor($model['usua_guest'])->usua_nome;
+                    var_dump($model);
+                    die('sf');
                 }
+                /* 'value' => function ($model) {
+                    return Usuario::nomeGestor($model['usua_guest'])->usua_nome;
+                }*/
             ],
             [
 

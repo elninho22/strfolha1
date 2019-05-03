@@ -22,9 +22,6 @@ class User extends Object implements IdentityInterface {
    public $usua_guest;
    public $authKey;
 
-    /**
-     * @inheritdoc
-     */
     public static function findIdentity($usua_codi) {
         $model = Usuario::find()->where(['usua_codi'=>$usua_codi])->one();
         if ($model) {
@@ -34,19 +31,10 @@ class User extends Object implements IdentityInterface {
         return null;
     }
 
-    /**
-     * @inheritdoc
-     */
     public static function findIdentityByAccessToken($token, $type = null) {
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
     public static function findByUsername($usua_mail, $usua_codi) {
         $model = Usuario::find()->where(['usua_mail' => trim( $usua_mail), 'usua_logi' => 20])->one();
         if ($model) {
@@ -75,32 +63,18 @@ class User extends Object implements IdentityInterface {
         return $userAttributes;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getId() {
         return $this->usua_codi;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getAuthKey() {
         return $this->authKey;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function validateAuthKey($authKey) {
         return $this->authKey === $authKey;
     }
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
+
     public function validatePassword($usua_pass) {
         return $this->usua_pass === hash("sha256", $usua_pass);
     }

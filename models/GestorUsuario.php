@@ -4,25 +4,20 @@ namespace app\models;
 
 use Yii;
 
-/**
- * This is the model class for table "gestor_usuario".
- *
+/***
+ * vincular ID do usuario com ID do gestor
  * @property int $geus_gest
  * @property int $geus_usua
  */
 class GestorUsuario extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public static function tableName()
     {
         return 'gestor_usuario';
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function rules()
     {
         return [
@@ -31,9 +26,6 @@ class GestorUsuario extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [

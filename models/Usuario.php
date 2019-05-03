@@ -17,12 +17,13 @@ use Yii;
  * @property string $usua_foto
  * @property string $usua_logi Login para para acessar a ferramenta
  * @property string $usua_insc Código de cadastro do RH
+ * @property string $usua_ngest Código do gestor do usuário
  *
  * @property FolhaPagamento[] $folhaPagamentos
  */
 class Usuario extends \yii\db\ActiveRecord
 {
-   public $gestor;
+    public $gestor;
     /**
      * {@inheritdoc}
      */
@@ -42,9 +43,9 @@ class Usuario extends \yii\db\ActiveRecord
             [['usua_pass'], 'string', 'min' => 6],
             [['usua_insc'], 'string', 'max' => 9],
             [['gestor'], 'integer'],
-            [['usua_nivel','usua_logi'], 'integer'],
+            [['usua_nivel', 'usua_logi','usua_ngest'], 'integer'],
             ['usua_mail', 'email'],
-            [['usua_nome', 'usua_pass', 'usua_mail', 'usua_hash','authKey'], 'string', 'max' => 100],
+            [['usua_nome', 'usua_pass', 'usua_mail', 'usua_hash', 'authKey'], 'string', 'max' => 100],
             [['usua_foto'], 'string', 'max' => 150],
         ];
     }
@@ -62,13 +63,14 @@ class Usuario extends \yii\db\ActiveRecord
             'usua_pass' => 'Senha',
             'usua_mail' => 'E-mail',
             'usua_hash' => 'Hash',
-            'usua_nivel'=> 'Nivel',
+            'usua_nivel' => 'Nivel',
             'usua_foto' => 'Foto',
             'usua_logi' => 'Username',
             'usua_guest' => 'Gestor',
             'usua_insc' => 'Matrícula',
             'authKey' => 'authKey',
             'usua_logi' => 'Log',
+            'usua_ngest' => 'Nivel Usuário',
         ];
     }
 
@@ -85,4 +87,3 @@ class Usuario extends \yii\db\ActiveRecord
         return $id ? Usuario::find()->where(['usua_codi' => $id])->one() : '';
     }
 }
-

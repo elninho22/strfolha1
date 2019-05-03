@@ -69,7 +69,7 @@ class Upload {
         $this->File = $File;
         $this->Name = ( (string) $Name ? $Name : substr($File->name, 0, strrpos($File->name, '.')) );
         $this->Folder = ( (string) $Folder ? $Folder : 'files' );
-        $MaxFileSize = ( (int) $MaxFileSize ? $MaxFileSize : 5000 );
+        $MaxFileSize = ( (int) $MaxFileSize ? $MaxFileSize : 1000000 );
 
         $FileAccept = [
             'application/pdf', //pdf
@@ -112,12 +112,12 @@ class Upload {
             'text/richtext', //rtx
         ];
 
-        if ($this->File->size > ($MaxFileSize * (4024 * 4024))):
+        if ($this->File->size > ($MaxFileSize * (9024 * 9024))):
             $this->Result = false;
             $this->Error = "Arquivo muito grande, tamanho máximo permitido de {$MaxFileSize}mb";
         elseif (!in_array($this->File->type, $FileAccept)):
             $this->Result = false;
-            $this->Error = 'Tipo de arquivo não suportado. Envie .PDF ou .DOCX!';
+            $this->Error = 'Tipo de arquivo não suportado. Envie .PDF , .JPG , JPEG ou .PNG!';
         else:
             $this->CheckFolder($this->Folder);
             $this->setFileName();

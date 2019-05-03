@@ -11,7 +11,7 @@ use yii\helpers\Url;
 use yii\bootstrap\Modal;
 use app\models\FolhaPagamento;
 
-phpinfo();
+//phpinfo();
 
 $this->title = 'SigFolha - Studiorama';
 

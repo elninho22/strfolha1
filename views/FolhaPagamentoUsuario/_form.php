@@ -17,7 +17,7 @@ use app\models\Usuario;
             <?= $form->field($model, 'arquivo')->fileInput() ?><p style="color:red;font-size:11px;font-family:verdana;"><strong>arquivos válido (.pdf, .jpg, .jpeg, .png)</strong><p>
 
             <?= $form->field($model, 'fopa_data')->dropDownlist(['Janeiro' => 'Janeiro', 'Fevereiro' => 'Fevereiro', 'Março' => 'Março', 'Abril' => 'Abril', 'Maio' => 'Maio', 'Junho' => 'Junho', 'Julho' => 'Julho', 'Agosto' => 'Agosto', 'Setembro' => 'Setembro', 'Outubro' => 'Outubro', 'Novembro' => 'Novembro', 'Dezembro' => 'Dezembro'], ['prompt' => 'Selecione Mês Referencia']) ?>
-            <?= $form->field($model, 'fopa_guest')->dropDownlist(ArrayHelper::map(Usuario::find()->where(['usua_nivel' => '98'])->all(), 'usua_codi', 'usua_nome'), ['prompt' => 'Selecione seu Gestor'])
+            <?= $form->field($model, 'fopa_guest')->dropDownlist(ArrayHelper::map(Usuario::find()->where(['usua_ngest' => '98'])->all(), 'usua_codi', 'usua_nome'), ['prompt' => 'Selecione seu Gestor'])
                 ->label('Gestor') ?>
             <?= $form->field($model, 'fopa_text')->textInput() ?>
 

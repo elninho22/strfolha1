@@ -8,10 +8,17 @@ body {
     height: auto;
     margin: 0 auto -60px;
     padding: 0 0 60px;
+    background-image: url('../web/uploads/bts/header.jpg') no-repeat center center;
+    background-size:100px 150px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    width: 100%;
+    -o-background-size: cover;
 }
 
 .wrap > .container {
     padding: 70px 15px 20px;
+    
 }
 
 .footer {

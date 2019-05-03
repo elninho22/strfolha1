@@ -55,18 +55,19 @@ $config = [
         ],
         'db' => $db,
 
-        /*         'urlManager' => [
+                 'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-            ], */
-        'urlManager' => [
+            ], 
+        ],
+/*         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
                 'login' => '/site/login'
             ],
-        ],
+        ], */
     ],
     'params' => $params,
 ];
