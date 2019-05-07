@@ -56,7 +56,7 @@ class UsuarioController extends Controller
                     'class' => AccessControl::classname(),
                     'rules' => [
                         [
-                            'actions' => ['create', 'view', 'index', 'update'],
+                            'actions' => ['create', 'view', 'index', 'update','inativar'],
                             'allow' => true,
                             'roles' => ['@'],
                         ],
@@ -136,6 +136,7 @@ class UsuarioController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->usua_pass = hash('sha256', $model->usua_pass);
+            $model->usua_logi = 20;
            // var_dump($model);
             //die('tased');
             if ($model->save()) {
@@ -155,12 +156,12 @@ class UsuarioController extends Controller
         ]);
     }
 
-    public function actionDelete($id)
+    /*  public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
+    } */
 
     protected function findModel($id)
     {
@@ -201,4 +202,25 @@ class UsuarioController extends Controller
             }
         }
     }
+    public function actionInativar($id)
+    {
+        $model = Usuario::find()->where(['usua_codi' => $id])->one();
+        if ($model) {
+            $model->usua_logi = 2019;
+            $model->save();
+            Yii::$app->getSession()->setFlash('bloquser', "Usuário <b>{$model->usua_nome}</b> bloquado com sucesso!");
+            return $this->redirect('index');
+        }
+    }
+        public function actionAtivar($id)
+    {
+        $model = Usuario::find()->where(['usua_codi' => $id])->one();
+        if ($model) {
+            $model->usua_logi = 20;
+            $model->save();
+            Yii::$app->getSession()->setFlash('ativuser', "Usuário <b>{$model->usua_nome}</b> ativado com sucesso!");
+            return $this->redirect('index');
+        }
+    }
+
 }

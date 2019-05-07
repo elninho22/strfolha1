@@ -10,12 +10,18 @@ $this->title = 'Gerencial - Folha de Ponto';
 $this->registerJsFile("@web/js/index.js", [
     'depends' => AppAsset::className(),
 ]);
+
+$this->registerJsFile("@web/js/aprov.js", [
+    'depends' => AppAsset::className(),
+]);
+
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="folha-pagamento-index">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <h1><?= Html::encode($this->title) ?></h1>
-      <p>
+    <p>
         <?php
         if (Yii::$app->session->hasFlash('folhaSucesso')) {
             echo '<div class="alert alert-success" role="alert">
@@ -49,6 +55,7 @@ $this->registerJsFile("@web/js/index.js", [
 
                 [
                     'attribute' => 'fopa_stat',
+                    'headerOptions' => ['class' => 'text-center', 'style' => 'width: 10%;'],
                     'format' => 'raw',
                     'filter' => ['1' => 'Aprovado', '2' => 'Reprovado', '0' => 'Pendente'],
                     'value' => ['app\models\PagamentoUtil', 'getStatusValue'],
@@ -83,7 +90,7 @@ $this->registerJsFile("@web/js/index.js", [
                 [
                     'header' => 'Opções',
                     'class' => 'yii\grid\ActionColumn',
-                    'headerOptions' => ['class' => 'text-center', 'style' => 'width: 24%;'],
+                    'headerOptions' => ['class' => 'text-center', 'style' => 'width: 30%;'],
                     'contentOptions' => ['class' => 'text-center'],
                     'template' => "{view} {update} {delete}", // altera a forma de exibição dos botões
                     'buttons' => [
@@ -103,12 +110,14 @@ $this->registerJsFile("@web/js/index.js", [
                                         'confirm' => "Aprovar folha do colaborador: " .  FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . " ? ",
                                         'method' => 'post',
                                     ],
+                                    'id' => 'load',
+                                    'data-loading-text' => '<i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"> </i> Aguarde...',
+
                                 ]
                             );
                         },
                         'update' => function ($url, $model) {
                             return '<button type="button" id="' . FolhaPagamento::idFolhaPagamento($model['fopa_codi'])->fopa_codi . '" data-usuario="' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_mail . '" class="btn btn-danger reprovar-user"  title="Reprovar Folha">Reprovar</button>';
-
                         },
                         'delete' => function ($url, $model) {
                             return Html::a('Visualizar', ['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua], [

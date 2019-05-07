@@ -24,7 +24,7 @@ $this->registerJsFile("@web/js/index.js", [
                     <div class="modal-footer">
 
                         <button type="button" class="btn btn-default fechar" data-dismiss="modal">Fechar</button>
-                        <button type=" submit" name="enviar" class="btn btn-primary">Enviar</button>
+                        <button type="submit" name="enviar" class="btn btn-primary">Enviar</button>
                     </div>
                     <input name="usua_mail" val="" id="usua_mail" type="hidden" />
                     <input name="id" val="" id="fopa_codi" type="hidden" />
