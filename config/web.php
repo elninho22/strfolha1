@@ -5,7 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
-    'name'=>'SigFolha - Studiorama',
+    'name'=>'Colaborativa',
     'sourceLanguage' => 'pt-br',
     'version' => '1.5.1.3',
     'language' => 'pt-br',

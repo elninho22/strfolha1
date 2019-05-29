@@ -23,7 +23,7 @@ $model = new Usuario();
             <div class="text-white rgba-stylish-strong py-9 px-9 z-depth-8">
                 <!--Header-->
                 <div class="modal-header text-center pb-4">
-                    <h3 class="modal-title w-100 white-text font-weight-bold" id="myModal"><strong><b>;)</b></strong> <a class="text-primary"><strong>Olá, Visitante | SIGFOLHA</strong></a></h3>
+                    <h3 class="modal-title w-100 white-text font-weight-bold" id="myModal"><strong><b>;)</b></strong> <a class="text-primary"><strong>Olá, Visitante | Colaborativa</strong></a></h3>
                     <button type="button" class="close white-text" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

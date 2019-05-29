@@ -18,16 +18,10 @@ $this->title = 'Usuários';
 <div class="usuario-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-            <?php
-        if (Yii::$app->session->hasFlash('ativuser')) {
-            echo '<div class="alert alert-success" role="alert">
-            ' . Yii::$app->session->getFlash('ativuser') . '
-          </div>';
-        } elseif (Yii::$app->session->hasFlash('bloquser')) {
-            echo '<div class="alert alert-danger" role="alert">' . Yii::$app->session->getFlash('bloquser') . '
-          </div>';
-        }
-        ?>
+    <?php
+    ?>
+
+
     <p>
         <?= Html::a('Novo Usuário', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
@@ -79,9 +73,9 @@ $this->title = 'Usuários';
                         ]);
                     },
                     'delete' => function ($url, $model) {
-                        return Html::a('Inativar', ['inativar', 'id' => $model->usua_codi], [
+                        return Html::a('Inativar', ['delete', 'id' => $model->usua_codi], [
                             'class' => 'btn btn-danger',
-                            "title " => 'Bloquear usuário',
+                            "title " => 'Inativar usuário',
                             'data' => [
                                 'confirm' => "Deseja bloquear usuário: {$model->usua_nome} ?",
                                 'method' => 'post',

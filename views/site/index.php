@@ -13,7 +13,7 @@ use app\models\FolhaPagamento;
 
 //phpinfo();
 
-$this->title = 'SigFolha - Studiorama';
+$this->title = 'Folha de Ponto - Colaborativa';
 
 $this->registerJsFile("@web/js/cadindex.js", [
   'depends' => AppAsset::className(),

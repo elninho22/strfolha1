@@ -47,11 +47,11 @@ class FolhapagamentoUsuario extends \yii\db\ActiveRecord
     {
         return [
             'fopa_codi' => 'Código',
-            'fopa_arquivo' => 'Arquivo',
-            'fopa_data' => 'Mês de Referência',
+            'arquivo' => 'Arquivo',
+            'fopa_data' => 'Mês de Referencia',
             'fopa_text' => 'Observação',
             'fopa_guest' => 'Gestor',
-            'fopa_usua' => 'Usuário',
+            'fopa_usua' => 'Usuario',
             'fopa_stat' => 'Status',
         ];
     }

@@ -66,9 +66,9 @@ class FolhapagamentoController extends Controller
         ]);
     }
 
-    /**
-     aprova folha, envia e-mail para os usuario e gestor logado, altera status da folha no bd
-    */
+    
+    // Aprova folha do colaborador, envia e-mail para o usuario e gestor responsavel, altera status da folha conforme aprovar ou reprovar;
+    
     public function actionAprovar()
     {
         $id = trim(Yii::$app->request->get('id'));
@@ -88,9 +88,9 @@ class FolhapagamentoController extends Controller
         echo "Error ao aprovar folha.  Entre em contato informadno  <b> codigo 2404 </b>";
 
         $sendMail = new Email();
-        $remetente = ['andrejulianom@gmail.com' => 'Informe - SigFolha']; //Só um índice
-        $destinatario = [$email_destinatario => null, $email_gestor]; // Um ou mais índices de e-mails
-        $assunto = 'Folha aprovada: ' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . ' - Studiorama';
+        $remetente = ['andrejulianom@gmail.com' => 'Informe - Colaborativa']; //Só um índice
+        $destinatario = [$email_destinatario => null,  $email_gestor]; // Um ou mais índices de e-mails
+        $assunto = 'Folha aprovada: ' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . ' - Colaborativa';
         $nomeLayout = 'default'; //Nome do arquivo criado na raiz da pasta mail
         $usarTemplate = false; // ou false
         $corpoEmail = '<p style="color:black;font-size:14px;font-family:verdana;">' . 'Olá, ' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . '. <br>' . '<p style="color:MediumSeaGreen;font-size:14px;font-family:verdana;">' . 'Sua folha de ponto foi aprovada com sucesso. ' . '<br>' .
@@ -99,8 +99,8 @@ class FolhapagamentoController extends Controller
             'Gestor Responsável: <b>' . FolhaPagamento::nomeGestorf($model['fopa_guest'])->usua_nome .
             '</b><br><br>' . 'Folha disponivel no link abaixo:' . '<style="color:Tomato;font-size:16px;font-family:verdana;">' . '<br>'
             .
-            Html::a('Download', [Yii::getAlias('@web' . $model->fopa_arquivo)]) .
-            '<p><br><hr>' . '<style="color:black;font-size:11px;font-family:verdana;">' . "Mensagem enviada automaticamente, por favor não responda a este e-mail. <br>" . " Se necessário entre em contato com seu Gestor. Para maiores informações, acesse:" . '<br>' . "www.sigfolha.com.br";
+            Html::a('Download', Yii::getAlias($model['fopa_arquivo'])) .
+            '<p><br><hr>' . '<style="color:black;font-size:11px;font-family:verdana;">' . "Mensagem enviada automaticamente, por favor não responda a este e-mail. <br>" . " Se necessário entre em contato com seu Gestor. Para maiores informações, acesse:" . '<br>' . Html::a( 'Ponto Colaborativa', Yii::getAlias('ponto.colaborativa.co'));
         $copiaOculta = false; // ou true
         $params = ['titulo' => 'SigFolha']; //Array de parametros para usar no template.
 
@@ -116,7 +116,7 @@ class FolhapagamentoController extends Controller
         //$this->redirect(Yii::getAlias('@web') . '/folhapagamento/index');
     }
 
-    public function actionReprovarFolha()
+    public function actionReprovar()
     {
         $idfolha = trim(Yii::$app->request->post('id'));
         $model = FolhaPagamento::find()->where(['fopa_codi' => $idfolha])->one();
@@ -130,16 +130,16 @@ class FolhapagamentoController extends Controller
             return json_encode(['success' => false, 'mensagem' => "Error ao reprovar folha.  Entre em contato informadno  código 2404."]);
         }
         $sendMail = new Email();
-        $remetente = ['andrejulianom@gmail.com' => 'Informe - SigFolha']; //Só um índice
+        $remetente = ['andrejulianom@gmail.com' => 'Informe - Colaborativa']; //Só um índice
         $destinatario = [$email_destinatario => null]; // Um ou mais índices de e-mails. Entendeu? entendi
-        $assunto = 'Folha Reprovada: ' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . ' - Studiorama';
+        $assunto = 'Folha Reprovada: ' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . ' - Colaborativa';
         $nomeLayout = 'default'; //Nome do arquivo criado na raiz da pasta mail
         $usarTemplate = false; // ou false
         $corpoEmail = '<p style="color:black;font-size:14px;font-family:verdana;">' . 'Olá, ' . FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome . '. <br>' . 'Sua folha de ponto foi reprovada, pelo seguinte motivo.' .  
             '<p style="color:Tomato;font-size:15px;font-family:verdana;">' . Yii::$app->request->post('motivo') .           '<p style="color:black;font-size:14px;font-family:verdana;">' .
             'Mês de Referência: <b>' . $model->fopa_data . '</b><br>' .
             'Gestor Responsável: <b>' . FolhaPagamento::nomeGestorf($model['fopa_guest'])->usua_nome . '</b><br>' .
-        '</b><br><p style="color:black;font-size:9px;font-family:verdana;">' . '<hr>' . '<style="color:black;font-size:11px;font-family:verdana;">' . "Mensagem enviada automaticamente, por favor não responda a este e-mail. <br>" . " Se necessário entre em contato com seu Gestor. Para maiores informações, acesse:" . '<br>' . "www.sigfolha.com.br";
+        '</b><br><p style="color:black;font-size:9px;font-family:verdana;">' . '<hr>' . '<style="color:black;font-size:11px;font-family:verdana;">' . "Mensagem enviada automaticamente, por favor não responda a este e-mail. <br>" . " Se necessário entre em contato com seu Gestor. Para maiores informações, acesse:" . '<br>' . Html::a('Ponto Colaborativa', Yii::getAlias('ponto.colaborativa.co'));;
         $copiaOculta = false; // ou true
         $params = ['titulo' => 'SigFolha']; //Array de parametros para usar no template.
 

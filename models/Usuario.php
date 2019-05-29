@@ -40,7 +40,7 @@ class Usuario extends \yii\db\ActiveRecord
         return [
             [['usua_nome', 'usua_mail', 'usua_guest'], 'required'],
             [['usua_dins'], 'safe'],
-            [['usua_pass'], 'string','min' => 6],
+            [['usua_pass'], 'string', 'min' => 6],
             [['usua_insc'], 'string', 'max' => 9],
             [['gestor'], 'integer'],
             [['usua_nivel', 'usua_logi','usua_ngest'], 'integer'],

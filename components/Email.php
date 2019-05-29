@@ -66,9 +66,9 @@ class Email
      */
     public function sendEmail(array $remetente, array $destinatario, $assunto = null, $nomeLayout = null, $usarTemplate = false, $corpoEmail = null, $copiaOculta = false, $params = [])
     {
-        $remetente = count($remetente) > 0 ? $remetente : ['andrejulianom@gmail.com' => 'Studiorama'];
+        $remetente = count($remetente) > 0 ? $remetente : ['andrejulianom@gmail.com' => 'Colaborativa'];
         $destinatario = count($destinatario) > 0 ? $destinatario : [];
-        $assunto = ((string)$assunto ? $assunto : 'E-mail SigFolha');
+        $assunto = ((string)$assunto ? $assunto : 'E-mail Colaborativa');
         $nomeLayout = ((string)$nomeLayout ? $nomeLayout : 'default');
         $params = count($params) > 0 ? $params : [];
 

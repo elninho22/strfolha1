@@ -7,7 +7,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'SigFolha - Login';
+$this->title = 'Folha de Ponto - Login';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">

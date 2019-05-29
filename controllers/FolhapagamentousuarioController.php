@@ -74,15 +74,13 @@ class FolhapagamentousuarioController extends Controller
         $model = new FolhapagamentoUsuario();
 
         if ($model->load(Yii::$app->request->post())) {
-
             //pega o arquivo
             $arquivo = UploadedFile::getInstance($model, 'arquivo');
-            $_FILES = $arquivo;
-
+            
             // Cria uma pasta dentro de WEB uploads e dentro folha
             $upload = new Upload(\Yii::getAlias('@webroot') . '/uploads/folha/');
 
-            if ($_FILES) {
+            //if (file_exists($arquivo)) {
 
                 // pegando extensao do arquivo$ex = $arquivo->extension; e verifica em qual metodo vai tratar
                 if ($arquivo->extension == 'pdf') {
@@ -90,7 +88,6 @@ class FolhapagamentousuarioController extends Controller
                 } else {
                     $upload->Image($arquivo);
                 }
-
                 //Aqui o metodo verifica se o arquivo ou processo foi com sucesso
                 $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
                 $model->fopa_usua = Yii::$app->user->identity->usua_codi;
@@ -98,10 +95,11 @@ class FolhapagamentousuarioController extends Controller
                 if ($model->save()) {
                     return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
                 }
-            } else {
-                Yii::$app->getSession()->setFlash('arqvazio', "Selecione arquivo do tipo: .PDF, .JPG, .JPEG, .PNG" . $upload->getError());
             }
-        } // depuracao \yii\helpers\VarDumper::dump( $model->errors,10,true); die('o');
+/*             if (!$upload->getResult()) {
+                throw new NotFoundHttpException("Formato de arquivo inválido, envie somente arquivos do tipo: .PDF, .JPG, .JPEG, .PNG" . $upload->getError());
+            }
+         }*/ // depuracao \yii\helpers\VarDumper::dump( $model->errors,10,true); die('o');
 
         return $this->render('create', [
             'model' => $model,
@@ -120,43 +118,40 @@ class FolhapagamentousuarioController extends Controller
         }
         $model = $this->findModel($fopa_codi, $fopa_usua);
 
-        //inicio do update com validade
         if ($model->load(Yii::$app->request->post())) {
-
+/*             var_dump(Yii::$app->request->post());
+            die('parou'); */
             //pega o arquivo
             $arquivo = UploadedFile::getInstance($model, 'arquivo');
-            //$_FILES = $arquivo;
 
             // Cria uma pasta dentro de WEB uploads e dentro folha
             $upload = new Upload(\Yii::getAlias('@webroot') . '/uploads/folha/');
 
-            if (!empty($arquivo)) {
-
+            //verifica se existe o arquivo dentro da pasta
+            //if (file_exists($arquivo)) {
                 // pegando extensao do arquivo$ex = $arquivo->extension; e verifica em qual metodo vai tratar
                 if ($arquivo->extension == 'pdf') {
                     $upload->File($arquivo);
                 } else {
                     $upload->Image($arquivo);
                 }
-
                 //Aqui o metodo verifica se o arquivo ou processo foi com sucesso
                 $model->fopa_arquivo = '/uploads/folha/' . $upload->getResult();
+
                 $model->fopa_usua = Yii::$app->user->identity->usua_codi;
                 $model->fopa_stat = 0;
-                // SALVA O ARQUIVO           
                 if ($model->save()) {
                     return $this->redirect(['view', 'fopa_codi' => $model->fopa_codi, 'fopa_usua' => $model->fopa_usua]);
                 }
-            } else {
-                Yii::$app->getSession()->setFlash('arqvazio', "Selecione arquivo do tipo: .PDF, .JPG, .JPEG, .PNG" . $upload->getError());
             }
-        } // depuracao \yii\helpers\VarDumper::dump( $model->errors,10,true); die('o');
+/*             if (!$upload->getResult()) {
+                throw new NotFoundHttpException("Formato de arquivo inválido, envie somente arquivos do tipo: .PDF, .JPG, .JPEG, .PNG" . $upload->getError());
+            }
+        } */
 
-        return $this->render('create', [
+        return $this->render('update', [
             'model' => $model,
         ]);
-
-        
     }
 
     protected function findModel($fopa_codi, $fopa_usua)

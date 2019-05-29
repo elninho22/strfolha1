@@ -1,20 +1,16 @@
 <?php
-
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\assets\AppAsset;
 use app\models\FolhaPagamento;
 
 $this->title = 'Gerencial - Folha de Ponto';
-
 $this->registerJsFile("@web/js/index.js", [
     'depends' => AppAsset::className(),
 ]);
-
 $this->registerJsFile("@web/js/aprov.js", [
     'depends' => AppAsset::className(),
 ]);
-
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="folha-pagamento-index">
@@ -40,19 +36,16 @@ $this->registerJsFile("@web/js/aprov.js", [
             'filterModel' => $searchModel,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-
                 [
                     'attribute' => 'fopa_usua',
                     'value' => function ($model) {
                         return FolhaPagamento::nomeUsuario($model['fopa_usua'])->usua_nome;
                     }
                 ],
-
                 [
                     'attribute' => 'fopa_data',
                     'filter' => ['Janeiro' => 'Janeiro', 'Fevereiro' => 'Fevereiro', 'Março' => 'Março', 'Abril' => 'Abril', 'Maio' => 'Maio', 'Junho' => 'Junho', 'Julho' => 'Julho', 'Agosto' => 'Agosto', 'Setembro' => 'Setembro', 'Outubro' => 'Outubro', 'Novembro' => 'Novembro', 'Dezembro' => 'Dezembro'],
                 ],
-
                 [
                     'attribute' => 'fopa_stat',
                     'headerOptions' => ['class' => 'text-center', 'style' => 'width: 10%;'],
@@ -60,14 +53,12 @@ $this->registerJsFile("@web/js/aprov.js", [
                     'filter' => ['1' => 'Aprovado', '2' => 'Reprovado', '0' => 'Pendente'],
                     'value' => ['app\models\PagamentoUtil', 'getStatusValue'],
                 ],
-
                 [
                     'attribute' => 'fopa_text',
                     'format' => 'raw',
                     'header' => 'Observação',
                     'headerOptions' => ['class' => 'text-center'],
                 ],
-
                 [
                     'header' => 'Folha',
                     'class' => 'yii\grid\ActionColumn',
@@ -112,7 +103,6 @@ $this->registerJsFile("@web/js/aprov.js", [
                                     ],
                                     'id' => 'load',
                                     'data-loading-text' => '<i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"> </i> Aguarde...',
-
                                 ]
                             );
                         },
